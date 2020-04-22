@@ -9,47 +9,58 @@
                 <li class="mx-3">
                     <a href="#">Все</a>
                 </li>
-                <li class="mx-3">
-                    <a href="#">Новая <span class="badge count">13</span></a>
-                </li>
-                <li class="mx-3">
-                    <a href="#">Решена <span class="badge count">45</span></a>
-                </li>
-                <li class="mx-3">
-                    <a href="#">В работе <span class="badge count">2</span></a>
-                </li>
-                <li class="mx-3">
-                    <a href="#">Закрыта <span class="badge count">13</span></a>
+                <li class="mx-3" v-for="status in issueStatuses">
+                    <a href="#">{{ status.title }}<span class="badge count ml-2">13</span></a>
                 </li>
             </nav>
             <div class="inline-block ml-auto header-links">
-                <router-link :to="{name: 'def'}" class="button p-3 px-4 rounded-pill shadow-sm tonight">Создать заявку
+                <router-link :to="{name: 'home'}" class="button p-3 px-4 rounded-pill shadow-sm tonight">Создать заявку
                 </router-link>
             </div>
         </div>
         <div class="col-12 block-content">
             <table class="table">
                 <tr>
-                    <th>#</th>
+                    <th class="text-center">#</th>
                     <th>Название</th>
                     <th>Автор</th>
                     <th>Ответственный</th>
                     <th>Дата создания</th>
                     <th>Статус</th>
-                    <th></th>
                 </tr>
-                <tr class="shadow-sm" v-for="issue in organizations">
-                    <td>17</td>
-                    <td>Болит жопа</td>
-                    <td>Тимати</td>
-                    <td>Егор Крид</td>
-                    <td>12 окт. 2003 г.</td>
+                <tr v-if="!issues">
+                    <td colspan="7" class="text-center">К сожалению, заявок нет 😪</td>
+                </tr>
+                <tr class="shadow-sm" v-else v-for="issue in issues">
+                    <td class="text-center">{{ issue.id }}</td>
                     <td>
-                        <div class="status closed">
-                            Закрыта
+                        <router-link :to="{ name: 'issues', params: { id: issue.id } }">
+                            {{ issue.title }}
+                        </router-link>
+                        <br/>
+                    </td>
+                    <td>
+                        <router-link :to="{ name: 'users', params: { id: issue.author.id } }">
+                            {{ issue.author.name }}
+                        </router-link>
+                        (
+                        <router-link :to="{ name: 'organizations', params: { id: issue.author.organization.id } }">
+                            {{ issue.author.organization.short_name }}
+                        </router-link>
+                        )
+                    </td>
+                    <td v-if="issue.employee">
+                        <router-link :to="{ name: 'users', params: { id: issue.employee.id } }">
+                            {{ issue.employee.name }}
+                        </router-link>
+                    </td>
+                    <td v-else>Не назначен</td>
+                    <td>{{ issue.created_at }}</td>
+                    <td>
+                        <div class="status" v-bind:class="[issue.status.icon.title, issue.status.color.title]">
+                            {{ issue.status.title }}
                         </div>
                     </td>
-                    <td>ываы</td>
                 </tr>
             </table>
         </div>
@@ -60,17 +71,19 @@
     export default {
         data: function () {
             return {
-                organizations: []
+                issues: null,
+                issueStatuses: null,
             }
         },
         mounted() {
             let app = this;
-            axios.get('/api/v1/organization')
+            axios.get('/api/v1/issues')
                 .then(function (resp) {
-                    app.organizations = resp.data;
-                })
-                .catch(function (resp) {
-                    alert("Could not load companirees");
+                    app.issues = resp.data;
+                });
+            axios.get('/api/v1/statuses')
+                .then(function (response) {
+                    app.issueStatuses = response.data;
                 });
         },
         methods: {

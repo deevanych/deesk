@@ -6,19 +6,19 @@ use App\Http\Controllers\Controller;
 use App\Issue;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
 
 class IssueController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        return Auth::user()->organization->issues;
+        return $request->user()->organization->issues;
     }
 
     /**
@@ -34,7 +34,7 @@ class IssueController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
+     * @param Request $request
      * @return Response
      */
     public function store(Request $request)
@@ -45,18 +45,19 @@ class IssueController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param \App\Issue $issue
-     * @return Response
+     * @param Issue $issue
+     * @return Issue
      */
     public function show(Issue $issue)
     {
         //
+        return $issue->load('type', 'priority', 'comments');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param \App\Issue $issue
+     * @param Issue $issue
      * @return Response
      */
     public function edit(Issue $issue)
@@ -67,8 +68,8 @@ class IssueController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Issue $issue
+     * @param Request $request
+     * @param Issue $issue
      * @return Response
      */
     public function update(Request $request, Issue $issue)
@@ -79,7 +80,7 @@ class IssueController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param \App\Issue $issue
+     * @param Issue $issue
      * @return Response
      */
     public function destroy(Issue $issue)

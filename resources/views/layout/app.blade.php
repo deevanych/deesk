@@ -5,7 +5,7 @@
 <div id="app">
     @include('layout.header')
     <section class="container">
-        @yield('content')
+        <router-view></router-view>
     </section>
 </div>
 @include('layout.assets')

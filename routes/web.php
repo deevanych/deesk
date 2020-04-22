@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('{all}', function () {
+//    return dd(Auth::user()->organization->clients);
     return view('pages.index');
-});
+})->where('all', '.*');
+

@@ -15,6 +15,11 @@ class CreateIssueCommentsTable extends Migration
     {
         Schema::create('issue_comments', function (Blueprint $table) {
             $table->id();
+            $table->text('text');
+            $table->bigInteger('author_id')->unsigned();
+            $table->foreign('author_id')->references('id')->on('users');
+            $table->bigInteger('issue_id')->unsigned();
+            $table->foreign('issue_id')->references('id')->on('issues');
             $table->timestamps();
         });
     }

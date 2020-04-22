@@ -15,6 +15,15 @@ class CreateIssueStatusesTable extends Migration
     {
         Schema::create('issue_statuses', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->bigInteger('color_id')->unsigned();
+            $table->foreign('color_id')->references('id')->on('issue_status_colors');
+            $table->bigInteger('icon_id')->unsigned();
+            $table->foreign('icon_id')->references('id')->on('issue_status_icons');
+            $table->bigInteger('organization_id')->unsigned();
+            $table->foreign('organization_id')->references('id')->on('organizations');
+            $table->text('description')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

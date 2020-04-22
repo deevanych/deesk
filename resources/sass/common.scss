@@ -1,14 +1,16 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700,800,900&display=swap&subset=cyrillic');
 
 * {
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Cera Pro', sans-serif;
     color: #232323;
-    font-size: 12px;
+}
+
+html {
+    overflow-x: hidden;
 }
 
 a {
     text-decoration: none;
-    color: #232323;
+    transition: color .3s;
 }
 
 a:hover {
@@ -27,27 +29,55 @@ nav li {
     color: #fff;
 }
 
+.font-weight-bolder {
+    font-weight: 800 !important;
+}
+
+.badge {
+    display: initial;
+}
+
 //header
 a.logo {
     font-weight: 900;
     text-decoration: none;
-    color: #232323;
+    color: #fff;
     font-size: 2rem;
 }
 
 header nav li a {
     font-weight: 700;
+    color: #fff;
 }
 
 #search input {
-    border: 1px solid;
+    border: none;
     outline: none;
 }
 
+#header-back {
+    height: 144px;
+    position: absolute;
+    background: #9f83f5;
+    width: 100%;
+    left: 50%;
+    margin-left: -600px;
+    border-radius: 0px 0px 0px 50px;
+    box-shadow: 0px 0px 6px #00000030;
+}
+
 //button colors
+.button {
+    transition: color .3s, box-shadow .3s, font-weight 0s, font-size 0s;
+}
+
+.button:hover {
+    box-shadow: 0.12rem 0.25rem 0.25rem rgba(0, 0, 0, 0.4) !important;
+}
+
 .button.white {
-    color: #232323;
-    border: 1px solid;
+    color: #6f6f6f;
+    background: #fff;
 }
 
 .button.white:hover {
@@ -68,38 +98,59 @@ header nav li a {
     background: linear-gradient(to right, #5B86E5, #36D1DC); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.button.green {
+    color: #fff;
+    background: #159957; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #155799, #159957); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #155799, #159957); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 //statuses
 .status {
     background-repeat: no-repeat;
-    padding-left: 30px;
+    padding-left: 1.5rem;
+    background-size: 1rem;
+    background-position: left;
+    font-weight: 500;
 }
 
-.closed {
-    background-image: url(/images/statuses/closed.svg);
+.close {
+    background-image: url(/images/statuses/close.svg);
 }
 
-.ready {
-    background-image: url(/images/statuses/ready.svg);
-    color: #28a745;
+.success {
+    background-image: url(/images/statuses/success.svg);
 }
 
-.working {
-    background-image: url(/images/statuses/working.svg);
-    color: #dc3545;
+.play {
+    background-image: url(/images/statuses/play.svg);
 }
 
-.paused {
-    background-image: url(/images/statuses/paused.svg);
-    color: #fd7e14;
+.pause {
+    background-image: url(/images/statuses/pause.svg);
 }
 
-.new {
-    background-image: url(/images/statuses/new.svg);
+.dot {
+    background-image: url(/images/statuses/dot.svg);
+}
+
+.blue {
     color: #17a2b8;
 }
 
-//pages
+.orange {
+    color: #fd7e14;
+}
 
+.red {
+    color: #dc3545;
+}
+
+.green {
+    color: #28a745;
+}
+
+//pages
 .block-content {
     margin-top: 40px;
 }
@@ -193,4 +244,71 @@ table.table td:nth-last-child(1) {
     right: 0;
     margin-left: 15px;
     margin-right: 15px;
+}
+
+.ql-toolbar.ql-snow {
+    border-radius: 50px;
+}
+
+.ql-container.ql-snow {
+    border: none;
+    border-bottom: 1px solid #eee;
+}
+
+.fave {
+    background-image: url(/images/icons/fave.svg);
+    display: inline-block;
+    height: 1rem;
+    width: 1rem;
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    background-position: center;
+}
+
+.fave.delete {
+    background-image: url(/images/icons/unfave.svg);
+}
+
+//colors
+.text-gray {
+    color: #696969;
+}
+
+.dropdown-menu {
+    border-radius: 25px;
+    margin-top: 0.5rem !important;
+    overflow: hidden;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+    border: none;
+}
+
+.dropdown-item:active {
+    background-color: #ff000012;
+}
+
+.dropdown-item {
+    padding: 0.5rem 1.5rem;
+}
+
+.dropdown-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.dropdown-toggle::after {
+    background-image: url(/images/icons/dropdown.svg);
+    width: 1rem;
+    height: 1.5rem;
+    background-repeat: no-repeat;
+    border: none;
+    margin-left: 1rem;
+}
+
+.dropdown-toggle[data-color=white]::after {
+    background-image: url(/images/icons/dropdown-white.svg);
+}
+
+.user-short {
+    font-size: .8rem;
 }
