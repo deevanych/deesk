@@ -57117,13 +57117,13 @@ var render = function() {
                               }
                             })
                           ]
+                        ),
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.issue.title) +
+                            "\n                    "
                         )
                       ]
-                    ),
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(_vm.issue.title) +
-                        "\n                "
                     )
                   ]
                 )
