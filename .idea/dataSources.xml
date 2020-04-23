@@ -7,5 +7,14 @@
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
       <jdbc-url>jdbc:postgresql://localhost:5432/deesk</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="cashalot_deesk@cashalot.beget.tech" uuid="bf015bfa-2dc9-44f3-81e3-384564cdd081">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://cashalot.beget.tech:3306/cashalot_deesk</jdbc-url>
+      <driver-properties>
+        <property name="serverTimezone" value="UTC" />
+      </driver-properties>
+    </data-source>
   </component>
 </project>
