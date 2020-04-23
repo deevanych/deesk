@@ -81,6 +81,30 @@
                 </div>
             </div>
         </div>
+        <div class="col-7" v-else>
+            <div class="row mb-5">
+                <div class="col">
+                    <PuSkeleton height="48px" width="60%"></PuSkeleton>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col d-flex align-items-center justify-content-end">
+                    <PuSkeleton height="48px" circle width="48px" class="rounded-pill mr-auto"></PuSkeleton>
+                    <PuSkeleton height="48px" width="100px" class="rounded-pill"></PuSkeleton>
+                    <PuSkeleton height="48px" width="100px" class="rounded-pill ml-3"></PuSkeleton>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col">
+                    <PuSkeleton v-for="n in 5" class="mb-3 d-block"></PuSkeleton>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col">
+                    <PuSkeleton height="500px"></PuSkeleton>
+                </div>
+            </div>
+        </div>
         <div class="col offset-1" v-if="issue">
             <div class="row mb-4">
                 <div class="col">
@@ -129,6 +153,14 @@
                 <div class="col">
                     <h6 class="text-gray">Наблюдатели</h6>
                     <h5>Наблюдателей нет</h5>
+                </div>
+            </div>
+        </div>
+        <div class="col offset-1" v-else>
+            <div class="row mb-4" v-for="n in 5">
+                <div class="col">
+                    <PuSkeleton width="50%" class="mb-2 d-block"></PuSkeleton>
+                    <PuSkeleton height="40px" width="80%" class="mb-2 d-block"></PuSkeleton>
                 </div>
             </div>
         </div>

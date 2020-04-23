@@ -2,6 +2,7 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueI18n from 'vue-i18n';
 import vueHeadFul from 'vue-headful';
+import Skeleton from 'vue-loading-skeleton';
 
 import '../js/common';
 // home
@@ -53,6 +54,7 @@ VueI18n.prototype.getChoiceIndex = function (choice, choicesLength) {
 
 window.Vue.use(VueRouter);
 window.Vue.use(VueI18n);
+window.Vue.use(Skeleton)
 
 Vue.component('header-app', Header);
 Vue.component('vue-headful', vueHeadFul);

@@ -1,7 +1,6 @@
 <template>
     <div>
-        <div id="header-back"></div>
-        <header class="container py-5 mb-5">
+        <header class="py-5 mb-5">
             <div class="row">
                 <div class="col">
                     <router-link :to="{name: 'home'}" class="logo">DEESK</router-link>
