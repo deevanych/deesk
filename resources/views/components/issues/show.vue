@@ -125,7 +125,7 @@
                         <div class="user-avatar mr-3"
                              style="background-image: url(http://deesk.ru/storage/clients/2.jpg);"></div>
                         <div class="d-flex flex-column justify-content-center">
-                            <a href="#" class="text-dark font-weight-bolder">{{ issue.author.name }}</a>
+                            <a href="#" class="font-weight-bolder">{{ issue.author.name }}</a>
                             <a href="#" class="text-gray">{{ issue.author.organization.short_name }}</a>
                         </div>
                     </div>

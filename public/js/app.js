@@ -57418,7 +57418,7 @@ var render = function() {
                       _c(
                         "a",
                         {
-                          staticClass: "text-dark font-weight-bolder",
+                          staticClass: "font-weight-bolder",
                           attrs: { href: "#" }
                         },
                         [_vm._v(_vm._s(_vm.issue.author.name))]
