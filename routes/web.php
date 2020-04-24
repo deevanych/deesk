@@ -12,20 +12,19 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::pattern('domain', '(deesk.ru|deesk.online)');
+//Route::pattern('domain', '(deesk.ru|deesk.online)');
+//
+////Главный домен
+//Route::domain('{domain}')->group(function () {
+//    Route::get('/', 'Controller@index');
+//    Route::get('/register', 'OrganizationController@create');
+//    Route::get('/password', function () {
+//        return Hash::make('11111q');
+//    });
+//});
 
-//Главный домен
-Route::domain('{domain}')->group(function () {
-    Route::get('/', 'Controller@index');
-    Route::get('/register', 'OrganizationController@create');
-    Route::get('/password', function () {
-        return Hash::make('11111q');
-    });
-});
-
-Route::group(['domain' => '{account}.{domain}'], function () {
+//Route::group(['domain' => '{account}.{domain}'], function () {
     Route::view('/{path?}', 'pages.index')
         ->where('path', '.*')
         ->name('app');
-});
-
+//});
