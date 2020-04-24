@@ -35,7 +35,7 @@
                        aria-expanded="false">{{ issue.status.title }}
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item status white" href="#" v-for="status in issueStatuses">
+                        <a class="dropdown-item status white" href="#" v-for="status in statuses">
                             <span class="status"
                                   v-bind:class="[status.icon.title, status.color.title]">
                                 {{ status.title }}
@@ -57,7 +57,7 @@
                         <div class="comment d-flex align-items-end" v-for="comment in comments"
                              v-bind:class="{ self: comment.self}">
                             <div class="user-avatar flex-shrink-0"
-                                 style="background-image: url(http://deesk.ru/storage/clients/2.jpg);"></div>
+                                 style="background-image: url(https://deesk.ru/storage/clients/2.jpg);"></div>
                             <div class="comment-body d-flex flex-column px-4 py-3">
                                 <span class="comment-author font-weight-bolder">{{ comment.author.name }}</span>
                                 <span class="comment-text">{{ comment.text }}</span>
@@ -123,7 +123,7 @@
                     <h6 class="text-gray">Автор</h6>
                     <div class="user-short d-flex flex-row align-items-center">
                         <div class="user-avatar mr-3"
-                             style="background-image: url(http://deesk.ru/storage/clients/2.jpg);"></div>
+                             style="background-image: url(https://deesk.ru/storage/clients/2.jpg);"></div>
                         <div class="d-flex flex-column justify-content-center">
                             <a href="#" class="font-weight-bolder">{{ issue.author.name }}</a>
                             <a href="#" class="text-gray">{{ issue.author.organization.short_name }}</a>
@@ -192,7 +192,7 @@
                 });
             axios.get('/api/v1/statuses')
                 .then(function (response) {
-                    app.issueStatuses = response.data;
+                    app.statuses = response.data;
                 });
         },
         methods: {

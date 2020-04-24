@@ -1908,8 +1908,8 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var D_OSPanel_domains_deesk_ru_resources_views_components_issues_list_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./resources/views/components/issues/list.vue */ "./resources/views/components/issues/list.vue");
-/* harmony import */ var D_OSPanel_domains_deesk_ru_resources_views_components_organizations_list_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./resources/views/components/organizations/list.vue */ "./resources/views/components/organizations/list.vue");
+/* harmony import */ var _issues_list_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./issues/list.vue */ "./resources/views/components/issues/list.vue");
+/* harmony import */ var _organizations_list_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./organizations/list.vue */ "./resources/views/components/organizations/list.vue");
 //
 //
 //
@@ -1926,8 +1926,8 @@ __webpack_require__.r(__webpack_exports__);
   path: '/',
   name: 'home',
   components: {
-    issueList: D_OSPanel_domains_deesk_ru_resources_views_components_issues_list_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    clientList: D_OSPanel_domains_deesk_ru_resources_views_components_organizations_list_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    issueList: _issues_list_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    clientList: _organizations_list_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
@@ -2243,7 +2243,7 @@ __webpack_require__.r(__webpack_exports__);
       app.title = resp.data.title;
     });
     axios.get('/api/v1/statuses').then(function (response) {
-      app.issueStatuses = response.data;
+      app.statuses = response.data;
     });
   },
   methods: {
@@ -57178,7 +57178,7 @@ var render = function() {
                   _c(
                     "div",
                     { staticClass: "dropdown-menu dropdown-menu-right" },
-                    _vm._l(_vm.issueStatuses, function(status) {
+                    _vm._l(_vm.statuses, function(status) {
                       return _c(
                         "a",
                         {
@@ -57243,7 +57243,7 @@ var render = function() {
                                 staticClass: "user-avatar flex-shrink-0",
                                 staticStyle: {
                                   "background-image":
-                                    "url(http://deesk.ru/storage/clients/2.jpg)"
+                                    "url(https://deesk.ru/storage/clients/2.jpg)"
                                 }
                               }),
                               _vm._v(" "),
@@ -57405,7 +57405,7 @@ var render = function() {
                     staticClass: "user-avatar mr-3",
                     staticStyle: {
                       "background-image":
-                        "url(http://deesk.ru/storage/clients/2.jpg)"
+                        "url(https://deesk.ru/storage/clients/2.jpg)"
                     }
                   }),
                   _vm._v(" "),
@@ -73888,8 +73888,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\OSPanel\domains\deesk.ru\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! D:\OSPanel\domains\deesk.ru\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /home/c/cashalot/helpdesk/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /home/c/cashalot/helpdesk/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

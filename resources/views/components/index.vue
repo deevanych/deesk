@@ -9,8 +9,8 @@
 </template>
 
 <script>
-    import IssueList from 'D:/OSPanel/domains/deesk.ru/resources/views/components/issues/list.vue';
-    import ClientList from 'D:/OSPanel/domains/deesk.ru/resources/views/components/organizations/list.vue';
+    import IssueList from './issues/list.vue';
+    import ClientList from './organizations/list.vue';
 
     export default {
         path: '/',
