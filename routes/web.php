@@ -23,8 +23,19 @@ use Illuminate\Support\Facades\Route;
 //    });
 //});
 
-//Route::group(['domain' => '{account}.{domain}'], function () {
-    Route::view('/{path?}', 'pages.index')
+//Route::group(['domain' => 'panel.{domain}'], function (\http\Client\Request $request) {
+//    return $request;
+//    Route::view('/{path?}', 'pages.index')
+//        ->where('path', '.*')
+//        ->name('app');
+//});
+
+Route::domain('panel.deesk.ru')->group(function () {
+    Route::view('/{path?}', 'app.index')
         ->where('path', '.*')
         ->name('app');
-//});
+});
+
+Route::domain('deesk.ru')->group(function () {
+    Route::get('/', 'PortalController@index')->name('portal.index');
+});

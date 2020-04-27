@@ -7,6 +7,11 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * @property mixed author
+ * @property  issue_id
+ * @method static create($all)
+ * @method belongsTo(string $string)
+ * @method hasOne(string $string, string $string1, string $string2)
+ * @method save()
  */
 class IssueComment extends Model
 {
@@ -16,6 +21,7 @@ class IssueComment extends Model
     protected $casts = [
         'created_at' => 'datetime:d.m.Y / H:i',
     ];
+    protected $guarded = [];
     protected $appends = ['self'];
 
     public function author()
@@ -23,6 +29,10 @@ class IssueComment extends Model
         return $this->hasOne('App\User', 'id', 'author_id');
     }
 
+    public function issue()
+    {
+        return $this->belongsTo('App\Issue');
+    }
     /**
      * @return bool
      */

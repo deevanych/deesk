@@ -24,4 +24,5 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.'], funct
     Route::resource('organizations', 'OrganizationController', ['except' => ['create', 'edit']]);
     Route::resource('issues', 'IssueController', ['except' => ['create', 'edit']]);
     Route::resource('statuses', 'IssueStatusController', ['except' => ['create', 'edit']]);
+    Route::resource('issues/{id}/comments', 'IssueCommentController', ['except' => ['create', 'edit']]);
 });

@@ -18,5 +18,14 @@ class IssueStatusIconSeeder extends Seeder
         DB::table('issue_status_icons')->insert([
             'title' => 'success'
         ]);
+        DB::table('issue_status_icons')->insert([
+            'title' => 'pause'
+        ]);
+        DB::table('issue_status_icons')->insert([
+            'title' => 'closed'
+        ]);
+        DB::table('issue_status_icons')->insert([
+            'title' => 'play'
+        ]);
     }
 }

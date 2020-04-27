@@ -18,5 +18,14 @@ class IssueStatusColorSeeder extends Seeder
         DB::table('issue_status_colors')->insert([
             'title' => 'green'
         ]);
+        DB::table('issue_status_colors')->insert([
+            'title' => 'orange'
+        ]);
+        DB::table('issue_status_colors')->insert([
+            'title' => 'red'
+        ]);
+        DB::table('issue_status_colors')->insert([
+            'title' => 'black'
+        ]);
     }
 }

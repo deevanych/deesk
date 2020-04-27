@@ -1,5 +1,6 @@
 <template>
     <div>
+        <div id="loading-bar" v-bind:class="{loading: loading}"></div>
         <header class="py-5 mb-5">
             <div class="row">
                 <div class="col">
@@ -19,3 +20,17 @@
         </header>
     </div>
 </template>
+
+<script>
+    export default {
+        data: function () {
+            return {
+                loading: true,
+            }
+        },
+        mounted() {
+            window.header = this;
+            this.loading = false;
+        }
+    }
+</script>

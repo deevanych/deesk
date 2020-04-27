@@ -51,7 +51,7 @@ class IssueController extends Controller
     public function show(Issue $issue)
     {
         //
-        return $issue->load('type', 'priority', 'comments');
+        return $issue->load('type', 'priority');
     }
 
     /**
@@ -70,11 +70,13 @@ class IssueController extends Controller
      *
      * @param Request $request
      * @param Issue $issue
-     * @return Response
+     * @return Issue
      */
     public function update(Request $request, Issue $issue)
     {
         //
+        $issue->update($request->all());
+        return array('status' => 'success', 'updated' => true, 'message' => 'Заявка обновлена', 'issue' => $issue->fresh());
     }
 
     /**

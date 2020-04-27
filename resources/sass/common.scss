@@ -8,13 +8,42 @@ html {
     overflow-x: hidden;
 }
 
+div#loading-bar {
+    height: 4px;
+    background: #EB5757;
+    position: fixed;
+    top: 0;
+    width: 0%;
+    left: 0;
+    transition: 0s;
+}
+
+div#loading-bar.loading {
+    width: 100%;
+    transition: 10s;
+}
+
 a {
     text-decoration: none;
     transition: color .3s;
 }
 
+a:not([href]) {
+    color: #007bff;
+    cursor: pointer;
+}
+
 a:hover {
     text-decoration: none;
+}
+
+button {
+    border: none;
+    outline: none !important;
+}
+
+button[disabled] {
+    opacity: .2;
 }
 
 nav li {
@@ -104,6 +133,27 @@ header nav li a {
     background: linear-gradient(to right, #155799, #159957); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
+.button.orange {
+    color: #fff;
+    background: #F2994A; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #F2C94C, #F2994A); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #F2C94C, #F2994A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.button.red {
+    color: #fff;
+    background: #EB5757; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #000000, #EB5757); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #000000, #EB5757); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.button.black {
+    color: #fff;
+    background: #20002c; /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #cbb4d4, #20002c); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #cbb4d4, #20002c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
 //statuses
 .status {
     background-repeat: no-repeat;
@@ -113,7 +163,7 @@ header nav li a {
     font-weight: 500;
 }
 
-.close {
+.closed {
     background-image: url(/images/statuses/close.svg);
 }
 
@@ -133,6 +183,26 @@ header nav li a {
     background-image: url(/images/statuses/dot.svg);
 }
 
+.closed.white {
+    background-image: url(/images/statuses/close-white.svg);
+}
+
+.success.white {
+    background-image: url(/images/statuses/success-white.svg);
+}
+
+.play.white {
+    background-image: url(/images/statuses/play-white.svg);
+}
+
+.pause.white {
+    background-image: url(/images/statuses/pause-white.svg);
+}
+
+.dot.white {
+    background-image: url(/images/statuses/dot-white.svg);
+}
+
 .blue {
     color: #17a2b8;
 }
@@ -147,6 +217,10 @@ header nav li a {
 
 .green {
     color: #28a745;
+}
+
+.black {
+    color: #232323;
 }
 
 //pages
@@ -310,4 +384,63 @@ table.table td:nth-last-child(1) {
 
 .user-short {
     font-size: .8rem;
+}
+
+.comment-text p {
+    color: #232323;
+}
+
+.comment.self .comment-text p {
+    color: #fff;
+}
+
+.comment-text p:last-child {
+    margin-bottom: 0px;
+}
+
+.comment-text img, .comment-text iframe {
+    max-width: 100%;
+    border-radius: 0.3rem;
+}
+
+.note-editor {
+    border-radius: 0.3rem;
+}
+
+.note-statusbar {
+    display: none;
+}
+
+.user-avatar {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-size: cover;
+}
+
+[data-toggle='dropdown'] .status {
+    color: #fff;
+}
+
+.toast {
+    border-radius: 25px !important;
+    background-size: 1rem;
+    background-position: 20px center !important;
+}
+
+.toast-success {
+    background-color: #51A351;
+}
+
+.toast-error {
+    background-color: #BD362F;
+}
+
+.toast-info {
+    background-color: #2F96B4;
+}
+
+.toast-message {
+    color: #fff;
 }
