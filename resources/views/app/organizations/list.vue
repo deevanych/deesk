@@ -10,11 +10,11 @@
             </div>
         </div>
         <div class="col-12 block-content">
-            <div class="row">
-                <div class="col" v-if="!clients">
+            <div class="row" v-if="clients">
+                <div class="col" v-if="!clients.length">
                     К сожалению, клиентов нет 😪
                 </div>
-                <div class="col-4" v-else v-for="client in clients">
+                <div class="col-4" v-for="client in clients">
                     <a class="client rounded-lg shadow-sm"
                        v-bind:style="{ backgroundImage: 'url(' + client.image + ')' }"
                        href="#">
@@ -23,6 +23,11 @@
                         <span
                             class="client-description">{{ $tc('message.issuesCount', client.client_issues_count) }}</span>
                     </a>
+                </div>
+            </div>
+            <div class="row" v-else>
+                <div class="col-4" v-for="n in 3">
+                    <PuSkeleton width="100%" height="250px"></PuSkeleton>
                 </div>
             </div>
         </div>

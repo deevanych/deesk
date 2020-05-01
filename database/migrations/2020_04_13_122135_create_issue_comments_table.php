@@ -15,7 +15,7 @@ class CreateIssueCommentsTable extends Migration
     {
         Schema::create('issue_comments', function (Blueprint $table) {
             $table->id();
-            $table->text('text');
+            $table->mediumText('text');
             $table->bigInteger('author_id')->unsigned();
             $table->foreign('author_id')->references('id')->on('users');
             $table->bigInteger('issue_id')->unsigned();

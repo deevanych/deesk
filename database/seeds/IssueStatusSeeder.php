@@ -28,20 +28,20 @@ class IssueStatusSeeder extends Seeder
         DB::table('issue_statuses')->insert([
             'title' => 'Закрыта',
             'organization_id' => 1,
-            'color_id' => 1,
-            'icon_id' => 1,
+            'color_id' => 3,
+            'icon_id' => 4,
         ]);
         DB::table('issue_statuses')->insert([
             'title' => 'В работе',
             'organization_id' => 1,
-            'color_id' => 1,
-            'icon_id' => 1,
+            'color_id' => 4,
+            'icon_id' => 5,
         ]);
         DB::table('issue_statuses')->insert([
             'title' => 'На паузе',
             'organization_id' => 1,
-            'color_id' => 1,
-            'icon_id' => 1,
+            'color_id' => 5,
+            'icon_id' => 3,
         ]);
     }
 }

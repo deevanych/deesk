@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="en">
-@include('layout.head')
+@include('portal.layout.head')
 <body>
 <div id="app">
-    @include('layout.header')
+    @include('portal.layout.header')
     <section class="container">
         <router-view></router-view>
     </section>
 </div>
-@include('layout.assets')
+@include('portal.layout.assets')
 </body>
 </html>

@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * @method static where(string $string, $id)
+ * @method fill($all)
+ * @method update($all)
+ * @method save()
+ * @method fresh()
+ * @method static findOrFail($id)
  * @property mixed id
  */
 class Issue extends Model
@@ -15,8 +20,10 @@ class Issue extends Model
     protected $hidden = ['author_id', 'employee_id', 'issue_status_id', 'issue_type_id', 'issue_priority_id'];
     protected $casts = [
         'created_at' => 'datetime:d.m.Y / H:i',
+        'updated_at' => 'datetime:d.m.Y / H:i',
     ];
     protected $appends = ['link'];
+    protected $guarded = [];
 
     public function author()
     {
