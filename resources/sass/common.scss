@@ -444,3 +444,62 @@ table.table td:nth-last-child(1) {
 .toast-message {
     color: #fff;
 }
+
+.comment-text p {
+    color: #232323;
+}
+
+.comment.self .comment-text p {
+    color: #fff;
+}
+
+.comment-text p:last-child {
+    margin-bottom: 0px;
+}
+
+.comment-text img, .comment-text iframe {
+    max-width: 100%;
+    border-radius: 0.3rem;
+}
+
+.note-editor {
+    border-radius: 0.3rem;
+}
+
+.note-statusbar {
+    display: none;
+}
+
+.user-avatar {
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    background-position: center;
+    background-size: cover;
+}
+
+[data-toggle='dropdown'] .status {
+    color: #fff;
+}
+
+.toast {
+    border-radius: 25px !important;
+    background-size: 1rem;
+    background-position: 20px center !important;
+}
+
+.toast-success {
+    background-color: #51A351;
+}
+
+.toast-error {
+    background-color: #BD362F;
+}
+
+.toast-info {
+    background-color: #2F96B4;
+}
+
+.toast-message {
+    color: #fff;
+}
