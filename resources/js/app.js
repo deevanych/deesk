@@ -23,6 +23,8 @@ import Home from '../views/app/index';
 import HeaderApp from '../views/app/layout/header';
 // issues
 import IssueShow from '../views/app/issues/show';
+// login
+import Login from '../views/app/auth/login';
 
 window.axios = require('axios');
 window.Vue = require('vue');
@@ -81,7 +83,7 @@ const routes = [
         },
         components: {
             default: Home,
-        }
+        },
     },
     {
         path: '/users/:id',
@@ -104,7 +106,18 @@ const routes = [
             organizationShow: Home
         },
     },
+    {
+        path: '/login',
+        name: 'login',
+        components: {
+            login: Login
+        },
+    }
 ];
+
+function isAuthenticated() {
+    return false;
+}
 
 const messages = {
     ru: {
