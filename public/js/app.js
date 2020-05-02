@@ -2287,6 +2287,44 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2294,7 +2332,10 @@ __webpack_require__.r(__webpack_exports__);
       issue: null,
       router: this.$router,
       statuses: null,
-      disable: false,
+      disable: {
+        status: false,
+        favorite: false
+      },
       comments: null,
       content: null,
       config: {
@@ -2315,21 +2356,49 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     changeStatus: function changeStatus(status) {
       var app = this;
-      app.disable = true;
+      app.disable.status = true;
       header.loading = true;
       axios.put('/api/v1/issues/' + this.$route.params.id, {
         issue_status_id: status.id
       }).then(function (response) {
         toastr[response.data.status](response.data.message);
-        app.disable = false;
+        app.disable.status = false;
         header.loading = false;
 
         if (response.data.updated) {
-          app.issue.status = response.data.issue.status;
-          app.issue.updated_at = response.data.issue.updated_at;
+          app.issue = response.data.issue;
         }
       })["catch"](function () {
         toastr[response.data.status](response.data.message);
+      });
+    },
+    toggleFavorite: function toggleFavorite(issueId, remove) {
+      this.disable.favorite = true;
+      header.loading = true;
+      var app = this,
+          method = remove ? 'delete' : 'post',
+          url = '';
+
+      if (remove) {
+        url = '/api/v1/issues/favorite/' + this.$route.params.id;
+      } else {
+        url = '/api/v1/issues/favorite';
+      }
+
+      axios[method](url, {
+        favorite: this.$route.params.id
+      }).then(function (response) {
+        header.loading = false;
+        app.disable.favorite = false;
+        toastr[response.data.status](response.data.message);
+
+        if (response.data.toggled) {
+          app.issue = response.data.issue;
+        }
+      })["catch"](function () {
+        header.loading = false;
+        app.disable = false;
+        toastr['error']('Произошла ошибка');
       });
     }
   },
@@ -2515,11 +2584,10 @@ __webpack_require__.r(__webpack_exports__);
       this.disable = true;
       header.loading = true;
       var textInput = $('#submit-comment').find('[name=text]'),
-          app = this,
-          data = {
+          app = this;
+      axios.post('/api/v1/issues/' + this.$route.params.id + '/comments', {
         text: textInput.val()
-      };
-      axios.post('/api/v1/issues/' + this.$route.params.id + '/comments', data).then(function (response) {
+      }).then(function (response) {
         header.loading = false;
         app.disable = false;
         toastr[response.data.status](response.data.message);
@@ -52276,9 +52344,9 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row mb-4" }, [
-    _vm.issue
-      ? _c(
+  return _vm.issue
+    ? _c("div", { staticClass: "row mb-4" }, [
+        _c(
           "div",
           { staticClass: "col-7" },
           [
@@ -52350,9 +52418,19 @@ var render = function() {
                     "col d-flex align-items-center justify-content-end"
                 },
                 [
-                  _c("a", {
+                  _c("button", {
                     staticClass:
-                      "button rounded-pill fave add mr-auto p-4 shadow-sm"
+                      "button rounded-pill fave mr-auto p-4 shadow-sm",
+                    class: { remove: _vm.issue.favorite },
+                    attrs: { disabled: _vm.disable.favorite },
+                    on: {
+                      click: function($event) {
+                        return _vm.toggleFavorite(
+                          _vm.issue.id,
+                          _vm.issue.favorite
+                        )
+                      }
+                    }
                   }),
                   _vm._v(" "),
                   _c(
@@ -52376,7 +52454,7 @@ var render = function() {
                         "data-color": "white",
                         "aria-haspopup": "true",
                         "aria-expanded": "false",
-                        disabled: _vm.disable
+                        disabled: _vm.disable.status
                       }
                     },
                     [
@@ -52444,65 +52522,9 @@ var render = function() {
             _c("comments")
           ],
           1
-        )
-      : _c(
-          "div",
-          { staticClass: "col-7" },
-          [
-            _c("div", { staticClass: "row mb-5" }, [
-              _c(
-                "div",
-                { staticClass: "col" },
-                [_c("PuSkeleton", { attrs: { height: "48px", width: "60%" } })],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row mb-4" }, [
-              _c(
-                "div",
-                {
-                  staticClass:
-                    "col d-flex align-items-center justify-content-end"
-                },
-                [
-                  _c("PuSkeleton", {
-                    staticClass: "rounded-pill mr-auto",
-                    attrs: { height: "48px", circle: "", width: "48px" }
-                  }),
-                  _vm._v(" "),
-                  _c("PuSkeleton", {
-                    staticClass: "rounded-pill",
-                    attrs: { height: "48px", width: "100px" }
-                  }),
-                  _vm._v(" "),
-                  _c("PuSkeleton", {
-                    staticClass: "rounded-pill ml-3",
-                    attrs: { height: "48px", width: "100px" }
-                  })
-                ],
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row mb-4" }, [
-              _c(
-                "div",
-                { staticClass: "col" },
-                _vm._l(5, function(n) {
-                  return _c("PuSkeleton", { staticClass: "mb-3 d-block" })
-                }),
-                1
-              )
-            ]),
-            _vm._v(" "),
-            _c("comments")
-          ],
-          1
         ),
-    _vm._v(" "),
-    _vm.issue
-      ? _c("div", { staticClass: "col offset-1" }, [
+        _vm._v(" "),
+        _c("div", { staticClass: "col offset-1" }, [
           _c("div", { staticClass: "row mb-4" }, [
             _c("div", { staticClass: "col" }, [
               _c("h6", { staticClass: "text-gray" }, [_vm._v("Дата создания")]),
@@ -52567,7 +52589,9 @@ var render = function() {
             _c("div", { staticClass: "col" }, [
               _c("h6", { staticClass: "text-gray" }, [_vm._v("Тип заявки")]),
               _vm._v(" "),
-              _c("h5", [_vm._v(_vm._s(_vm.issue.type.title))])
+              _vm.issue.type
+                ? _c("h5", [_vm._v(_vm._s(_vm.issue.type.title))])
+                : _c("h5", [_vm._v("Не назначен")])
             ])
           ]),
           _vm._v(" "),
@@ -52577,13 +52601,131 @@ var render = function() {
                 _vm._v("Приоритет заявки")
               ]),
               _vm._v(" "),
-              _c("h5", [_vm._v(_vm._s(_vm.issue.priority.title))])
+              _vm.issue.priority
+                ? _c("h5", [_vm._v(_vm._s(_vm.issue.priority.title))])
+                : _c("h5", [_vm._v("Не назначен")])
             ])
           ]),
           _vm._v(" "),
-          _vm._m(1)
+          _c("div", { staticClass: "row mb-4" }, [
+            _c("div", { staticClass: "col" }, [
+              _c("h6", { staticClass: "text-gray" }, [_vm._v("Наблюдатели")]),
+              _vm._v(" "),
+              _vm.issue.observers
+                ? _c(
+                    "div",
+                    { staticClass: "d-flex align-items-center" },
+                    [
+                      _vm.issue.observers.length > 0
+                        ? [
+                            _vm.issue.observers.length > 3
+                              ? [
+                                  _vm._l(_vm.issue.observers, function(
+                                    observer,
+                                    n
+                                  ) {
+                                    return n <= 2
+                                      ? _c(
+                                          "div",
+                                          {
+                                            key: n,
+                                            staticClass:
+                                              "user-short d-flex flex-row align-items-center float-left observer"
+                                          },
+                                          [
+                                            _c("div", {
+                                              staticClass: "user-avatar",
+                                              staticStyle: {
+                                                "background-image":
+                                                  'url("https://deesk.ru/storage/clients/2.jpg")'
+                                              }
+                                            })
+                                          ]
+                                        )
+                                      : _vm._e()
+                                  }),
+                                  _vm._v(" "),
+                                  _c("span", { staticClass: "ml-2" }, [
+                                    _vm._v(
+                                      "\n                                и еще " +
+                                        _vm._s(_vm.issue.observers.length - 3) +
+                                        "\n                            "
+                                    )
+                                  ])
+                                ]
+                              : _vm.issue.observers.length == 1
+                              ? [_vm._m(1)]
+                              : _vm.issue.observers.length <= 3
+                              ? [_vm._m(2)]
+                              : _vm._e()
+                          ]
+                        : [_c("h5", [_vm._v("Наблюдателей нет")])]
+                    ],
+                    2
+                  )
+                : _c("h5", [_vm._v("Наблюдателей нет")])
+            ])
+          ])
         ])
-      : _c(
+      ])
+    : _c("div", { staticClass: "row mb-4" }, [
+        _c(
+          "div",
+          { staticClass: "col-7" },
+          [
+            _c("div", { staticClass: "row mb-5" }, [
+              _c(
+                "div",
+                { staticClass: "col" },
+                [_c("PuSkeleton", { attrs: { height: "48px", width: "60%" } })],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row mb-4" }, [
+              _c(
+                "div",
+                {
+                  staticClass:
+                    "col d-flex align-items-center justify-content-end"
+                },
+                [
+                  _c("PuSkeleton", {
+                    staticClass: "rounded-pill mr-auto",
+                    attrs: { height: "48px", circle: "", width: "48px" }
+                  }),
+                  _vm._v(" "),
+                  _c("PuSkeleton", {
+                    staticClass: "rounded-pill",
+                    attrs: { height: "48px", width: "100px" }
+                  }),
+                  _vm._v(" "),
+                  _c("PuSkeleton", {
+                    staticClass: "rounded-pill ml-3",
+                    attrs: { height: "48px", width: "100px" }
+                  })
+                ],
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row mb-4" }, [
+              _c(
+                "div",
+                { staticClass: "col" },
+                _vm._l(5, function(n) {
+                  return _c("PuSkeleton", { staticClass: "mb-3 d-block" })
+                }),
+                1
+              )
+            ]),
+            _vm._v(" "),
+            _c("comments")
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _c(
           "div",
           { staticClass: "col offset-1" },
           _vm._l(5, function(n) {
@@ -52608,7 +52750,7 @@ var render = function() {
           }),
           0
         )
-  ])
+      ])
 }
 var staticRenderFns = [
   function() {
@@ -52627,13 +52769,50 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mb-4" }, [
-      _c("div", { staticClass: "col" }, [
-        _c("h6", { staticClass: "text-gray" }, [_vm._v("Наблюдатели")]),
+    return _c(
+      "div",
+      { staticClass: "user-short d-flex flex-row align-items-center" },
+      [
+        _c("div", {
+          staticClass: "user-avatar mr-3",
+          staticStyle: {
+            "background-image": 'url("https://deesk.ru/storage/clients/2.jpg")'
+          }
+        }),
         _vm._v(" "),
-        _c("h5", [_vm._v("Наблюдателей нет")])
-      ])
-    ])
+        _c(
+          "div",
+          { staticClass: "d-flex flex-column justify-content-center" },
+          [
+            _c("a", { staticClass: "font-weight-bolder" }, [
+              _vm._v("Клиент\n                                    2")
+            ]),
+            _vm._v(" "),
+            _c("a", { staticClass: "text-gray" }, [_vm._v("Второй клиент")])
+          ]
+        )
+      ]
+    )
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      {
+        staticClass:
+          "user-short d-flex flex-row align-items-center float-left observer"
+      },
+      [
+        _c("div", {
+          staticClass: "user-avatar",
+          staticStyle: {
+            "background-image": 'url("https://deesk.ru/storage/clients/2.jpg")'
+          }
+        })
+      ]
+    )
   }
 ]
 render._withStripped = true
