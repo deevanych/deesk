@@ -2325,6 +2325,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2363,6 +2384,24 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         toastr[response.data.status](response.data.message);
         app.disable.status = false;
+        header.loading = false;
+
+        if (response.data.updated) {
+          app.issue = response.data.issue;
+        }
+      })["catch"](function () {
+        toastr[response.data.status](response.data.message);
+      });
+    },
+    acceptIssue: function acceptIssue() {
+      var app = this;
+      app.disable.accept = true;
+      header.loading = true;
+      axios.put('/api/v1/issues/' + this.$route.params.id, {
+        employee_id: user.id
+      }).then(function (response) {
+        toastr[response.data.status](response.data.message);
+        app.disable.accept = false;
         header.loading = false;
 
         if (response.data.updated) {
@@ -52433,15 +52472,51 @@ var render = function() {
                     }
                   }),
                   _vm._v(" "),
-                  _c(
-                    "a",
-                    {
-                      staticClass:
-                        "button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active",
-                      attrs: { href: "/" }
-                    },
-                    [_vm._v("Принять\n                ")]
-                  ),
+                  !_vm.issue.employee
+                    ? [
+                        _c(
+                          "a",
+                          {
+                            staticClass:
+                              "button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active",
+                            attrs: { href: "/" },
+                            on: {
+                              click: function($event) {
+                                $event.preventDefault()
+                                return _vm.acceptIssue($event)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              "\n                        Принять\n                    "
+                            )
+                          ]
+                        )
+                      ]
+                    : [
+                        _vm.issue.my
+                          ? _c(
+                              "a",
+                              {
+                                staticClass:
+                                  "button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active",
+                                attrs: { href: "/" },
+                                on: {
+                                  click: function($event) {
+                                    $event.preventDefault()
+                                    return _vm.acceptIssue($event)
+                                  }
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                        Передать\n                    "
+                                )
+                              ]
+                            )
+                          : _vm._e()
+                      ],
                   _vm._v(" "),
                   _c(
                     "button",
@@ -52509,7 +52584,8 @@ var render = function() {
                     }),
                     0
                   )
-                ]
+                ],
+                2
               )
             ]),
             _vm._v(" "),
@@ -52583,7 +52659,49 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(0),
+          _c("div", { staticClass: "row mb-4" }, [
+            _c("div", { staticClass: "col" }, [
+              _c("h6", { staticClass: "text-gray" }, [_vm._v("Ответственный")]),
+              _vm._v(" "),
+              _vm.issue.employee
+                ? _c(
+                    "div",
+                    {
+                      staticClass:
+                        "user-short d-flex flex-row align-items-center"
+                    },
+                    [
+                      _c("div", {
+                        staticClass: "user-avatar mr-3",
+                        staticStyle: {
+                          "background-image":
+                            "url(https://deesk.ru/storage/clients/2.jpg)"
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        {
+                          staticClass:
+                            "d-flex flex-column justify-content-center"
+                        },
+                        [
+                          _c("a", { staticClass: "font-weight-bolder" }, [
+                            _vm._v(_vm._s(_vm.issue.employee.name))
+                          ]),
+                          _vm._v(" "),
+                          _c("a", { staticClass: "text-gray" }, [
+                            _vm._v(
+                              _vm._s(_vm.issue.employee.organization.short_name)
+                            )
+                          ])
+                        ]
+                      )
+                    ]
+                  )
+                : _c("h5", [_vm._v("Не назначен")])
+            ])
+          ]),
           _vm._v(" "),
           _c("div", { staticClass: "row mb-4" }, [
             _c("div", { staticClass: "col" }, [
@@ -52654,9 +52772,56 @@ var render = function() {
                                   ])
                                 ]
                               : _vm.issue.observers.length == 1
-                              ? [_vm._m(1)]
+                              ? _vm._l(_vm.issue.observers, function(observer) {
+                                  return _c(
+                                    "div",
+                                    {
+                                      staticClass:
+                                        "user-short d-flex flex-row align-items-center"
+                                    },
+                                    [
+                                      _c("div", {
+                                        staticClass: "user-avatar mr-3",
+                                        staticStyle: {
+                                          "background-image":
+                                            'url("https://deesk.ru/storage/clients/2.jpg")'
+                                        }
+                                      }),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "d-flex flex-column justify-content-center"
+                                        },
+                                        [
+                                          _c(
+                                            "a",
+                                            {
+                                              staticClass: "font-weight-bolder"
+                                            },
+                                            [_vm._v(_vm._s(observer.name))]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "a",
+                                            { staticClass: "text-gray" },
+                                            [
+                                              _vm._v(
+                                                _vm._s(
+                                                  observer.organization
+                                                    .short_name
+                                                )
+                                              )
+                                            ]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  )
+                                })
                               : _vm.issue.observers.length <= 3
-                              ? [_vm._m(2)]
+                              ? [_vm._m(0)]
                               : _vm._e()
                           ]
                         : [_c("h5", [_vm._v("Наблюдателей нет")])]
@@ -52753,47 +52918,6 @@ var render = function() {
       ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mb-4" }, [
-      _c("div", { staticClass: "col" }, [
-        _c("h6", { staticClass: "text-gray" }, [_vm._v("Ответственный")]),
-        _vm._v(" "),
-        _c("h5", [_vm._v("Не назначен")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      { staticClass: "user-short d-flex flex-row align-items-center" },
-      [
-        _c("div", {
-          staticClass: "user-avatar mr-3",
-          staticStyle: {
-            "background-image": 'url("https://deesk.ru/storage/clients/2.jpg")'
-          }
-        }),
-        _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "d-flex flex-column justify-content-center" },
-          [
-            _c("a", { staticClass: "font-weight-bolder" }, [
-              _vm._v("Клиент\n                                    2")
-            ]),
-            _vm._v(" "),
-            _c("a", { staticClass: "text-gray" }, [_vm._v("Второй клиент")])
-          ]
-        )
-      ]
-    )
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -68877,6 +69001,9 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
 });
 router.beforeEach(function (to, from, next) {
   window.header.loading = true;
+  axios.get('/api/v1/users/my').then(function (response) {
+    window.user = response.data;
+  });
   next();
 });
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({

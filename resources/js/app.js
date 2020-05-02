@@ -124,6 +124,10 @@ const router = new VueRouter({routes, mode: 'history'});
 
 router.beforeEach((to, from, next) => {
     window.header.loading = true;
+    axios.get('/api/v1/users/my')
+        .then(function (response) {
+            window.user = response.data;
+        });
     next()
 });
 

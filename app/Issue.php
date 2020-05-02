@@ -36,6 +36,7 @@ class Issue extends Model
     ];
     protected $appends = [
         'link',
+        'my',
     ];
     protected $attributes = [
         'favorite',
@@ -45,6 +46,11 @@ class Issue extends Model
     public function author()
     {
         return $this->hasOne('App\User', 'id', 'author_id');
+    }
+
+    public function setCreatedAtAttribute($value)
+    {
+        $this->attributes['created_at'] = '2020-05-02 00:00:00';
     }
 
     public function employee()
@@ -85,5 +91,10 @@ class Issue extends Model
     public function getFavoriteAttribute()
     {
         return (boolean)(FavoriteIssue::whereUserId(Auth::id())->whereIssueId($this->id)->count());
+    }
+
+    public function getMyAttribute()
+    {
+        return (boolean)(Auth::id() === $this->employee_id);
     }
 }
