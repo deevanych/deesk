@@ -266,6 +266,24 @@
                     toastr[response.data.status](response.data.message);
                 });
             },
+            acceptIssue() {
+                let app = this;
+                app.disable.accept = true;
+                header.loading = true;
+                axios.put('/api/v1/issues/' + this.$route.params.id, {
+                    employee_id: user.id
+                })
+                    .then(function (response) {
+                        toastr[response.data.status](response.data.message);
+                        app.disable.accept = false;
+                        header.loading = false;
+                        if (response.data.updated) {
+                            app.issue = response.data.issue;
+                        }
+                    }).catch(function () {
+                    toastr[response.data.status](response.data.message);
+                });
+            },
             toggleFavorite(issueId, remove) {
                 this.disable.favorite = true;
                 header.loading = true;
