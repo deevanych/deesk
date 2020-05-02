@@ -24,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'organization_id'
     ];
 
     /**
@@ -41,5 +41,10 @@ class User extends Authenticatable
     public function organization()
     {
         return $this->belongsTo('App\Organization');
+    }
+
+    public function favoriteIssues()
+    {
+        return $this->belongsToMany('App\Issue', 'favorite_issues', 'user_id', 'issue_id');
     }
 }

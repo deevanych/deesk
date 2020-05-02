@@ -15,7 +15,10 @@ class CreateFavoriteIssuesTable extends Migration
     {
         Schema::create('favorite_issues', function (Blueprint $table) {
             $table->id();
-            $table->timestamps();
+            $table->bigInteger('user_id')->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->bigInteger('issue_id')->unsigned();
+            $table->foreign('issue_id')->references('id')->on('issues');
         });
     }
 

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @method static where(string $string, $id)
@@ -16,13 +17,29 @@ use Illuminate\Database\Eloquent\Model;
 class Issue extends Model
 {
     //
-    protected $with = ['author', 'employee', 'status'];
-    protected $hidden = ['author_id', 'employee_id', 'issue_status_id', 'issue_type_id', 'issue_priority_id'];
+    protected $with = [
+        'author',
+        'employee',
+        'status',
+    ];
+    protected $hidden = [
+        'author_id',
+        'author_organization_id',
+        'employee_id',
+        'issue_status_id',
+        'issue_type_id',
+        'issue_priority_id',
+    ];
     protected $casts = [
         'created_at' => 'datetime:d.m.Y / H:i',
         'updated_at' => 'datetime:d.m.Y / H:i',
     ];
-    protected $appends = ['link'];
+    protected $appends = [
+        'link',
+    ];
+    protected $attributes = [
+        'favorite',
+    ];
     protected $guarded = [];
 
     public function author()
@@ -55,8 +72,18 @@ class Issue extends Model
         return $this->hasOne('App\IssuePriority', 'id', 'issue_priority_id');
     }
 
+    public function observers()
+    {
+        return $this->belongsToMany('App\User', 'favorite_issues', 'issue_id', 'user_id');
+    }
+
     public function getLinkAttribute()
     {
         return route('api.issues.show', $this->id);
+    }
+
+    public function getFavoriteAttribute()
+    {
+        return (boolean)(FavoriteIssue::whereUserId(Auth::id())->whereIssueId($this->id)->count());
     }
 }

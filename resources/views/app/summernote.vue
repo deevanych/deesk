@@ -63,11 +63,10 @@
                 this.disable = true;
                 header.loading = true;
                 let textInput = $('#submit-comment').find('[name=text]'),
-                    app = this,
-                    data = {
-                        text: textInput.val(),
-                    };
-                axios.post('/api/v1/issues/' + this.$route.params.id + '/comments', data)
+                    app = this;
+                axios.post('/api/v1/issues/' + this.$route.params.id + '/comments', {
+                    text: textInput.val(),
+                })
                     .then(function (response) {
                         header.loading = false;
                         app.disable = false;

@@ -51,7 +51,7 @@ class IssueController extends Controller
     public function show(Issue $issue)
     {
         //
-        return $issue->load('type', 'priority');
+        return $issue->load('type', 'priority', 'observers')->append('favorite');
     }
 
     /**
@@ -76,7 +76,7 @@ class IssueController extends Controller
     {
         //
         $issue->update($request->all());
-        return array('status' => 'success', 'updated' => true, 'message' => 'Заявка обновлена', 'issue' => $issue->fresh());
+        return array('status' => 'success', 'updated' => true, 'message' => 'Заявка обновлена', 'issue' => $issue->fresh()->load('type', 'priority', 'observers')->append('favorite'));
     }
 
     /**

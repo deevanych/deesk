@@ -11700,6 +11700,7 @@ a:hover {
 button {
   border: none;
   outline: none !important;
+  background: #fff;
 }
 
 button[disabled] {
@@ -12003,7 +12004,7 @@ table.table td:nth-last-child(1) {
   background-position: center;
 }
 
-.fave.delete {
+.fave.remove {
   background-image: url(/images/icons/unfave.svg);
 }
 
@@ -12118,6 +12119,16 @@ table.table td:nth-last-child(1) {
   color: #fff;
 }
 
+.comment.self .comment-text a {
+  color: #232323;
+  font-weight: bold;
+}
+
+.comment.self .comment-text a[target=_blank] {
+  color: #232323;
+  text-decoration: underline;
+}
+
 .comment-text p:last-child {
   margin-bottom: 0px;
 }
@@ -12168,5 +12179,15 @@ table.table td:nth-last-child(1) {
 
 .toast-message {
   color: #fff;
+}
+
+.observer {
+  border-radius: 50%;
+  border: 3px solid #fff;
+  margin-left: -10px;
+}
+
+.observer:first-child {
+  margin-left: 0px;
 }
 

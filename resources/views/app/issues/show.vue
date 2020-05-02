@@ -1,6 +1,6 @@
 <template>
-    <div class="row mb-4">
-        <div class="col-7" v-if="issue">
+    <div class="row mb-4" v-if="issue">
+        <div class="col-7">
             <vue-headful
                 v-bind:title="issue.title"
             />
@@ -24,7 +24,9 @@
             </div>
             <div class="row mb-4">
                 <div class="col d-flex align-items-center justify-content-end">
-                    <a class="button rounded-pill fave add mr-auto p-4 shadow-sm"></a>
+                    <button class="button rounded-pill fave mr-auto p-4 shadow-sm" :class="{remove: issue.favorite}"
+                            :disabled="disable.favorite"
+                            v-on:click="toggleFavorite(issue.id, issue.favorite)"></button>
                     <a href="/"
                        class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active">Принять
                     </a>
@@ -33,7 +35,7 @@
                         v-bind:class="issue.status.color.title" data-toggle="dropdown" data-color="white"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        :disabled="disable">
+                        :disabled="disable.status">
                             <span class="status white"
                                   v-bind:class="issue.status.icon.title">
                                 {{ issue.status.title }}
@@ -56,27 +58,7 @@
             </div>
             <comments></comments>
         </div>
-        <div class="col-7" v-else>
-            <div class="row mb-5">
-                <div class="col">
-                    <PuSkeleton height="48px" width="60%"></PuSkeleton>
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col d-flex align-items-center justify-content-end">
-                    <PuSkeleton height="48px" circle width="48px" class="rounded-pill mr-auto"></PuSkeleton>
-                    <PuSkeleton height="48px" width="100px" class="rounded-pill"></PuSkeleton>
-                    <PuSkeleton height="48px" width="100px" class="rounded-pill ml-3"></PuSkeleton>
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col">
-                    <PuSkeleton v-for="n in 5" class="mb-3 d-block"></PuSkeleton>
-                </div>
-            </div>
-            <comments></comments>
-        </div>
-        <div class="col offset-1" v-if="issue">
+        <div class="col offset-1">
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Дата создания</h6>
@@ -111,23 +93,79 @@
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Тип заявки</h6>
-                    <h5>{{ issue.type.title }}</h5>
+                    <h5 v-if="issue.type">{{ issue.type.title }}</h5>
+                    <h5 v-else="issue.type">Не назначен</h5>
                 </div>
             </div>
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Приоритет заявки</h6>
-                    <h5>{{ issue.priority.title }}</h5>
+                    <h5 v-if="issue.priority">{{ issue.priority.title }}</h5>
+                    <h5 v-else="issue.priority">Не назначен</h5>
                 </div>
             </div>
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Наблюдатели</h6>
-                    <h5>Наблюдателей нет</h5>
+                    <div class="d-flex align-items-center" v-if="issue.observers">
+                        <template v-if="issue.observers.length > 0">
+                            <template v-if="issue.observers.length > 3">
+                                <div class="user-short d-flex flex-row align-items-center float-left observer"
+                                     v-for="(observer, n) in issue.observers" :key="n" v-if="n <= 2">
+                                    <div class="user-avatar"
+                                         style="background-image: url(&quot;https://deesk.ru/storage/clients/2.jpg&quot;);"></div>
+                                </div>
+                                <span class="ml-2">
+                                    и еще {{ issue.observers.length - 3 }}
+                                </span>
+                            </template>
+                            <template v-else-if="issue.observers.length == 1">
+                                <div class="user-short d-flex flex-row align-items-center">
+                                    <div class="user-avatar mr-3"
+                                         style="background-image: url(&quot;https://deesk.ru/storage/clients/2.jpg&quot;);"></div>
+                                    <div class="d-flex flex-column justify-content-center"><a
+                                        class="font-weight-bolder">Клиент
+                                        2</a> <a class="text-gray">Второй клиент</a></div>
+                                </div>
+                            </template>
+                            <template v-else-if="issue.observers.length <= 3">
+                                <div class="user-short d-flex flex-row align-items-center float-left observer">
+                                    <div class="user-avatar"
+                                         style="background-image: url(&quot;https://deesk.ru/storage/clients/2.jpg&quot;);"></div>
+                                </div>
+                            </template>
+                        </template>
+                        <template v-else>
+                            <h5>Наблюдателей нет</h5>
+                        </template>
+                    </div>
+                    <h5 v-else>Наблюдателей нет</h5>
                 </div>
             </div>
         </div>
-        <div class="col offset-1" v-else>
+    </div>
+    <div class="row mb-4" v-else>
+        <div class="col-7">
+            <div class="row mb-5">
+                <div class="col">
+                    <PuSkeleton height="48px" width="60%"></PuSkeleton>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col d-flex align-items-center justify-content-end">
+                    <PuSkeleton height="48px" circle width="48px" class="rounded-pill mr-auto"></PuSkeleton>
+                    <PuSkeleton height="48px" width="100px" class="rounded-pill"></PuSkeleton>
+                    <PuSkeleton height="48px" width="100px" class="rounded-pill ml-3"></PuSkeleton>
+                </div>
+            </div>
+            <div class="row mb-4">
+                <div class="col">
+                    <PuSkeleton v-for="n in 5" class="mb-3 d-block"></PuSkeleton>
+                </div>
+            </div>
+            <comments></comments>
+        </div>
+        <div class="col offset-1">
             <div class="row mb-4" v-for="n in 5">
                 <div class="col">
                     <PuSkeleton width="50%" class="mb-2 d-block"></PuSkeleton>
@@ -147,7 +185,10 @@
                 issue: null,
                 router: this.$router,
                 statuses: null,
-                disable: false,
+                disable: {
+                    status: false,
+                    favorite: false,
+                },
                 comments: null,
                 content: null,
                 config: {
@@ -170,23 +211,50 @@
         methods: {
             changeStatus(status) {
                 let app = this;
-                app.disable = true;
+                app.disable.status = true;
                 header.loading = true;
                 axios.put('/api/v1/issues/' + this.$route.params.id, {
                     issue_status_id: status.id
                 })
                     .then(function (response) {
                         toastr[response.data.status](response.data.message);
-                        app.disable = false;
+                        app.disable.status = false;
                         header.loading = false;
                         if (response.data.updated) {
-                            app.issue.status = response.data.issue.status;
-                            app.issue.updated_at = response.data.issue.updated_at;
+                            app.issue = response.data.issue;
                         }
                     }).catch(function () {
                     toastr[response.data.status](response.data.message);
                 });
             },
+            toggleFavorite(issueId, remove) {
+                this.disable.favorite = true;
+                header.loading = true;
+                let app = this,
+                    method = (remove) ? 'delete' : 'post',
+                    url = '';
+                if (remove) {
+                    url = '/api/v1/issues/favorite/' + this.$route.params.id;
+                } else {
+                    url = '/api/v1/issues/favorite';
+                }
+                axios[method](url, {
+                    favorite: this.$route.params.id,
+                })
+                    .then(function (response) {
+                        header.loading = false;
+                        app.disable.favorite = false;
+                        toastr[response.data.status](response.data.message);
+                        if (response.data.toggled) {
+                            app.issue = response.data.issue;
+                        }
+                    })
+                    .catch(function () {
+                        header.loading = false;
+                        app.disable = false;
+                        toastr['error']('Произошла ошибка');
+                    });
+            }
         },
         components: {
             comments: comments,
