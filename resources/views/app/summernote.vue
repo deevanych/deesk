@@ -41,7 +41,6 @@
             }
         },
         updated() {
-            let app = this;
             $('#summernote').summernote({
                 placeholder: 'Введите сообщение ..',
                 height: 120,
@@ -53,32 +52,34 @@
                 disableResizeEditor: true,
                 callbacks: {
                     onEnter: function() {
-                        app.submitComment();
+                        self.submitComment();
                     }
                 },
             });
         },
+        mounted() {
+            let self = this;
+        },
         methods: {
             submitComment() {
-                this.disable = true;
+                self.disable = true;
                 header.loading = true;
-                let textInput = $('#submit-comment').find('[name=text]'),
-                    app = this;
-                axios.post('/api/v1/issues/' + this.$route.params.id + '/comments', {
+                let textInput = $('#submit-comment').find('[name=text]');
+                axios.post('/api/v1/issues/' + self.$route.params.id + '/comments', {
                     text: textInput.val(),
                 })
                     .then(function (response) {
                         header.loading = false;
-                        app.disable = false;
+                        self.disable = false;
                         toastr[response.data.status](response.data.message);
                         if (response.data.published) {
                             $('#summernote').summernote('reset');
-                            app.comments.push(response.data.comment);
+                            self.comments.push(response.data.comment);
                         }
                     })
                     .catch(function () {
                         header.loading = false;
-                        app.disable = false;
+                        self.disable = false;
                         toastr['error']('Произошла ошибка');
                     });
             }

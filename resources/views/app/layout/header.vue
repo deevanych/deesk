@@ -13,7 +13,10 @@
                     <li class="mx-4"><a href="#">Заявки</a></li>
                     <li class="mx-4"><a href="#">Контакты</a></li>
                     <li class="mx-4"><a href="#">Настройки</a></li>
-                    <li class="ml-4"><a href="#" class="button white p-3 px-4 rounded-pill shadow-sm">Личный кабинет</a>
+                    <li class="ml-4">
+                        <router-link :to="{name: 'logout'}" class="button white p-3 px-4 rounded-pill shadow-sm">Личный
+                            кабинет
+                        </router-link>
                     </li>
                 </nav>
             </div>

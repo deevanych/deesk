@@ -25,17 +25,29 @@
             <div class="row mb-4">
                 <div class="col d-flex align-items-center justify-content-end">
                     <button class="button rounded-pill fave mr-auto p-4 shadow-sm" :class="{remove: issue.favorite}"
-                            :disabled="disable.favorite"
+                            :disabled="disabled.favorite"
                             v-on:click="toggleFavorite(issue.id, issue.favorite)"></button>
-                    <a href="/"
-                       class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active">Принять
-                    </a>
+                    <template v-if="!issue.employee">
+                        <a href="/"
+                           class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
+                           v-on:click.prevent="acceptIssue">
+                            Принять
+                        </a>
+                    </template>
+                    <template v-else>
+                        <a href="/"
+                           class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
+                           v-if="issue.my"
+                           v-on:click.prevent="acceptIssue">
+                            Передать
+                        </a>
+                    </template>
                     <button
                         class="ml-3 button p-3 px-4 rounded-pill shadow-sm tonight router-link-exact-active router-link-active dropdown-toggle"
                         v-bind:class="issue.status.color.title" data-toggle="dropdown" data-color="white"
                         aria-haspopup="true"
                         aria-expanded="false"
-                        :disabled="disable.status">
+                        :disabled="disabled.status">
                             <span class="status white"
                                   v-bind:class="issue.status.icon.title">
                                 {{ issue.status.title }}
@@ -87,7 +99,15 @@
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Ответственный</h6>
-                    <h5>Не назначен</h5>
+                    <div v-if="issue.employee" class="user-short d-flex flex-row align-items-center">
+                        <div class="user-avatar mr-3"
+                             style="background-image: url(https://deesk.ru/storage/clients/2.jpg);"></div>
+                        <div class="d-flex flex-column justify-content-center">
+                            <a class="font-weight-bolder">{{ issue.employee.name }}</a>
+                            <a class="text-gray">{{ issue.employee.organization.short_name }}</a>
+                        </div>
+                    </div>
+                    <h5 v-else>Не назначен</h5>
                 </div>
             </div>
             <div class="row mb-4">
@@ -120,16 +140,18 @@
                                 </span>
                             </template>
                             <template v-else-if="issue.observers.length == 1">
-                                <div class="user-short d-flex flex-row align-items-center">
+                                <div class="user-short d-flex flex-row align-items-center"
+                                     v-for="observer in issue.observers">
                                     <div class="user-avatar mr-3"
                                          style="background-image: url(&quot;https://deesk.ru/storage/clients/2.jpg&quot;);"></div>
-                                    <div class="d-flex flex-column justify-content-center"><a
-                                        class="font-weight-bolder">Клиент
-                                        2</a> <a class="text-gray">Второй клиент</a></div>
+                                    <div class="d-flex flex-column justify-content-center">
+                                        <a class="font-weight-bolder">{{ observer.name }}</a>
+                                        <a class="text-gray">{{ observer.organization.short_name }}</a></div>
                                 </div>
                             </template>
                             <template v-else-if="issue.observers.length <= 3">
-                                <div class="user-short d-flex flex-row align-items-center float-left observer">
+                                <div class="user-short d-flex flex-row align-items-center float-left observer"
+                                     v-for="observer in issue.observers">
                                     <div class="user-avatar"
                                          style="background-image: url(&quot;https://deesk.ru/storage/clients/2.jpg&quot;);"></div>
                                 </div>
@@ -185,9 +207,10 @@
                 issue: null,
                 router: this.$router,
                 statuses: null,
-                disable: {
+                disabled: {
                     status: false,
                     favorite: false,
+                    accept: false,
                 },
                 comments: null,
                 content: null,
@@ -197,41 +220,59 @@
             }
         },
         mounted() {
-            let app = this;
+            let self = this;
             axios.get('/api/v1/issues/' + this.$route.params.id)
                 .then(function (response) {
-                    app.issue = response.data;
+                    self.issue = response.data;
                     header.loading = false;
                 });
             axios.get('/api/v1/statuses')
                 .then(function (response) {
-                    app.statuses = response.data;
+                    self.statuses = response.data;
                 });
         },
         methods: {
             changeStatus(status) {
-                let app = this;
-                app.disable.status = true;
+                let self = this;
+                self.disabled.status = true;
                 header.loading = true;
                 axios.put('/api/v1/issues/' + this.$route.params.id, {
                     issue_status_id: status.id
                 })
                     .then(function (response) {
                         toastr[response.data.status](response.data.message);
-                        app.disable.status = false;
+                        self.disabled.status = false;
                         header.loading = false;
                         if (response.data.updated) {
-                            app.issue = response.data.issue;
+                            self.issue = response.data.issue;
+                        }
+                    }).catch(function () {
+                    toastr[response.data.status](response.data.message);
+                });
+            },
+            acceptIssue() {
+                let self = this;
+                self.disabled.accept = true;
+                header.loading = true;
+                axios.put('/api/v1/issues/' + this.$route.params.id, {
+                    employee_id: userId,
+                })
+                    .then(function (response) {
+                        toastr[response.data.status](response.data.message);
+                        self.disabled.accept = false;
+                        header.loading = false;
+                        if (response.data.updated) {
+                            self.issue = response.data.issue;
                         }
                     }).catch(function () {
                     toastr[response.data.status](response.data.message);
                 });
             },
             toggleFavorite(issueId, remove) {
-                this.disable.favorite = true;
+                let self = this;
+                self.disabled.favorite = true;
                 header.loading = true;
-                let app = this,
-                    method = (remove) ? 'delete' : 'post',
+                let method = (remove) ? 'delete' : 'post',
                     url = '';
                 if (remove) {
                     url = '/api/v1/issues/favorite/' + this.$route.params.id;
@@ -239,19 +280,19 @@
                     url = '/api/v1/issues/favorite';
                 }
                 axios[method](url, {
-                    favorite: this.$route.params.id,
+                    favorite: self.$route.params.id,
                 })
                     .then(function (response) {
                         header.loading = false;
-                        app.disable.favorite = false;
+                        self.disabled.favorite = false;
                         toastr[response.data.status](response.data.message);
                         if (response.data.toggled) {
-                            app.issue = response.data.issue;
+                            self.issue = response.data.issue;
                         }
                     })
                     .catch(function () {
                         header.loading = false;
-                        app.disable = false;
+                        self.disable = false;
                         toastr['error']('Произошла ошибка');
                     });
             }

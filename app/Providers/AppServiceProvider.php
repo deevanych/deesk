@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,5 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         date_default_timezone_set('Europe/Moscow');
+        setlocale(LC_TIME, 'ru_RU.UTF-8');
+        Carbon::setLocale(config('app.locale'));
     }
 }

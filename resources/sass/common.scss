@@ -37,13 +37,13 @@ a:hover {
     text-decoration: none;
 }
 
-button {
+button, .button[disabled] {
     border: none;
     outline: none !important;
     background: #fff;
 }
 
-button[disabled] {
+button[disabled], .button[disabled] {
     opacity: .2;
 }
 
@@ -53,6 +53,8 @@ nav li {
 
 .button {
     font-weight: 700;
+    border: none;
+    outline: none;
 }
 
 .button:hover {
