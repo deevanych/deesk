@@ -41,6 +41,7 @@
             }
         },
         updated() {
+            let self = this;
             $('#summernote').summernote({
                 placeholder: 'Введите сообщение ..',
                 height: 120,
@@ -58,10 +59,10 @@
             });
         },
         mounted() {
-            let self = this;
         },
         methods: {
             submitComment() {
+                let self = this;
                 self.disable = true;
                 header.loading = true;
                 let textInput = $('#submit-comment').find('[name=text]');

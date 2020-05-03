@@ -6,17 +6,9 @@ import Skeleton from 'vue-loading-skeleton';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 
 import jquery from 'jquery';
-
-window.$ = window.jQuery = jquery;
-
-require('summernote');
-require('bootstrap');
-require('lodash');
-
 import '../js/common';
 
 import Summernote from '../views/app/summernote';
-
 //app
 import App from '../views/app/layout/app';
 // home
@@ -27,6 +19,12 @@ import HeaderApp from '../views/app/layout/header';
 import IssueShow from '../views/app/issues/show';
 // login
 import Login from '../views/app/auth/login';
+
+window.$ = window.jQuery = jquery;
+
+require('summernote');
+require('bootstrap');
+require('lodash');
 
 window.axios = require('axios');
 window.Vue = require('vue');
@@ -137,9 +135,14 @@ const routes = [
         path: '/logout',
         name: 'logout',
         beforeEnter: (to, from, next) => {
-            localStorage.clear();
-            axios.defaults.headers.common['Authorization'] = null;
-            next({name: 'login'});
+            axios.get('/api/v1/logout')
+                .then(function(response){
+                   if (response.data.status) {
+                       localStorage.clear();
+                       axios.defaults.headers.common['Authorization'] = null;
+                       next({name: 'login'});
+                   }
+                });
         }
     }
 ];
