@@ -15,12 +15,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.'], function () {
-    Auth::loginUsingId(1, true);
+Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.', 'middleware' => 'auth:api'], function () {
+//    Auth::loginUsingId(1);
+    Route::post('login', 'AuthController@login')->name('login');
     Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
     Route::resource('organizations', 'OrganizationController', ['except' => ['create', 'edit']]);
     Route::resource('issues', 'IssueController', ['except' => ['create', 'edit']]);
@@ -28,3 +25,4 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.'], funct
     Route::resource('issues/favorite', 'FavoriteIssueController', ['except' => ['create', 'edit']]);
     Route::resource('issues/{id}/comments', 'IssueCommentController', ['except' => ['create', 'edit']]);
 });
+

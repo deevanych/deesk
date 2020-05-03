@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\RegistrationType;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -17,6 +19,7 @@ class UserController extends Controller
     public function index()
     {
         //
+        return User::all();
     }
 
     /**
@@ -49,7 +52,7 @@ class UserController extends Controller
     public function show(Request $request)
     {
         //
-        return ($request->user === 'my') ? $request->user() : User::findOrFail($request->user);
+        return ($request->user === 'my') ? Auth::user() : User::findOrFail($request->user);
     }
 
     /**

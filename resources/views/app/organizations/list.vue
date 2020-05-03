@@ -42,10 +42,10 @@
             }
         },
         mounted() {
-            let app = this;
+            let self = this;
             axios.get('/api/v1/organizations')
                 .then(function (resp) {
-                    app.clients = resp.data;
+                    self.clients = resp.data;
                 });
         },
     }

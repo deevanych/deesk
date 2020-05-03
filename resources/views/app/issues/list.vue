@@ -93,30 +93,17 @@
             }
         },
         mounted() {
-            let app = this;
+            let self = this;
             axios.get('/api/v1/issues')
                 .then(function (response) {
-                    app.issues = response.data;
+                    self.issues = response.data;
                     header.loading = false;
                 });
             axios.get('/api/v1/statuses')
                 .then(function (response) {
-                    app.issueStatuses = response.data;
+                    self.issueStatuses = response.data;
                 });
         },
-        methods: {
-            deleteEntry(id, index) {
-                if (confirm("Do you really want to delete it?")) {
-                    let app = this;
-                    axios.delete('/api/v1/organizations/' + id)
-                        .then(function (resp) {
-                            app.companies.splice(list, 1);
-                        })
-                        .catch(function (resp) {
-                            alert("Could not delete company");
-                        });
-                }
-            }
-        }
+        methods: {}
     }
 </script>

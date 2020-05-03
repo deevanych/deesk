@@ -57,10 +57,10 @@
             $('.comments').scrollTop(9999999999);
         },
         mounted() {
-            let app = this;
+            let self = this;
             axios.get('/api/v1/issues/' + this.$route.params.id + '/comments')
                 .then(function (response) {
-                    app.comments = response.data;
+                    self.comments = response.data;
                 });
         },
     }

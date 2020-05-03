@@ -17,6 +17,8 @@ import '../js/common';
 
 import Summernote from '../views/app/summernote';
 
+//app
+import App from '../views/app/layout/app';
 // home
 import Home from '../views/app/index';
 // header
@@ -32,6 +34,19 @@ window.toastr = require('toastr');
 window.header = {};
 
 Vue.config.productionTip = false;
+
+if (localStorage.getItem('_token')) {
+    axios.defaults.headers.common['Authorization'] = localStorage.getItem('_token');
+    window.userId = localStorage.getItem('user_id');
+}
+
+axios.interceptors.response.use(function (response) {
+    return response
+}, function (error) {
+    if (error.response.status === 401 && router.currentRoute.name !== 'login') {
+        router.push({name: 'login'});
+    }
+})
 
 const defaultImpl = VueI18n.prototype.getChoiceIndex;
 
@@ -77,41 +92,55 @@ Vue.component('perfect', VuePerfectScrollbar);
 const routes = [
     {
         path: '/',
-        name: 'home',
-        meta: {
-            title: 'Главная'
-        },
         components: {
-            default: Home,
+            default: App,
         },
-    },
-    {
-        path: '/users/:id',
-        name: 'users',
-        components: {
-            default: Home,
-        },
-    },
-    {
-        path: '/issues/:id',
-        name: 'issues',
-        components: {
-            default: IssueShow,
-        },
-    },
-    {
-        path: '/organizations/:id',
-        name: 'organizations',
-        components: {
-            organizationShow: Home
-        },
+        children: [
+            {
+                path: '/',
+                name: 'home',
+                components: {
+                    default: Home,
+                },
+            },
+            {
+                path: '/issues/:id',
+                name: 'issues',
+                components: {
+                    default: IssueShow,
+                },
+            },
+            {
+                path: '/users/:id',
+                name: 'users',
+                components: {
+                    default: Home,
+                },
+            },
+            {
+                path: '/organizations/:id',
+                name: 'organizations',
+                components: {
+                    default: Home
+                },
+            },
+        ]
     },
     {
         path: '/login',
         name: 'login',
         components: {
-            login: Login
+            default: Login
         },
+    },
+    {
+        path: '/logout',
+        name: 'logout',
+        beforeEnter: (to, from, next) => {
+            localStorage.clear();
+            axios.defaults.headers.common['Authorization'] = null;
+            next({name: 'login'});
+        }
     }
 ];
 
@@ -137,11 +166,7 @@ const router = new VueRouter({routes, mode: 'history'});
 
 router.beforeEach((to, from, next) => {
     window.header.loading = true;
-    axios.get('/api/v1/users/my')
-        .then(function (response) {
-            window.user = response.data;
-        });
-    next()
+    next();
 });
 
 const app = new Vue({
