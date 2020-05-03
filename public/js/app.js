@@ -2721,6 +2721,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   updated: function updated() {
+    var self = this;
     $('#summernote').summernote({
       placeholder: 'Введите сообщение ..',
       height: 120,
@@ -2733,11 +2734,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     });
   },
-  mounted: function mounted() {
-    var self = this;
-  },
+  mounted: function mounted() {},
   methods: {
     submitComment: function submitComment() {
+      var self = this;
       self.disable = true;
       header.loading = true;
       var textInput = $('#submit-comment').find('[name=text]');
@@ -69213,14 +69213,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-window.$ = window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_6___default.a;
-
-__webpack_require__(/*! summernote */ "./node_modules/summernote/dist/summernote.js");
-
-__webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
-
-__webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-
 
  //app
 
@@ -69232,6 +69224,14 @@ __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
  // login
 
+
+window.$ = window.jQuery = jquery__WEBPACK_IMPORTED_MODULE_6___default.a;
+
+__webpack_require__(/*! summernote */ "./node_modules/summernote/dist/summernote.js");
+
+__webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
+
+__webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 
 window.axios = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
@@ -69332,10 +69332,14 @@ var routes = [{
   path: '/logout',
   name: 'logout',
   beforeEnter: function beforeEnter(to, from, next) {
-    localStorage.clear();
-    axios.defaults.headers.common['Authorization'] = null;
-    next({
-      name: 'login'
+    axios.get('/api/v1/logout').then(function (response) {
+      if (response.data.status) {
+        localStorage.clear();
+        axios.defaults.headers.common['Authorization'] = null;
+        next({
+          name: 'login'
+        });
+      }
     });
   }
 }];
