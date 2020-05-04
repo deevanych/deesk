@@ -1,9 +1,12 @@
 <template>
-    <div class="h-100 d-flex">
+    <div class="h-100 d-flex flex-column align-items-center justify-content-center">
         <vue-headful
             title="Вход в панель"
         />
-        <div class="row w-100 m-auto">
+        <div class="row w-100 mb-5">
+            <img src="/images/logo/full-logo.png" alt="" class="col-6 m-auto d-block">
+        </div>
+        <div class="row w-100 mt-5">
             <form class="col-6 m-auto" v-on:submit.prevent="auth">
                 <div class="form-group w-100">
                     <input type="text" v-model="data.username" required/>

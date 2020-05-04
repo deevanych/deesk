@@ -4,7 +4,10 @@
         <header class="py-5 mb-5">
             <div class="row">
                 <div class="col">
-                    <router-link :to="{name: 'home'}" class="logo">DEESK</router-link>
+                    <router-link :to="{name: 'home'}" class="logo">
+                        <span class="d-block position-absolute w-100 h-100"></span>
+                        <img src="/images/logo/logo-small.png" width="120"/>
+                    </router-link>
                 </div>
                 <nav class="col-10 d-flex align-items-center justify-content-end">
                     <form class="mr-4 mb-0" id="search">

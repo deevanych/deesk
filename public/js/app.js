@@ -1962,6 +1962,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   path: '/login',
   name: 'login',
@@ -2570,6 +2573,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
+//
 //
 //
 //
@@ -52163,11 +52169,16 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "h-100 d-flex" },
+    {
+      staticClass:
+        "h-100 d-flex flex-column align-items-center justify-content-center"
+    },
     [
       _c("vue-headful", { attrs: { title: "Вход в панель" } }),
       _vm._v(" "),
-      _c("div", { staticClass: "row w-100 m-auto" }, [
+      _vm._m(0),
+      _vm._v(" "),
+      _c("div", { staticClass: "row w-100 mt-5" }, [
         _c(
           "form",
           {
@@ -52242,7 +52253,19 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row w-100 mb-5" }, [
+      _c("img", {
+        staticClass: "col-6 m-auto d-block",
+        attrs: { src: "/images/logo/full-logo.png", alt: "" }
+      })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -53388,7 +53411,15 @@ var render = function() {
             _c(
               "router-link",
               { staticClass: "logo", attrs: { to: { name: "home" } } },
-              [_vm._v("DEESK")]
+              [
+                _c("span", {
+                  staticClass: "d-block position-absolute w-100 h-100"
+                }),
+                _vm._v(" "),
+                _c("img", {
+                  attrs: { src: "/images/logo/logo-small.png", width: "120" }
+                })
+              ]
             )
           ],
           1
