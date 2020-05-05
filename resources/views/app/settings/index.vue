@@ -22,10 +22,33 @@
             </div>
         </div>
         <div class="row mb-2">
-            <div class="col-4 p-5 menu">
+            <div class="col-4 px-5 pt-5 pb-0 menu">
                 <div class="row mb-4">
                     <div class="col">
-                        <h5>Заявки</h5>
+                        <div class="row mb-5">
+                            <div class="col">
+                                <h5>Заявки</h5>
+                                <a href="/" class="d-block mt-1">Типы</a>
+                                <a href="/" class="d-block mt-1">Приоритеты</a>
+                                <a href="/" class="d-block mt-1">Статусы</a>
+                                <a href="/" class="d-block mt-1">Нормативы</a>
+                                <a href="/" class="d-block mt-1">Действия по умолчанию</a>
+                            </div>
+                        </div>
+                        <div class="row mb-5">
+                            <div class="col">
+                                <h5>Клиенты</h5>
+                                <a href="/" class="d-block mt-1">Организации</a>
+                                <a href="/" class="d-block mt-1">Контакты</a>
+                            </div>
+                        </div>
+                        <div class="row mb-5">
+                            <div class="col">
+                                <h5>Моя организация</h5>
+                                <a href="/" class="d-block mt-1">Сотрудники</a>
+                                <a href="/" class="d-block mt-1">Роли и права</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

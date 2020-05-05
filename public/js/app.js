@@ -2734,6 +2734,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -52258,10 +52281,10 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row w-100 mb-5" }, [
+    return _c("div", { staticClass: "row w-100 mb-3" }, [
       _c("img", {
         staticClass: "col-6 m-auto d-block",
-        attrs: { src: "/images/logo/full-logo.png", alt: "" }
+        attrs: { src: "/images/logo/logo-full.png", alt: "" }
       })
     ])
   }
@@ -53709,9 +53732,63 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "row mb-2" }, [
-      _c("div", { staticClass: "col-4 p-5 menu" }, [
+      _c("div", { staticClass: "col-4 px-5 pt-5 pb-0 menu" }, [
         _c("div", { staticClass: "row mb-4" }, [
-          _c("div", { staticClass: "col" }, [_c("h5", [_vm._v("Заявки")])])
+          _c("div", { staticClass: "col" }, [
+            _c("div", { staticClass: "row mb-5" }, [
+              _c("div", { staticClass: "col" }, [
+                _c("h5", [_vm._v("Заявки")]),
+                _vm._v(" "),
+                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+                  _vm._v("Типы")
+                ]),
+                _vm._v(" "),
+                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+                  _vm._v("Приоритеты")
+                ]),
+                _vm._v(" "),
+                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+                  _vm._v("Статусы")
+                ]),
+                _vm._v(" "),
+                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+                  _vm._v("Нормативы")
+                ]),
+                _vm._v(" "),
+                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+                  _vm._v("Действия по умолчанию")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row mb-5" }, [
+              _c("div", { staticClass: "col" }, [
+                _c("h5", [_vm._v("Клиенты")]),
+                _vm._v(" "),
+                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+                  _vm._v("Организации")
+                ]),
+                _vm._v(" "),
+                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+                  _vm._v("Контакты")
+                ])
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "row mb-5" }, [
+              _c("div", { staticClass: "col" }, [
+                _c("h5", [_vm._v("Моя организация")]),
+                _vm._v(" "),
+                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+                  _vm._v("Сотрудники")
+                ]),
+                _vm._v(" "),
+                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+                  _vm._v("Роли и права")
+                ])
+              ])
+            ])
+          ])
         ])
       ]),
       _vm._v(" "),

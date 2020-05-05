@@ -3,8 +3,8 @@
         <vue-headful
             title="Вход в панель"
         />
-        <div class="row w-100 mb-5">
-            <img src="/images/logo/full-logo.png" alt="" class="col-6 m-auto d-block">
+        <div class="row w-100 mb-3">
+            <img src="/images/logo/logo-full.png" alt="" class="col-6 m-auto d-block">
         </div>
         <div class="row w-100 mt-5">
             <form class="col-6 m-auto" v-on:submit.prevent="auth">
