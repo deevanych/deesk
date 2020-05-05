@@ -60,7 +60,7 @@ class Issue extends Model
 
     public function status()
     {
-        return $this->hasOne('App\IssueStatus', 'id', 'issue_status_id');
+        return $this->belongsTo('App\IssueStatus', 'issue_status_id', 'id');
     }
 
     public function type()

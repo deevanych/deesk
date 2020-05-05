@@ -17,6 +17,9 @@ class Organization extends Model
 
     public function issueStatuses()
     {
+        if ($this->isClient()) {
+            return $this->hasMany('App\IssueStatus', 'organization_id', 'parent_id');
+        }
         return $this->hasMany('App\IssueStatus');
     }
 

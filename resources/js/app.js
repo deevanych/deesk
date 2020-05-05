@@ -19,6 +19,8 @@ import HeaderApp from '../views/app/layout/header';
 import IssueShow from '../views/app/issues/show';
 // login
 import Login from '../views/app/auth/login';
+// settings
+import Settings from '../views/app/settings/index';
 
 window.$ = window.jQuery = jquery;
 
@@ -120,6 +122,13 @@ const routes = [
                 name: 'organizations',
                 components: {
                     default: Home
+                },
+            },
+            {
+                path: '/settings',
+                name: 'settings',
+                components: {
+                    default: Settings
                 },
             },
         ]
