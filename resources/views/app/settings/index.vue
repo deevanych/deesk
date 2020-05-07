@@ -28,9 +28,9 @@
                         <div class="row mb-5">
                             <div class="col">
                                 <h5>Заявки</h5>
-                                <a href="/" class="d-block mt-1">Типы</a>
+                                <router-link :to="{name: 'settings.issues.types'}" class="d-block mt-1">Типы</router-link>
                                 <a href="/" class="d-block mt-1">Приоритеты</a>
-                                <a href="/" class="d-block mt-1">Статусы</a>
+                                <router-link :to="{name: 'settings.issues.statuses'}" class="d-block mt-1">Статусы</router-link>
                                 <a href="/" class="d-block mt-1">Нормативы</a>
                                 <a href="/" class="d-block mt-1">Действия по умолчанию</a>
                             </div>
@@ -52,7 +52,8 @@
                     </div>
                 </div>
             </div>
-            <div>
+            <div class="col-8 pl-5">
+                <router-view></router-view>
             </div>
         </div>
     </div>
@@ -74,7 +75,7 @@
         },
         mounted() {
             let self = this;
-            header.loading = false;
+            header.loading = true;
         },
         methods: {},
         components: {}

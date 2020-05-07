@@ -65,7 +65,7 @@
                     username: 'client@test.com',
                     password: 123456,
                     grant_type: "password",
-                    client_secret: "h0oOtXLTbHvz8obPg6eU7FSHBztcJKMvu5dnbSmj",
+                    client_secret: "M7AmP0MDEdnFq9rhyzuSfvvYOWlxAXbELJPqhCPB",
                     client_id: 1,
                     scope: "*",
                 },

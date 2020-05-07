@@ -130,6 +130,25 @@ const routes = [
                 components: {
                     default: Settings
                 },
+                redirect: {
+                    name: 'settings.issues.types'
+                },
+                children: [
+                    {
+                        path: '/settings/types',
+                        name: 'settings.issues.types',
+                        components: {
+                            default: () => import('../views/app/settings/issues/types'),
+                        },
+                    },
+                    {
+                        path: '/settings/statuses',
+                        name: 'settings.issues.statuses',
+                        components: {
+                            default: () => import('../views/app/settings/issues/statuses'),
+                        },
+                    },
+                ],
             },
         ]
     },
@@ -145,12 +164,12 @@ const routes = [
         name: 'logout',
         beforeEnter: (to, from, next) => {
             axios.get('/api/v1/logout')
-                .then(function(response){
-                   if (response.data.status) {
-                       localStorage.clear();
-                       axios.defaults.headers.common['Authorization'] = null;
-                       next({name: 'login'});
-                   }
+                .then(function (response) {
+                    if (response.data.status) {
+                        localStorage.clear();
+                        axios.defaults.headers.common['Authorization'] = null;
+                        next({name: 'login'});
+                    }
                 });
         }
     }
