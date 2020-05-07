@@ -14,7 +14,8 @@ class IssueTypeSeeder extends Seeder
         //
         DB::table('issue_types')->insert([
             'title' => 'Обслуживание',
-            'organization_id' => 1
+            'description' => 'По контракту #117',
+            'organization_id' => 1,
         ]);
     }
 }

@@ -10,7 +10,8 @@
                     <a href="#">Все</a>
                 </li>
                 <li class="mx-3" v-for="status in issueStatuses">
-                    <a href="#">{{ status.title }}<span class="badge count ml-2" v-if="status.issuesCount">{{ status.issuesCount }}</span></a>
+                    <a href="#">{{ status.title }}</a>
+                    <span class="badge count ml-2" v-if="status.issuesCount">{{ status.issuesCount }}</span>
                 </li>
             </nav>
             <nav class="d-flex filter ml-4" v-else>

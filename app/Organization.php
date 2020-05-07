@@ -29,6 +29,10 @@ class Organization extends Model
         return $this->hasMany('App\Issue', $key);
     }
 
+    public function issueTypes() {
+        return $this->hasMany('App\IssueType');
+    }
+
     public function isClient()
     {
         return ($this->parent_id) ? true : false;

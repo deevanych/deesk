@@ -1,6 +1,50 @@
 /******/ (function(modules) { // webpackBootstrap
+/******/ 	// install a JSONP callback for chunk loading
+/******/ 	function webpackJsonpCallback(data) {
+/******/ 		var chunkIds = data[0];
+/******/ 		var moreModules = data[1];
+/******/
+/******/
+/******/ 		// add "moreModules" to the modules object,
+/******/ 		// then flag all "chunkIds" as loaded and fire callback
+/******/ 		var moduleId, chunkId, i = 0, resolves = [];
+/******/ 		for(;i < chunkIds.length; i++) {
+/******/ 			chunkId = chunkIds[i];
+/******/ 			if(Object.prototype.hasOwnProperty.call(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 				resolves.push(installedChunks[chunkId][0]);
+/******/ 			}
+/******/ 			installedChunks[chunkId] = 0;
+/******/ 		}
+/******/ 		for(moduleId in moreModules) {
+/******/ 			if(Object.prototype.hasOwnProperty.call(moreModules, moduleId)) {
+/******/ 				modules[moduleId] = moreModules[moduleId];
+/******/ 			}
+/******/ 		}
+/******/ 		if(parentJsonpFunction) parentJsonpFunction(data);
+/******/
+/******/ 		while(resolves.length) {
+/******/ 			resolves.shift()();
+/******/ 		}
+/******/
+/******/ 	};
+/******/
+/******/
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
+/******/
+/******/ 	// object to store loaded and loading chunks
+/******/ 	// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 	// Promise = chunk loading, 0 = chunk loaded
+/******/ 	var installedChunks = {
+/******/ 		"/js/app": 0
+/******/ 	};
+/******/
+/******/
+/******/
+/******/ 	// script path function
+/******/ 	function jsonpScriptSrc(chunkId) {
+/******/ 		return __webpack_require__.p + "" + ({}[chunkId]||chunkId) + ".js"
+/******/ 	}
 /******/
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
@@ -26,6 +70,67 @@
 /******/ 		return module.exports;
 /******/ 	}
 /******/
+/******/ 	// This file contains only the entry chunk.
+/******/ 	// The chunk loading function for additional chunks
+/******/ 	__webpack_require__.e = function requireEnsure(chunkId) {
+/******/ 		var promises = [];
+/******/
+/******/
+/******/ 		// JSONP chunk loading for javascript
+/******/
+/******/ 		var installedChunkData = installedChunks[chunkId];
+/******/ 		if(installedChunkData !== 0) { // 0 means "already installed".
+/******/
+/******/ 			// a Promise means "currently loading".
+/******/ 			if(installedChunkData) {
+/******/ 				promises.push(installedChunkData[2]);
+/******/ 			} else {
+/******/ 				// setup Promise in chunk cache
+/******/ 				var promise = new Promise(function(resolve, reject) {
+/******/ 					installedChunkData = installedChunks[chunkId] = [resolve, reject];
+/******/ 				});
+/******/ 				promises.push(installedChunkData[2] = promise);
+/******/
+/******/ 				// start chunk loading
+/******/ 				var script = document.createElement('script');
+/******/ 				var onScriptComplete;
+/******/
+/******/ 				script.charset = 'utf-8';
+/******/ 				script.timeout = 120;
+/******/ 				if (__webpack_require__.nc) {
+/******/ 					script.setAttribute("nonce", __webpack_require__.nc);
+/******/ 				}
+/******/ 				script.src = jsonpScriptSrc(chunkId);
+/******/
+/******/ 				// create error before stack unwound to get useful stacktrace later
+/******/ 				var error = new Error();
+/******/ 				onScriptComplete = function (event) {
+/******/ 					// avoid mem leaks in IE.
+/******/ 					script.onerror = script.onload = null;
+/******/ 					clearTimeout(timeout);
+/******/ 					var chunk = installedChunks[chunkId];
+/******/ 					if(chunk !== 0) {
+/******/ 						if(chunk) {
+/******/ 							var errorType = event && (event.type === 'load' ? 'missing' : event.type);
+/******/ 							var realSrc = event && event.target && event.target.src;
+/******/ 							error.message = 'Loading chunk ' + chunkId + ' failed.\n(' + errorType + ': ' + realSrc + ')';
+/******/ 							error.name = 'ChunkLoadError';
+/******/ 							error.type = errorType;
+/******/ 							error.request = realSrc;
+/******/ 							chunk[1](error);
+/******/ 						}
+/******/ 						installedChunks[chunkId] = undefined;
+/******/ 					}
+/******/ 				};
+/******/ 				var timeout = setTimeout(function(){
+/******/ 					onScriptComplete({ type: 'timeout', target: script });
+/******/ 				}, 120000);
+/******/ 				script.onerror = script.onload = onScriptComplete;
+/******/ 				document.head.appendChild(script);
+/******/ 			}
+/******/ 		}
+/******/ 		return Promise.all(promises);
+/******/ 	};
 /******/
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = modules;
@@ -78,6 +183,16 @@
 /******/
 /******/ 	// __webpack_public_path__
 /******/ 	__webpack_require__.p = "/";
+/******/
+/******/ 	// on error function for async loading
+/******/ 	__webpack_require__.oe = function(err) { console.error(err); throw err; };
+/******/
+/******/ 	var jsonpArray = window["webpackJsonp"] = window["webpackJsonp"] || [];
+/******/ 	var oldJsonpFunction = jsonpArray.push.bind(jsonpArray);
+/******/ 	jsonpArray.push = webpackJsonpCallback;
+/******/ 	jsonpArray = jsonpArray.slice();
+/******/ 	for(var i = 0; i < jsonpArray.length; i++) webpackJsonpCallback(jsonpArray[i]);
+/******/ 	var parentJsonpFunction = oldJsonpFunction;
 /******/
 /******/
 /******/ 	// Load entry module and return exports
@@ -1974,7 +2089,7 @@ __webpack_require__.r(__webpack_exports__);
         username: 'client@test.com',
         password: 123456,
         grant_type: "password",
-        client_secret: "h0oOtXLTbHvz8obPg6eU7FSHBztcJKMvu5dnbSmj",
+        client_secret: "M7AmP0MDEdnFq9rhyzuSfvvYOWlxAXbELJPqhCPB",
         client_id: 1,
         scope: "*"
       },
@@ -2123,6 +2238,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
 //
 //
 //
@@ -2757,6 +2873,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -2765,7 +2882,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   mounted: function mounted() {
     var self = this;
-    header.loading = false;
+    header.loading = true;
   },
   methods: {},
   components: {}
@@ -52537,13 +52654,14 @@ var render = function() {
               _vm._l(_vm.issueStatuses, function(status) {
                 return _c("li", { staticClass: "mx-3" }, [
                   _c("a", { attrs: { href: "#" } }, [
-                    _vm._v(_vm._s(status.title)),
-                    status.issuesCount
-                      ? _c("span", { staticClass: "badge count ml-2" }, [
-                          _vm._v(_vm._s(status.issuesCount))
-                        ])
-                      : _vm._e()
-                  ])
+                    _vm._v(_vm._s(status.title))
+                  ]),
+                  _vm._v(" "),
+                  status.issuesCount
+                    ? _c("span", { staticClass: "badge count ml-2" }, [
+                        _vm._v(_vm._s(status.issuesCount))
+                      ])
+                    : _vm._e()
                 ])
               })
             ],
@@ -53334,8 +53452,11 @@ var render = function() {
               _c(
                 "div",
                 { staticClass: "col" },
-                _vm._l(5, function(n) {
-                  return _c("PuSkeleton", { staticClass: "mb-3 d-block" })
+                _vm._l(5, function(observer, n) {
+                  return _c("PuSkeleton", {
+                    key: n,
+                    staticClass: "mb-3 d-block"
+                  })
                 }),
                 1
               )
@@ -53349,7 +53470,7 @@ var render = function() {
         _c(
           "div",
           { staticClass: "col offset-1" },
-          _vm._l(5, function(n) {
+          _vm._l(5, function(observer, n) {
             return _c("div", { staticClass: "row mb-4" }, [
               _c(
                 "div",
@@ -53721,7 +53842,66 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _vm._m(0)
+      _c("div", { staticClass: "row mb-2" }, [
+        _c("div", { staticClass: "col-4 px-5 pt-5 pb-0 menu" }, [
+          _c("div", { staticClass: "row mb-4" }, [
+            _c("div", { staticClass: "col" }, [
+              _c("div", { staticClass: "row mb-5" }, [
+                _c(
+                  "div",
+                  { staticClass: "col" },
+                  [
+                    _c("h5", [_vm._v("Заявки")]),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "d-block mt-1",
+                        attrs: { to: { name: "settings.issues.types" } }
+                      },
+                      [_vm._v("Типы")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      { staticClass: "d-block mt-1", attrs: { href: "/" } },
+                      [_vm._v("Приоритеты")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "d-block mt-1",
+                        attrs: { to: { name: "settings.issues.statuses" } }
+                      },
+                      [_vm._v("Статусы")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      { staticClass: "d-block mt-1", attrs: { href: "/" } },
+                      [_vm._v("Нормативы")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      { staticClass: "d-block mt-1", attrs: { href: "/" } },
+                      [_vm._v("Действия по умолчанию")]
+                    )
+                  ],
+                  1
+                )
+              ]),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              _vm._m(1)
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-8 pl-5" }, [_c("router-view")], 1)
+      ])
     ],
     1
   )
@@ -53731,68 +53911,36 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row mb-2" }, [
-      _c("div", { staticClass: "col-4 px-5 pt-5 pb-0 menu" }, [
-        _c("div", { staticClass: "row mb-4" }, [
-          _c("div", { staticClass: "col" }, [
-            _c("div", { staticClass: "row mb-5" }, [
-              _c("div", { staticClass: "col" }, [
-                _c("h5", [_vm._v("Заявки")]),
-                _vm._v(" "),
-                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
-                  _vm._v("Типы")
-                ]),
-                _vm._v(" "),
-                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
-                  _vm._v("Приоритеты")
-                ]),
-                _vm._v(" "),
-                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
-                  _vm._v("Статусы")
-                ]),
-                _vm._v(" "),
-                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
-                  _vm._v("Нормативы")
-                ]),
-                _vm._v(" "),
-                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
-                  _vm._v("Действия по умолчанию")
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row mb-5" }, [
-              _c("div", { staticClass: "col" }, [
-                _c("h5", [_vm._v("Клиенты")]),
-                _vm._v(" "),
-                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
-                  _vm._v("Организации")
-                ]),
-                _vm._v(" "),
-                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
-                  _vm._v("Контакты")
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "row mb-5" }, [
-              _c("div", { staticClass: "col" }, [
-                _c("h5", [_vm._v("Моя организация")]),
-                _vm._v(" "),
-                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
-                  _vm._v("Сотрудники")
-                ]),
-                _vm._v(" "),
-                _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
-                  _vm._v("Роли и права")
-                ])
-              ])
-            ])
-          ])
+    return _c("div", { staticClass: "row mb-5" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("h5", [_vm._v("Клиенты")]),
+        _vm._v(" "),
+        _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+          _vm._v("Организации")
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+          _vm._v("Контакты")
         ])
-      ]),
-      _vm._v(" "),
-      _c("div")
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row mb-5" }, [
+      _c("div", { staticClass: "col" }, [
+        _c("h5", [_vm._v("Моя организация")]),
+        _vm._v(" "),
+        _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+          _vm._v("Сотрудники")
+        ]),
+        _vm._v(" "),
+        _c("a", { staticClass: "d-block mt-1", attrs: { href: "/" } }, [
+          _vm._v("Роли и права")
+        ])
+      ])
     ])
   }
 ]
@@ -69664,7 +69812,27 @@ var routes = [{
     name: 'settings',
     components: {
       "default": _views_app_settings_index__WEBPACK_IMPORTED_MODULE_14__["default"]
-    }
+    },
+    redirect: {
+      name: 'settings.issues.types'
+    },
+    children: [{
+      path: '/settings/types',
+      name: 'settings.issues.types',
+      components: {
+        "default": function _default() {
+          return __webpack_require__.e(/*! import() */ 0).then(__webpack_require__.bind(null, /*! ../views/app/settings/issues/types */ "./resources/views/app/settings/issues/types.vue"));
+        }
+      }
+    }, {
+      path: '/settings/statuses',
+      name: 'settings.issues.statuses',
+      components: {
+        "default": function _default() {
+          return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ../views/app/settings/issues/statuses */ "./resources/views/app/settings/issues/statuses.vue"));
+        }
+      }
+    }]
   }]
 }, {
   path: '/login',

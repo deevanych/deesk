@@ -182,13 +182,13 @@
             </div>
             <div class="row mb-4">
                 <div class="col">
-                    <PuSkeleton v-for="n in 5" class="mb-3 d-block"></PuSkeleton>
+                    <PuSkeleton v-for="(observer, n) in 5" :key="n" class="mb-3 d-block"></PuSkeleton>
                 </div>
             </div>
             <comments></comments>
         </div>
         <div class="col offset-1">
-            <div class="row mb-4" v-for="n in 5">
+            <div class="row mb-4" v-for="(observer, n) in 5">
                 <div class="col">
                     <PuSkeleton width="50%" class="mb-2 d-block"></PuSkeleton>
                     <PuSkeleton height="40px" width="80%" class="mb-2 d-block"></PuSkeleton>
