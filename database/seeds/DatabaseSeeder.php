@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             IssuePrioritySeeder::class,
             IssueTypeSeeder::class,
             IssueSeeder::class,
-            IssueCommentSeeder::class
+            IssueCommentSeeder::class,
+            OauthClientSeeder::class,l
         ]);
     }
 }

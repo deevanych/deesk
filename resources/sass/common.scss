@@ -15,6 +15,7 @@ div#loading-bar {
     width: 0;
     left: 0;
     transition: 0s;
+    z-index: 9999;
 }
 
 div#loading-bar.loading {
@@ -493,4 +494,66 @@ table.table td:nth-last-child(1) {
 
 .modal-content {
     border-radius: 3rem;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.form-group > * {
+    padding: 10px;
+}
+
+.form-group > input:first-child {
+    z-index: 1;
+    border: none;
+    background: transparent;
+    border-bottom: 1px solid;
+    outline: none;
+    width: 100%;
+    position: absolute;
+}
+
+.form-group > input.helper {
+    opacity: 0;
+}
+
+.form-group > span {
+    top: 0;
+    transition: .3s;
+    left: 0;
+    position: absolute;
+}
+
+.form-group > input[required] + span > span:first-child::after {
+    content: '*';
+    color: #dc3545 !important;
+    margin-left: .5rem;
+}
+
+.form-group > input[required]:valid + span, .form-group > input:focus + span, .form-group > input:not(:placeholder-shown) + span {
+    top: -28px;
+    font-size: .8rem;
+}
+
+.description {
+    color: #a7a7a7;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.list-enter-active, .list-leave-active {
+    transition: opacity .3s;
+}
+
+.list-enter, .list-leave-to {
+    opacity: 0;
+}
+
+.tooltip-inner {
+    border-radius: 25px;
+    padding: 1rem;
 }

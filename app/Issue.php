@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
  * @method save()
  * @method fresh()
  * @method static findOrFail($id)
- * @property mixed id
+ * @property int id
+ * @property int employee_id
  */
 class Issue extends Model
 {
@@ -93,7 +94,7 @@ class Issue extends Model
         return (boolean)(FavoriteIssue::whereUserId(Auth::id())->whereIssueId($this->id)->count());
     }
 
-    public function getMyAttribute()
+    public function getMyAttribute(): bool
     {
         return (boolean)(Auth::id() === $this->employee_id);
     }

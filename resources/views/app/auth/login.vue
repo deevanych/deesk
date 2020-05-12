@@ -9,12 +9,14 @@
         <div class="row w-100 mt-5">
             <form class="col-6 m-auto" v-on:submit.prevent="auth">
                 <div class="form-group w-100">
-                    <input type="text" v-model="data.username" required/>
+                    <input type="text" placeholder=" " v-model="data.username" required/>
                     <span>email</span>
+                    <input type="text" class="helper">
                 </div>
                 <div class="form-group">
-                    <input type="password" v-model="data.password" required/>
+                    <input type="password" placeholder=" " v-model="data.password" required/>
                     <span>пароль</span>
+                    <input type="text" class="helper">
                 </div>
                 <input type="submit" :disabled="disabled" value="Войти"
                        class="button p-3 px-4 rounded-pill shadow-sm tonight router-link-exact-active router-link-active"/>
@@ -22,38 +24,6 @@
         </div>
     </div>
 </template>
-
-<style scoped>
-    .form-group {
-        position: relative;
-        margin-bottom: 2rem;
-    }
-
-    .form-group > * {
-        padding: 10px;
-    }
-
-    .form-group > input {
-        z-index: 1;
-        border: none;
-        background: transparent;
-        border-bottom: 1px solid;
-        outline: none;
-        width: 100%;
-    }
-
-    .form-group > span {
-        top: 0px;
-        transition: .3s;
-        left: 0px;
-        position: absolute;
-    }
-
-    .form-group > input:valid + span, .form-group > input:focus + span {
-        top: -28px;
-        font-size: .8rem;
-    }
-</style>
 
 <script>
     export default {

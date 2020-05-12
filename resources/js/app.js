@@ -1,11 +1,13 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueI18n from 'vue-i18n';
-import vueHeadFul from 'vue-headful';
+import VueHeadFul from 'vue-headful';
 import Skeleton from 'vue-loading-skeleton';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+import Vuelidate from 'vuelidate'
 
 import jquery from 'jquery';
+import lottie from 'lottie-web';
 import '../js/common';
 
 import Summernote from '../views/app/summernote';
@@ -23,6 +25,7 @@ import Login from '../views/app/auth/login';
 import Settings from '../views/app/settings/index';
 
 window.$ = window.jQuery = jquery;
+lottie.setQuality('low');
 
 require('summernote');
 require('bootstrap');
@@ -31,6 +34,7 @@ require('lodash');
 window.axios = require('axios');
 window.Vue = require('vue');
 window.toastr = require('toastr');
+window.lottie = lottie;
 window.header = {};
 
 Vue.config.productionTip = false;
@@ -82,10 +86,11 @@ VueI18n.prototype.getChoiceIndex = function (choice, choicesLength) {
 
 window.Vue.use(VueRouter);
 window.Vue.use(VueI18n);
-window.Vue.use(Skeleton)
+window.Vue.use(Skeleton);
+window.Vue.use(Vuelidate);
 
 Vue.component('header-app', HeaderApp);
-Vue.component('vue-headful', vueHeadFul);
+Vue.component('vue-headful', VueHeadFul);
 Vue.component('summernote', Summernote);
 Vue.component('perfect', VuePerfectScrollbar);
 

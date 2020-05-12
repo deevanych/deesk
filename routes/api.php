@@ -22,9 +22,9 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.', 'middl
     Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
     Route::resource('organizations', 'OrganizationController', ['except' => ['create', 'edit']]);
     Route::resource('issues/types', 'IssueTypeController', ['except' => ['create', 'edit']]);
-    Route::resource('issues', 'IssueController', ['except' => ['create', 'edit']]);
-    Route::resource('statuses', 'IssueStatusController', ['except' => ['create', 'edit']]);
     Route::resource('issues/favorite', 'FavoriteIssueController', ['except' => ['create', 'edit']]);
     Route::resource('issues/{id}/comments', 'IssueCommentController', ['except' => ['create', 'edit']]);
+    Route::resource('issues', 'IssueController', ['except' => ['create', 'edit']]);
+    Route::resource('statuses', 'IssueStatusController', ['except' => ['create', 'edit']]);
 });
 

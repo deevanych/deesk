@@ -22,8 +22,8 @@
             </div>
         </div>
         <div class="row mb-2">
-            <div class="col-4 px-5 pt-5 pb-0 menu">
-                <div class="row mb-4">
+            <div class="col-4">
+                <div class="row mb-4 px-5 pt-5 pb-0 menu">
                     <div class="col">
                         <div class="row mb-5">
                             <div class="col">
