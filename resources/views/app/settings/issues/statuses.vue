@@ -45,7 +45,6 @@
             header.loading = false;
             axios.get('/api/v1/issues/types')
                 .then(function (response) {
-                    console.log(response);
                     self.types = response.data;
                 });
         },

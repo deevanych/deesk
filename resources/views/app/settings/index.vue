@@ -29,7 +29,7 @@
                             <div class="col">
                                 <h5>Заявки</h5>
                                 <router-link :to="{name: 'settings.issues.types'}" class="d-block mt-1">Типы</router-link>
-                                <a href="/" class="d-block mt-1">Приоритеты</a>
+                                <router-link :to="{name: 'settings.issues.priorities'}" class="d-block mt-1">Приоритеты</router-link>
                                 <router-link :to="{name: 'settings.issues.statuses'}" class="d-block mt-1">Статусы</router-link>
                                 <a href="/" class="d-block mt-1">Нормативы</a>
                                 <a href="/" class="d-block mt-1">Действия по умолчанию</a>

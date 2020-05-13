@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @property mixed clients
@@ -29,8 +30,15 @@ class Organization extends Model
         return $this->hasMany('App\Issue', $key);
     }
 
+    /**
+     * @return HasMany
+     */
     public function issueTypes() {
         return $this->hasMany('App\IssueType');
+    }
+
+    public function issuePriorities() {
+        return $this->hasMany('App\IssuePriority');
     }
 
     public function isClient()

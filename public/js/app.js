@@ -68383,8 +68383,11 @@ var render = function() {
                     ),
                     _vm._v(" "),
                     _c(
-                      "a",
-                      { staticClass: "d-block mt-1", attrs: { href: "/" } },
+                      "router-link",
+                      {
+                        staticClass: "d-block mt-1",
+                        attrs: { to: { name: "settings.issues.priorities" } }
+                      },
                       [_vm._v("Приоритеты")]
                     ),
                     _vm._v(" "),
@@ -85315,7 +85318,15 @@ var routes = [{
       name: 'settings.issues.types',
       components: {
         "default": function _default() {
-          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(2)]).then(__webpack_require__.bind(null, /*! ../views/app/settings/issues/types */ "./resources/views/app/settings/issues/types.vue"));
+          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(4)]).then(__webpack_require__.bind(null, /*! ../views/app/settings/issues/types */ "./resources/views/app/settings/issues/types.vue"));
+        }
+      }
+    }, {
+      path: '/settings/priorities',
+      name: 'settings.issues.priorities',
+      components: {
+        "default": function _default() {
+          return Promise.all(/*! import() */[__webpack_require__.e(0), __webpack_require__.e(1), __webpack_require__.e(3)]).then(__webpack_require__.bind(null, /*! ../views/app/settings/issues/priorities */ "./resources/views/app/settings/issues/priorities.vue"));
         }
       }
     }, {
@@ -85323,7 +85334,7 @@ var routes = [{
       name: 'settings.issues.statuses',
       components: {
         "default": function _default() {
-          return __webpack_require__.e(/*! import() */ 1).then(__webpack_require__.bind(null, /*! ../views/app/settings/issues/statuses */ "./resources/views/app/settings/issues/statuses.vue"));
+          return __webpack_require__.e(/*! import() */ 2).then(__webpack_require__.bind(null, /*! ../views/app/settings/issues/statuses */ "./resources/views/app/settings/issues/statuses.vue"));
         }
       }
     }]

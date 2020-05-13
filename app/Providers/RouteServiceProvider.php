@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\IssuePriority;
 use App\IssueType;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +38,9 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('type', function ($id) {
             return IssueType::withTrashed()->find($id);
+        });
+        Route::bind('priority', function ($id) {
+            return IssuePriority::withTrashed()->find($id);
         });
     }
 

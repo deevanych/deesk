@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
             IssueTypeSeeder::class,
             IssueSeeder::class,
             IssueCommentSeeder::class,
-            OauthClientSeeder::class,l
+            OauthClientSeeder::class,
         ]);
     }
 }

@@ -147,6 +147,13 @@ const routes = [
                         },
                     },
                     {
+                        path: '/settings/priorities',
+                        name: 'settings.issues.priorities',
+                        components: {
+                            default: () => import('../views/app/settings/issues/priorities'),
+                        },
+                    },
+                    {
                         path: '/settings/statuses',
                         name: 'settings.issues.statuses',
                         components: {

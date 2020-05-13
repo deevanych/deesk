@@ -19,6 +19,8 @@ class CreateIssuePrioritiesTable extends Migration
             $table->bigInteger('organization_id')->unsigned();
             $table->foreign('organization_id')->references('id')->on('organizations');
             $table->text('description')->nullable();
+            $table->boolean('active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }
