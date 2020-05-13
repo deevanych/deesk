@@ -19,6 +19,10 @@ php7.3 artisan config:cache
 php7.3 artisan route:cache
 # clear and cache view
 php7.3 artisan view:cache
+# clear and cache events
+php7.3 artisan event:cache
+# clear bootstrap cache
+php7.3 artisan optimize
 # install packages
 npm install
 # webpack build
