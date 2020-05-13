@@ -11,7 +11,7 @@ composer-php7.3 install --no-interaction --no-dev --prefer-dist
 # update database
 #php artisan migrate --force
 # --force  Required to run when in production.
-php7.3 artisan migrate:fresh --seed
+php7.3 artisan migrate:fresh --seed --force
 # clear and cache config
 php7.3 artisan config:cache
 # clear and cache route
