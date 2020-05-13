@@ -39,16 +39,19 @@ class AutoDeploy extends Command
     public function handle()
     {
         //
-        exec('php7.3 artisan down');
-        exec('git pull');
-        exec('composer-php7.3 install --no-interaction --no-dev --prefer-dist');
-        exec('composer-php7.3 update');
-        exec('php7.3 artisan migrate:fresh --seed --force');
-        exec('php7.3 artisan config:cache');
-        exec('php7.3 artisan route:cache');
-        exec('php7.3 artisan view:cache');
-        exec('npm install');
-        exec('npm run prod');
-        exec('php7.3 artisan up');
+//        $base = base_path();
+//        exec('cd '.$base.' && ls', $re);
+//        exec('cd '.$base.' && php7.3 artisan down', $re);
+//        exec('cd '.$base.' && git pull', $re);
+//        exec('cd '.$base.' && composer-php7.3 install --no-interaction --no-dev --prefer-dist', $re);
+//        exec('cd '.$base.' && composer-php7.3 update', $re);
+//        exec('cd '.$base.' && php7.3 artisan migrate:fresh --seed --force');
+//        exec('cd '.$base.' && php7.3 artisan config:cache');
+//        exec('cd '.$base.' && php7.3 artisan route:cache');
+//        exec('cd '.$base.' && php7.3 artisan view:cache', $re);
+//        exec('cd '.$base.' && npm install', $re);
+//        exec('cd '.$base.' && npm run prod');
+//        exec('cd '.$base.' && php7.3 artisan up');
+//        return dd($re);
     }
 }
