@@ -4,8 +4,9 @@ php7.3 artisan down
 # update source code
 git pull
 # update PHP dependencies
-/usr/local/bin/composer-php7.3 install --no-interaction --no-dev --prefer-dist
-/usr/local/bin/composer-php7.3 update
+composer-php7.3 install --no-interaction --no-dev --prefer-dist
+composer-php7.3 update
+composer dumpautoload -o
 # --no-interaction Do not ask any interactive question
 # --no-dev  Disables installation of require-dev packages.
 # --prefer-dist  Forces installation from package dist even for dev versions.
