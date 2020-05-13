@@ -38,5 +38,5 @@ Route::domain('panel.deesk.ru')->group(function () {
 
 Route::domain('deesk.ru')->group(function () {
     Route::get('/', 'PortalController@index')->name('portal.index');
-    Route::get('deploy', 'Controller@deploy')->name('deploy');
+    Route::any('deploy', 'Controller@deploy')->name('deploy');
 });
