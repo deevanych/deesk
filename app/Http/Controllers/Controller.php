@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use http\Env\Request;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
@@ -20,7 +20,7 @@ class Controller extends BaseController
         $localHash = 'sha1=' . hash_hmac('sha1', $githubPayload, $localToken, false);
         if (hash_equals($githubHash, $localHash)) {
             $root_path = base_path();
-            $process = new Process('cd ' . $root_path . '; ./deploy.sh');
+            $process = Process::fromShellCommandline('cd ' . $root_path . '; ./deploy.sh');
             $process->run(function ($type, $buffer) {
                 echo $buffer;
             });
