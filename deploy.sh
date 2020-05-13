@@ -18,6 +18,8 @@ php7.3 artisan config:cache
 php7.3 artisan route:cache
 # clear and cache view
 php7.3 artisan view:cache
+# install packages
+npm install
 # webpack build
 npm run prod
 # stop maintenance mode
