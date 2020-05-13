@@ -13,11 +13,10 @@
                 {{ issueType.title }}
             </a>
         </td>
-        <td class="description"
-            v-bind:data-toggle="[issueType.description.length > 25 ? 'tooltip' : '']"
-            data-placement="top"
-            v-bind:data-original-title="[issueType.description.length > 25 ? issueType.description : '']">
-            {{ getDescription(issueType.description) }}
+        <td class="description">
+            <span v-bind:data-toggle="[issueType.description ? 'tooltip' : '']"
+                  data-placement="top"
+                  v-bind:data-original-title="[issueType.description ? issueType.description : '']">{{ getDescription(issueType.description) }}</span>
         </td>
         <td class="d-flex align-items-center justify-content-end pr-3">
             <div ref="toggle"
@@ -94,11 +93,11 @@
                 return text;
             },
             toggleIssueTypeActive: function (issueType) {
-                let self = this;
+                let self = this,
+                    editedIssueType = {...issueType};
                 header.loading = true;
-                axios.put('/api/v1/issues/types/' + issueType.id, {
-                    active: !issueType.active
-                }).then(function (response) {
+                editedIssueType.active = !issueType.active;
+                axios.put('/api/v1/issues/types/' + issueType.id, editedIssueType).then(function (response) {
                     header.loading = false;
                     self.disabled = false;
                     toastr[response.data.status](response.data.message);
@@ -139,14 +138,13 @@
                         toastr['error']('Произошла ошибка');
                     });
             },
-
             restoreIssueType: function (issueType) {
-                let self = this;
+                let self = this,
+                    editedIssueType = {...issueType};
                 header.loading = true;
                 self.disabled = true;
-                axios.put('/api/v1/issues/types/' + issueType.id, {
-                    'deleted_at': null
-                })
+                editedIssueType.deleted_at = null;
+                axios.put('/api/v1/issues/types/' + issueType.id, editedIssueType)
                     .then(function (response) {
                         header.loading = false;
                         self.disabled = false;

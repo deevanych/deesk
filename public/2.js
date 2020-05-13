@@ -13,7 +13,12 @@ __webpack_require__.r(__webpack_exports__);
 var _animated_icons_toggle_toggle_json__WEBPACK_IMPORTED_MODULE_0___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../../../../../animated-icons/toggle/toggle.json */ "./resources/animated-icons/toggle/toggle.json", 1);
 /* harmony import */ var _animated_icons_delete_delete_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../../../animated-icons/delete/delete.json */ "./resources/animated-icons/delete/delete.json");
 var _animated_icons_delete_delete_json__WEBPACK_IMPORTED_MODULE_1___namespace = /*#__PURE__*/__webpack_require__.t(/*! ../../../../../animated-icons/delete/delete.json */ "./resources/animated-icons/delete/delete.json", 1);
-//
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 //
 //
 //
@@ -114,11 +119,12 @@ var _animated_icons_delete_delete_json__WEBPACK_IMPORTED_MODULE_1___namespace = 
       return text;
     },
     toggleIssueTypeActive: function toggleIssueTypeActive(issueType) {
-      var self = this;
+      var self = this,
+          editedIssueType = _objectSpread({}, issueType);
+
       header.loading = true;
-      axios.put('/api/v1/issues/types/' + issueType.id, {
-        active: !issueType.active
-      }).then(function (response) {
+      editedIssueType.active = !issueType.active;
+      axios.put('/api/v1/issues/types/' + issueType.id, editedIssueType).then(function (response) {
         header.loading = false;
         self.disabled = false;
         toastr[response.data.status](response.data.message);
@@ -162,12 +168,13 @@ var _animated_icons_delete_delete_json__WEBPACK_IMPORTED_MODULE_1___namespace = 
       });
     },
     restoreIssueType: function restoreIssueType(issueType) {
-      var self = this;
+      var self = this,
+          editedIssueType = _objectSpread({}, issueType);
+
       header.loading = true;
       self.disabled = true;
-      axios.put('/api/v1/issues/types/' + issueType.id, {
-        'deleted_at': null
-      }).then(function (response) {
+      editedIssueType.deleted_at = null;
+      axios.put('/api/v1/issues/types/' + issueType.id, editedIssueType).then(function (response) {
         header.loading = false;
         self.disabled = false;
         toastr[response.data.status](response.data.message);
@@ -418,7 +425,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           if (response.data.created) {
             self.issueTypes.push(response.data.issueType);
             $(e.target).modal('toggle');
-            self.issueType = {};
+            $(self.$refs.editForm).on('hidden.bs.modal', function (e) {
+              self.issueType = {};
+            });
           }
         })["catch"](function () {
           header.loading = false;
@@ -443,7 +452,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           if (response.data.updated) {
             self.$set(self.issueTypes, self.editIssueTypeIndex, response.data.issueType);
             $(self.$refs.editForm).modal('toggle');
-            self.issueType = {};
+            $(self.$refs.editForm).on('hidden.bs.modal', function (e) {
+              self.issueType = {};
+            });
           }
         })["catch"](function () {
           header.loading = false;
@@ -513,30 +524,21 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c(
-      "td",
-      {
-        staticClass: "description",
-        attrs: {
-          "data-toggle": [
-            _vm.issueType.description.length > 25 ? "tooltip" : ""
-          ],
-          "data-placement": "top",
-          "data-original-title": [
-            _vm.issueType.description.length > 25
-              ? _vm.issueType.description
-              : ""
-          ]
-        }
-      },
-      [
-        _vm._v(
-          "\n        " +
-            _vm._s(_vm.getDescription(_vm.issueType.description)) +
-            "\n    "
-        )
-      ]
-    ),
+    _c("td", { staticClass: "description" }, [
+      _c(
+        "span",
+        {
+          attrs: {
+            "data-toggle": [_vm.issueType.description ? "tooltip" : ""],
+            "data-placement": "top",
+            "data-original-title": [
+              _vm.issueType.description ? _vm.issueType.description : ""
+            ]
+          }
+        },
+        [_vm._v(_vm._s(_vm.getDescription(_vm.issueType.description)))]
+      )
+    ]),
     _vm._v(" "),
     _c(
       "td",

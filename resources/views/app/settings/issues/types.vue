@@ -212,7 +212,9 @@
                             if (response.data.created) {
                                 self.issueTypes.push(response.data.issueType);
                                 $(e.target).modal('toggle');
-                                self.issueType = {};
+                                $(self.$refs.editForm).on('hidden.bs.modal', function (e) {
+                                    self.issueType = {};
+                                })
                             }
                         })
                         .catch(function () {
@@ -236,7 +238,9 @@
                         if (response.data.updated) {
                             self.$set(self.issueTypes, self.editIssueTypeIndex, response.data.issueType);
                             $(self.$refs.editForm).modal('toggle');
-                            self.issueType = {};
+                            $(self.$refs.editForm).on('hidden.bs.modal', function (e) {
+                                self.issueType = {};
+                            })
                         }
                     })
                         .catch(function () {
