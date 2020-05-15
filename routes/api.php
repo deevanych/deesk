@@ -26,7 +26,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.', 'middl
     Route::resource('issues/favorite', 'FavoriteIssueController', ['except' => ['create', 'edit']]);
     Route::resource('issues/statuses/colors', 'IssueStatusColorController', ['except' => ['create', 'edit']]);
     Route::resource('issues/statuses/icons', 'IssueStatusIconController', ['except' => ['create', 'edit']]);
-    Route::resource('issues/statuses/types', 'IssueStatusTypeController', ['except' => ['create', 'edit']]);
+    Route::resource('issues/statuses/types', 'IssueStatusTypeController', ['except' => ['create', 'edit'], 'as' => 'statusTypes']);
     Route::resource('issues/statuses', 'IssueStatusController', ['except' => ['create', 'edit']]);
     Route::resource('issues/{id}/comments', 'IssueCommentController', ['except' => ['create', 'edit']]);
     Route::resource('issues', 'IssueController', ['except' => ['create', 'edit']]);
