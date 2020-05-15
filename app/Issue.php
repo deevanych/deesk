@@ -61,7 +61,7 @@ class Issue extends Model
 
     public function status()
     {
-        return $this->belongsTo('App\IssueStatus', 'issue_status_id', 'id');
+        return $this->belongsTo('App\IssueStatus', 'issue_status_id', 'id')->withTrashed();
     }
 
     public function type()

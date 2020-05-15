@@ -40,6 +40,11 @@ class IssueTypeController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'title' => 'required|max:50|min:4',
+            'description' => 'max:50',
+        ]);
+
         $issueType = Auth::user()->organization->issueTypes()->create($request->all());
         return array('status' => 'success', 'created' => true, 'message' => 'Тип заявки создан', 'issueType' => $issueType);
     }
@@ -76,7 +81,7 @@ class IssueTypeController extends Controller
     public function update(Request $request, IssueType $type)
     {
         //
-        $validatedData = $request->validate([
+        $request->validate([
             'title' => 'required|max:50|min:4',
             'description' => 'max:50',
         ]);

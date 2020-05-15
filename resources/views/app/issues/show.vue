@@ -226,7 +226,7 @@
                     self.issue = response.data;
                     header.loading = false;
                 });
-            axios.get('/api/v1/statuses')
+            axios.get('/api/v1/issues/statuses')
                 .then(function (response) {
                     self.statuses = response.data;
                 });

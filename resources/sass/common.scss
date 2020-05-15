@@ -240,6 +240,11 @@ a[href='#'].active {
     border-color: #36D1DC;
 }
 
+a[href='#'].button {
+    border: none;
+    padding: 0;
+}
+
 .badge.count {
     color: #ffffff;
     background: #ff9966; /* fallback for old browsers */
@@ -448,7 +453,7 @@ table.table td:nth-last-child(1) {
     background-size: cover;
 }
 
-[data-toggle='dropdown'] .status {
+.button .status {
     color: #fff;
 }
 
@@ -526,7 +531,7 @@ table.table td:nth-last-child(1) {
     position: absolute;
 }
 
-.form-group > input[required] + span > span:first-child::after {
+.form-group > input[required] + span > span:first-child::after, span.required::after {
     content: '*';
     color: #dc3545 !important;
     margin-left: .5rem;
@@ -556,4 +561,43 @@ table.table td:nth-last-child(1) {
 .tooltip-inner {
     border-radius: 25px;
     padding: 1rem;
+}
+
+.issue-status-color-choose, .issue-status-icon-choose {
+    width: 30px;
+    height: 30px;
+    display: block;
+    border: 2px solid #fff;
+    transition: .3s border-color;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.issue-status-color:checked + .issue-status-color-choose, .issue-status-icon:checked + .issue-status-icon-choose {
+    border-color: #007bff;
+}
+
+input[type=radio] + label.radio-button::before {
+    content: '';
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    border-radius: 50%;
+    margin-right: 10px;
+    border: 1px solid #fff;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+input[type=radio]:checked + label.radio-button::before {
+    background: #007bff;
+}
+
+.modification {
+    background: #007bff;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1px solid #fff;
 }

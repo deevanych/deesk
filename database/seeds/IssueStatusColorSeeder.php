@@ -13,19 +13,24 @@ class IssueStatusColorSeeder extends Seeder
     {
         //
         DB::table('issue_status_colors')->insert([
-            'title' => 'blue'
+            'title' => 'blue',
+            'description' => 'Голубая лагуна',
         ]);
         DB::table('issue_status_colors')->insert([
-            'title' => 'green'
+            'title' => 'green',
+            'description' => 'Сонный изумруд',
         ]);
         DB::table('issue_status_colors')->insert([
-            'title' => 'orange'
+            'title' => 'orange',
+            'description' => 'Молодое солнце',
         ]);
         DB::table('issue_status_colors')->insert([
-            'title' => 'red'
+            'title' => 'red',
+            'description' => 'Ночное утро',
         ]);
         DB::table('issue_status_colors')->insert([
-            'title' => 'black'
+            'title' => 'black',
+            'description' => 'Космический любимый',
         ]);
     }
 }

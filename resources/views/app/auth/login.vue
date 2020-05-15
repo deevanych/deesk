@@ -32,7 +32,7 @@
         data: function () {
             return {
                 data: {
-                    username: 'client@test.com',
+                    username: 'service@test.com',
                     password: 123456,
                     grant_type: "password",
                     client_secret: "M7AmP0MDEdnFq9rhyzuSfvvYOWlxAXbELJPqhCPB",

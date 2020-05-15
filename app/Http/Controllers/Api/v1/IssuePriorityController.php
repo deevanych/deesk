@@ -40,6 +40,11 @@ class IssuePriorityController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'title' => 'required|max:50|min:4',
+            'description' => 'max:50',
+        ]);
+
         $issuePriority = Auth::user()->organization->issuePriorities()->create($request->all());
         return array('status' => 'success', 'created' => true, 'message' => 'Приоритет заявки создан', 'issuePriority' => $issuePriority);
     }

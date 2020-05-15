@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateIssueStatusColorsTable extends Migration
+class CreateIssueStatusTypesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,11 @@ class CreateIssueStatusColorsTable extends Migration
      */
     public function up()
     {
-        Schema::create('issue_status_colors', function (Blueprint $table) {
+        Schema::create('issue_status_types', function (Blueprint $table) {
             $table->id();
             $table->string('title');
             $table->string('description');
+            $table->timestamps();
         });
     }
 
@@ -27,6 +28,6 @@ class CreateIssueStatusColorsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('issue_status_colors');
+        Schema::dropIfExists('issue_status_types');
     }
 }
