@@ -11,7 +11,7 @@
                         <div class="user-avatar flex-shrink-0"
                              style="background-image: url(https://deesk.ru/storage/clients/2.jpg);"></div>
                         <div class="comment-body d-flex flex-column px-4 py-3">
-                            <span class="comment-author font-weight-bolder">{{ comment.author.name }}</span>
+                            <span class="comment-author font-weight-bolder">{{ comment.author.title }}</span>
                             <span class="comment-text" v-html="comment.text"></span>
                         </div>
                         <span class="comment-date flex-shrink-0">{{ comment.created_at }}</span>

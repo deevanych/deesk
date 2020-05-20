@@ -19,7 +19,7 @@
                        v-bind:style="{ backgroundImage: 'url(' + client.image + ')' }"
                        href="#">
                         <span class="client-background"></span>
-                        <span class="client-title">{{ client.short_name }}</span>
+                        <span class="client-title">{{ client.title }}</span>
                         <span
                             class="client-description">{{ $tc('message.issuesCount', client.client_issues_count) }}</span>
                     </a>

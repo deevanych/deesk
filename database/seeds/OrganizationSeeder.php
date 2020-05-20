@@ -14,18 +14,18 @@ class OrganizationSeeder extends Seeder
     {
         //
         DB::table('organizations')->insert([
-            'short_name' => 'Сервис',
+            'title' => 'Сервис',
             'full_name' => 'Обслуживающая компания',
             'domain' => 'service',
         ]);
         DB::table('organizations')->insert([
-            'short_name' => 'Клиент',
+            'title' => 'Клиент',
             'full_name' => 'Ресторан',
             'domain' => 'client',
             'parent_id' => 1,
         ]);
         DB::table('organizations')->insert([
-            'short_name' => 'Второй клиент',
+            'title' => 'Второй клиент',
             'full_name' => 'Ресторан',
             'domain' => 'client2',
             'parent_id' => 1,

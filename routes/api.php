@@ -23,6 +23,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.', 'middl
     Route::resource('organizations', 'OrganizationController', ['except' => ['create', 'edit']]);
     Route::resource('issues/types', 'IssueTypeController', ['except' => ['create', 'edit']]);
     Route::resource('issues/priorities', 'IssuePriorityController', ['except' => ['create', 'edit']]);
+    Route::resource('issues/rules', 'IssueRuleController', ['except' => ['create', 'edit']]);
     Route::resource('issues/favorite', 'FavoriteIssueController', ['except' => ['create', 'edit']]);
     Route::resource('issues/statuses/colors', 'IssueStatusColorController', ['except' => ['create', 'edit']]);
     Route::resource('issues/statuses/icons', 'IssueStatusIconController', ['except' => ['create', 'edit']]);

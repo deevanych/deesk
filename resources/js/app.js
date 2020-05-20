@@ -4,13 +4,17 @@ import VueI18n from 'vue-i18n';
 import VueHeadFul from 'vue-headful';
 import Skeleton from 'vue-loading-skeleton';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
-import Vuelidate from 'vuelidate'
+import Select2 from 'select2';
+import Vuelidate from 'vuelidate';
 
 import jquery from 'jquery';
 import lottie from 'lottie-web';
 import '../js/common';
 
-import Summernote from '../views/app/summernote';
+// components
+import Summernote from '../views/app/components/summernote';
+import SelectComponent from '../views/app/components/select2';
+
 //app
 import App from '../views/app/layout/app';
 // home
@@ -93,6 +97,7 @@ Vue.component('header-app', HeaderApp);
 Vue.component('vue-headful', VueHeadFul);
 Vue.component('summernote', Summernote);
 Vue.component('perfect', VuePerfectScrollbar);
+Vue.component('select2', SelectComponent);
 
 const routes = [
     {
@@ -158,6 +163,13 @@ const routes = [
                         name: 'settings.issues.statuses',
                         components: {
                             default: () => import('../views/app/settings/issues/statuses'),
+                        },
+                    },
+                    {
+                        path: '/settings/rules',
+                        name: 'settings.issues.rules',
+                        components: {
+                            default: () => import('../views/app/settings/issues/rules'),
                         },
                     },
                 ],

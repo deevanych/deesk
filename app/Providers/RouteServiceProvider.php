@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\IssuePriority;
+use App\IssueRule;
 use App\IssueStatus;
 use App\IssueType;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -45,6 +46,9 @@ class RouteServiceProvider extends ServiceProvider
         });
         Route::bind('status', function ($id) {
             return IssueStatus::withTrashed()->find($id);
+        });
+        Route::bind('rule', function ($id) {
+            return IssueRule::withTrashed()->find($id);
         });
     }
 

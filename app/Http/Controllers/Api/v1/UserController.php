@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         //
-        return User::all();
+        return Auth::user()->organization->users;
     }
 
     /**

@@ -90,8 +90,8 @@
                         <div class="user-avatar mr-3"
                              style="background-image: url(https://deesk.ru/storage/clients/2.jpg);"></div>
                         <div class="d-flex flex-column justify-content-center">
-                            <a class="font-weight-bolder">{{ issue.author.name }}</a>
-                            <a class="text-gray">{{ issue.author.organization.short_name }}</a>
+                            <a class="font-weight-bolder">{{ issue.author.title }}</a>
+                            <a class="text-gray">{{ issue.author.organization.title }}</a>
                         </div>
                     </div>
                 </div>
@@ -103,8 +103,8 @@
                         <div class="user-avatar mr-3"
                              style="background-image: url(https://deesk.ru/storage/clients/2.jpg);"></div>
                         <div class="d-flex flex-column justify-content-center">
-                            <a class="font-weight-bolder">{{ issue.employee.name }}</a>
-                            <a class="text-gray">{{ issue.employee.organization.short_name }}</a>
+                            <a class="font-weight-bolder">{{ issue.employee.title }}</a>
+                            <a class="text-gray">{{ issue.employee.organization.title }}</a>
                         </div>
                     </div>
                     <h5 v-else>Не назначен</h5>
@@ -145,8 +145,8 @@
                                     <div class="user-avatar mr-3"
                                          style="background-image: url(&quot;https://deesk.ru/storage/clients/2.jpg&quot;);"></div>
                                     <div class="d-flex flex-column justify-content-center">
-                                        <a class="font-weight-bolder">{{ observer.name }}</a>
-                                        <a class="text-gray">{{ observer.organization.short_name }}</a></div>
+                                        <a class="font-weight-bolder">{{ observer.title }}</a>
+                                        <a class="text-gray">{{ observer.organization.title }}</a></div>
                                 </div>
                             </template>
                             <template v-else-if="issue.observers.length <= 3">

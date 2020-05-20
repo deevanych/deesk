@@ -51,17 +51,17 @@
                         </td>
                         <td>
                             <router-link :to="{ name: 'users', params: { id: issue.author.id } }">
-                                {{ issue.author.name }}
+                                {{ issue.author.title }}
                             </router-link>
                             (
                             <router-link :to="{ name: 'organizations', params: { id: issue.author.organization.id } }">
-                                {{ issue.author.organization.short_name }}
+                                {{ issue.author.organization.title }}
                             </router-link>
                             )
                         </td>
                         <td v-if="issue.employee">
                             <router-link :to="{ name: 'users', params: { id: issue.employee.id } }">
-                                {{ issue.employee.name }}
+                                {{ issue.employee.title }}
                             </router-link>
                         </td>
                         <td v-else>Не назначен</td>

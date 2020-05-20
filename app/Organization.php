@@ -30,15 +30,16 @@ class Organization extends Model
         return $this->hasMany('App\Issue', $key);
     }
 
-    /**
-     * @return HasMany
-     */
     public function issueTypes() {
         return $this->hasMany('App\IssueType');
     }
 
     public function issuePriorities() {
         return $this->hasMany('App\IssuePriority');
+    }
+
+    public function issueRules() {
+        return $this->hasMany('App\IssueRule');
     }
 
     public function isClient()
@@ -54,6 +55,11 @@ class Organization extends Model
     public function clients()
     {
         return $this->hasMany('App\Organization', 'parent_id')->withCount('clientIssues');
+    }
+
+    public function users()
+    {
+        return $this->hasMany('App\User');
     }
 
     public function parent()

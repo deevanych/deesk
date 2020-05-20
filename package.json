@@ -25,6 +25,7 @@
         "lottie-web": "^5.6.8",
         "popper": "^1.0.1",
         "popper.js": "^1.16.1",
+        "select2": "^4.0.13",
         "summernote": "^0.8.16",
         "toastr": "^2.1.4",
         "vue": "^2.6.11",

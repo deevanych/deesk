@@ -32,7 +32,7 @@
                                 <router-link :to="{name: 'settings.issues.priorities'}" class="d-block mt-1">Приоритеты</router-link>
                                 <router-link :to="{name: 'settings.issues.statuses'}" class="d-block mt-1">Статусы</router-link>
                                 <a href="/" class="d-block mt-1">Нормативы</a>
-                                <a href="/" class="d-block mt-1">Действия по умолчанию</a>
+                                <router-link :to="{name: 'settings.issues.rules'}" class="d-block mt-1">Действия по умолчанию</router-link>
                             </div>
                         </div>
                         <div class="row mb-5">
