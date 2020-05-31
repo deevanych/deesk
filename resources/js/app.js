@@ -1,14 +1,20 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import VueI18n from 'vue-i18n';
-import vueHeadFul from 'vue-headful';
+import VueHeadFul from 'vue-headful';
 import Skeleton from 'vue-loading-skeleton';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
+import Select2 from 'select2';
+import Vuelidate from 'vuelidate';
 
 import jquery from 'jquery';
+import lottie from 'lottie-web';
 import '../js/common';
 
-import Summernote from '../views/app/summernote';
+// components
+import Summernote from '../views/app/components/summernote';
+import SelectComponent from '../views/app/components/select2';
+
 //app
 import App from '../views/app/layout/app';
 // home
@@ -21,8 +27,13 @@ import IssueShow from '../views/app/issues/show';
 import Login from '../views/app/auth/login';
 // settings
 import Settings from '../views/app/settings/index';
+// clients
+import Clients from '../views/app/clients/index';
+// organizations
+import Organizations from '../views/app/organizations/show';
 
 window.$ = window.jQuery = jquery;
+lottie.setQuality('low');
 
 require('summernote');
 require('bootstrap');
@@ -31,6 +42,7 @@ require('lodash');
 window.axios = require('axios');
 window.Vue = require('vue');
 window.toastr = require('toastr');
+window.lottie = lottie;
 window.header = {};
 
 Vue.config.productionTip = false;
@@ -82,12 +94,14 @@ VueI18n.prototype.getChoiceIndex = function (choice, choicesLength) {
 
 window.Vue.use(VueRouter);
 window.Vue.use(VueI18n);
-window.Vue.use(Skeleton)
+window.Vue.use(Skeleton);
+window.Vue.use(Vuelidate);
 
 Vue.component('header-app', HeaderApp);
-Vue.component('vue-headful', vueHeadFul);
+Vue.component('vue-headful', VueHeadFul);
 Vue.component('summernote', Summernote);
 Vue.component('perfect', VuePerfectScrollbar);
+Vue.component('select2', SelectComponent);
 
 const routes = [
     {
@@ -119,10 +133,62 @@ const routes = [
             },
             {
                 path: '/organizations/:id',
-                name: 'organizations',
+                name: 'organizations.show',
                 components: {
-                    default: Home
+                    default: Organizations,
                 },
+                // redirect: {
+                //     name: 'organizations.activity'
+                // },
+                // children: [
+                //     {
+                //         path: '/organizations/:id/contacts',
+                //         name: 'organizations.contacts',
+                //         components: {
+                //             default: () => import('../views/app/organizations/components/contacts'),
+                //         },
+                //     },
+                //     {
+                //         path: '/organizations/:id/issues',
+                //         name: 'organizations.issues',
+                //         components: {
+                //             default: () => import('../views/app/organizations/components/issues'),
+                //         },
+                //     },
+                //     {
+                //         path: '/organizations/:id/activity',
+                //         name: 'organizations.activity',
+                //         components: {
+                //             default: () => import('../views/app/organizations/components/activity'),
+                //         },
+                //     },
+                //     {
+                //         path: '/organizations/:id/objects',
+                //         name: 'organizations.objects',
+                //         components: {
+                //             default: () => import('../views/app/organizations/components/objects'),
+                //         },
+                //     },
+                // ],
+            },
+            {
+                path: '/clients',
+                name: 'clients',
+                components: {
+                    default: Clients
+                },
+                redirect: {
+                    name: 'clients.organizations'
+                },
+                children: [
+                    {
+                        path: '/clients/organizations',
+                        name: 'clients.organizations',
+                        components: {
+                            default: () => import('../views/app/clients/organizations'),
+                        },
+                    },
+                ],
             },
             {
                 path: '/settings',
@@ -142,10 +208,24 @@ const routes = [
                         },
                     },
                     {
+                        path: '/settings/priorities',
+                        name: 'settings.issues.priorities',
+                        components: {
+                            default: () => import('../views/app/settings/issues/priorities'),
+                        },
+                    },
+                    {
                         path: '/settings/statuses',
                         name: 'settings.issues.statuses',
                         components: {
                             default: () => import('../views/app/settings/issues/statuses'),
+                        },
+                    },
+                    {
+                        path: '/settings/rules',
+                        name: 'settings.issues.rules',
+                        components: {
+                            default: () => import('../views/app/settings/issues/rules'),
                         },
                     },
                 ],

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="deesk">
+  <component name="PublishConfigData" serverName="deesk">
     <serverData>
       <paths name="deesk">
         <serverdata>
@@ -9,7 +9,13 @@
           </mappings>
         </serverdata>
       </paths>
+      <paths name="minsel">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
     </serverData>
-    <option name="myAutoUpload" value="ALWAYS" />
   </component>
 </project>

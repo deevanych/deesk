@@ -22,31 +22,16 @@
             </div>
         </div>
         <div class="row mb-2">
-            <div class="col-4 px-5 pt-5 pb-0 menu">
-                <div class="row mb-4">
+            <div class="col-4">
+                <div class="row mb-4 px-5 pt-5 pb-0 menu">
                     <div class="col">
                         <div class="row mb-5">
                             <div class="col">
                                 <h5>Заявки</h5>
                                 <router-link :to="{name: 'settings.issues.types'}" class="d-block mt-1">Типы</router-link>
-                                <a href="/" class="d-block mt-1">Приоритеты</a>
+                                <router-link :to="{name: 'settings.issues.priorities'}" class="d-block mt-1">Приоритеты</router-link>
                                 <router-link :to="{name: 'settings.issues.statuses'}" class="d-block mt-1">Статусы</router-link>
-                                <a href="/" class="d-block mt-1">Нормативы</a>
-                                <a href="/" class="d-block mt-1">Действия по умолчанию</a>
-                            </div>
-                        </div>
-                        <div class="row mb-5">
-                            <div class="col">
-                                <h5>Клиенты</h5>
-                                <a href="/" class="d-block mt-1">Организации</a>
-                                <a href="/" class="d-block mt-1">Контакты</a>
-                            </div>
-                        </div>
-                        <div class="row mb-5">
-                            <div class="col">
-                                <h5>Моя организация</h5>
-                                <a href="/" class="d-block mt-1">Сотрудники</a>
-                                <a href="/" class="d-block mt-1">Роли и права</a>
+                                <router-link :to="{name: 'settings.issues.rules'}" class="d-block mt-1">Действия по умолчанию</router-link>
                             </div>
                         </div>
                     </div>

@@ -16,6 +16,7 @@ class CreateIssueStatusColorsTable extends Migration
         Schema::create('issue_status_colors', function (Blueprint $table) {
             $table->id();
             $table->string('title');
+            $table->string('description');
         });
     }
 

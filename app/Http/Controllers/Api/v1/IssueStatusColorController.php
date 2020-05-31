@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
+use App\Http\Controllers\Controller;
 use App\IssueStatusColor;
 use Illuminate\Http\Request;
 
@@ -15,6 +16,7 @@ class IssueStatusColorController extends Controller
     public function index()
     {
         //
+        return IssueStatusColor::all();
     }
 
     /**

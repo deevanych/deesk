@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\IssueFile;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PortalController extends Controller
 {
@@ -15,7 +16,7 @@ class PortalController extends Controller
     public function index()
     {
         //
-        return 232;
+        return Auth::user()->id;
     }
 
     /**

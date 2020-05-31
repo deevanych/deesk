@@ -2,12 +2,11 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="8374bfda-d4fb-46d0-988d-eac0bdc3287f" name="deesk" url="http://cashalot.beget.tech">
-        <fileTransfer host="cashalot.beget.tech" port="21" rootFolder="/helpdesk">
+      <webServer id="9b38b0b6-568e-4320-9565-f3dff38997a5" name="deesk" url="http://cashalot.beget.tech">
+        <fileTransfer rootFolder="/helpdesk" host="cashalot.beget.tech" port="21">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
-          <option name="port" value="21" />
         </fileTransfer>
       </webServer>
     </option>

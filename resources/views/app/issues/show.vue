@@ -86,27 +86,13 @@
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Автор</h6>
-                    <div class="user-short d-flex flex-row align-items-center">
-                        <div class="user-avatar mr-3"
-                             style="background-image: url(https://deesk.ru/storage/clients/2.jpg);"></div>
-                        <div class="d-flex flex-column justify-content-center">
-                            <a class="font-weight-bolder">{{ issue.author.name }}</a>
-                            <a class="text-gray">{{ issue.author.organization.short_name }}</a>
-                        </div>
-                    </div>
+                    <user-info v-if="issue.author" v-bind:users="issue.author"></user-info>
                 </div>
             </div>
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Ответственный</h6>
-                    <div v-if="issue.employee" class="user-short d-flex flex-row align-items-center">
-                        <div class="user-avatar mr-3"
-                             style="background-image: url(https://deesk.ru/storage/clients/2.jpg);"></div>
-                        <div class="d-flex flex-column justify-content-center">
-                            <a class="font-weight-bolder">{{ issue.employee.name }}</a>
-                            <a class="text-gray">{{ issue.employee.organization.short_name }}</a>
-                        </div>
-                    </div>
+                    <user-info v-if="issue.employee" v-bind:users="issue.employee"></user-info>
                     <h5 v-else>Не назначен</h5>
                 </div>
             </div>
@@ -128,35 +114,7 @@
                 <div class="col">
                     <h6 class="text-gray">Наблюдатели</h6>
                     <div class="d-flex align-items-center" v-if="issue.observers">
-                        <template v-if="issue.observers.length > 0">
-                            <template v-if="issue.observers.length > 3">
-                                <div class="user-short d-flex flex-row align-items-center float-left observer"
-                                     v-for="(observer, n) in issue.observers" :key="n" v-if="n <= 2">
-                                    <div class="user-avatar"
-                                         style="background-image: url(&quot;https://deesk.ru/storage/clients/2.jpg&quot;);"></div>
-                                </div>
-                                <span class="ml-2">
-                                    и еще {{ issue.observers.length - 3 }}
-                                </span>
-                            </template>
-                            <template v-else-if="issue.observers.length == 1">
-                                <div class="user-short d-flex flex-row align-items-center"
-                                     v-for="observer in issue.observers">
-                                    <div class="user-avatar mr-3"
-                                         style="background-image: url(&quot;https://deesk.ru/storage/clients/2.jpg&quot;);"></div>
-                                    <div class="d-flex flex-column justify-content-center">
-                                        <a class="font-weight-bolder">{{ observer.name }}</a>
-                                        <a class="text-gray">{{ observer.organization.short_name }}</a></div>
-                                </div>
-                            </template>
-                            <template v-else-if="issue.observers.length <= 3">
-                                <div class="user-short d-flex flex-row align-items-center float-left observer"
-                                     v-for="observer in issue.observers">
-                                    <div class="user-avatar"
-                                         style="background-image: url(&quot;https://deesk.ru/storage/clients/2.jpg&quot;);"></div>
-                                </div>
-                            </template>
-                        </template>
+                        <user-info v-if="issue.observers.length > 0" v-bind:users="issue.observers"></user-info>
                         <template v-else>
                             <h5>Наблюдателей нет</h5>
                         </template>
@@ -200,6 +158,7 @@
 
 <script>
     import comments from "./comments";
+    import UserInfo from "../components/user-info";
 
     export default {
         data: function () {
@@ -226,7 +185,7 @@
                     self.issue = response.data;
                     header.loading = false;
                 });
-            axios.get('/api/v1/statuses')
+            axios.get('/api/v1/issues/statuses')
                 .then(function (response) {
                     self.statuses = response.data;
                 });
@@ -298,6 +257,7 @@
             }
         },
         components: {
+            UserInfo,
             comments: comments,
         }
     }

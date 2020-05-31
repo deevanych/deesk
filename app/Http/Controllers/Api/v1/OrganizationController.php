@@ -46,21 +46,22 @@ class OrganizationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param int Organization $organization
      * @return Response
      */
-    public function show($id)
+    public function show(Organization $organization)
     {
         //
+        return $organization->load('profile');
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param int Organization $organization
      * @return Response
      */
-    public function edit($id)
+    public function edit(Organization $organization)
     {
         //
     }
@@ -69,10 +70,10 @@ class OrganizationController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param int $id
+     * @param int Organization $organization
      * @return Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Organization $organization)
     {
         //
     }
@@ -80,10 +81,10 @@ class OrganizationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param int $id
+     * @param int Organization $organization
      * @return Response
      */
-    public function destroy($id)
+    public function destroy(Organization $organization)
     {
         //
     }

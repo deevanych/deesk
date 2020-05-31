@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             OrganizationSeeder::class,
             UserSeeder::class,
+            IssueStatusTypeSeeder::class,
             IssueStatusColorSeeder::class,
             IssueStatusIconSeeder::class,
             IssueStatusSeeder::class,
@@ -21,7 +22,9 @@ class DatabaseSeeder extends Seeder
             IssuePrioritySeeder::class,
             IssueTypeSeeder::class,
             IssueSeeder::class,
-            IssueCommentSeeder::class
+            IssueCommentSeeder::class,
+            OauthClientSeeder::class,
+            OrganizationProfileSeeder::class,
         ]);
     }
 }

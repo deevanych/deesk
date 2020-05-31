@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\IssueStatus;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class IssueStatusController extends Controller
 {
@@ -40,6 +41,16 @@ class IssueStatusController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'title' => 'required|max:50|min:4',
+            'description' => 'max:50',
+            'icon_id' => 'required',
+            'color_id' => 'required',
+            'type_id' => 'required',
+        ]);
+
+        $issueStatus = Auth::user()->organization->issueStatuses()->create($request->all());
+        return array('status' => 'success', 'created' => true, 'message' => 'Статус заявки создан', 'issueStatus' => IssueStatus::find($issueStatus->id));
     }
 
     /**
@@ -68,22 +79,42 @@ class IssueStatusController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param IssueStatus $issueStatus
-     * @return Response
+     * @param IssueStatus $status
+     * @return array
      */
-    public function update(Request $request, IssueStatus $issueStatus)
+    public function update(Request $request, IssueStatus $status)
     {
         //
+        $request->validate([
+            'title' => 'required|max:50|min:4',
+            'description' => 'max:50',
+            'icon_id' => 'required',
+            'color_id' => 'required',
+            'type_id' => 'required',
+        ]);
+        $request = $request->except('issuesCount', 'icon', 'color', 'type');
+        $status->update($request);
+        $message = 'Статус заявки обновлен';
+        if ($status->wasChanged('active')) {
+            $message = ($status->active) ? 'Статус заявки включен' : 'Статус заявки выключен';
+        }
+        if ($status->wasChanged('deleted_at')) {
+            $message = ($status->deleted_at) ? 'Статус заявки удален' : 'Статус заявки восстановлен';
+        }
+        return array('status' => 'success', 'updated' => true, 'message' => $message, 'issueStatus' => $status->fresh());
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param IssueStatus $issueStatus
-     * @return Response
+     * @param IssueStatus $status
+     * @return array
+     * @throws \Exception
      */
-    public function destroy(IssueStatus $issueStatus)
+    public function destroy(IssueStatus $status)
     {
         //
+        $status->delete();
+        return array('status' => 'success', 'removed' => true, 'message' => 'Статус заявки удален', 'issueStatus' => $status);
     }
 }

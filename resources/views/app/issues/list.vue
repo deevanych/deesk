@@ -15,8 +15,8 @@
                 </li>
             </nav>
             <nav class="d-flex filter ml-4" v-else>
-                <li class="mx-3 d-flex align-items-center" v-for="n in 5">
-                    <PuSkeleton width="100px" height="1rem"></PuSkeleton>
+                <li class="mx-3 d-flex align-items-center" v-for="n in 4">
+                    <PuSkeleton width="4rem" height="1rem"></PuSkeleton>
                     <PuSkeleton width="1.2rem" height="1.2rem" class="ml-1"></PuSkeleton>
                 </li>
             </nav>
@@ -51,17 +51,16 @@
                         </td>
                         <td>
                             <router-link :to="{ name: 'users', params: { id: issue.author.id } }">
-                                {{ issue.author.name }}
+                                {{ issue.author.title }}
                             </router-link>
-                            (
-                            <router-link :to="{ name: 'organizations', params: { id: issue.author.organization.id } }">
-                                {{ issue.author.organization.short_name }}
+                            /
+                            <router-link :to="{ name: 'organizations.show', params: { id: issue.author.organization.id } }">
+                                {{ issue.author.organization.title }}
                             </router-link>
-                            )
                         </td>
                         <td v-if="issue.employee">
                             <router-link :to="{ name: 'users', params: { id: issue.employee.id } }">
-                                {{ issue.employee.name }}
+                                {{ issue.employee.title }}
                             </router-link>
                         </td>
                         <td v-else>Не назначен</td>
@@ -100,7 +99,7 @@
                     self.issues = response.data;
                     header.loading = false;
                 });
-            axios.get('/api/v1/statuses')
+            axios.get('/api/v1/issues/statuses')
                 .then(function (response) {
                     self.issueStatuses = response.data;
                 });

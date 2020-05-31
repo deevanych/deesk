@@ -21,7 +21,7 @@ class IssueSeeder extends Seeder
             'issue_type_id' => 1,
             'issue_status_id' => 1,
             'issue_priority_id' => 1,
-            'author_id' => 2,
+            'author_id' => 3,
             'registration_type_id' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);
@@ -33,7 +33,7 @@ class IssueSeeder extends Seeder
             'issue_type_id' => 1,
             'issue_status_id' => 2,
             'issue_priority_id' => 1,
-            'author_id' => 3,
+            'author_id' => 4,
             'registration_type_id' => 1,
             'created_at' => Carbon::now()->format('Y-m-d H:i:s')
         ]);

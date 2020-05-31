@@ -20,9 +20,12 @@ class CreateIssueStatusesTable extends Migration
             $table->foreign('color_id')->references('id')->on('issue_status_colors');
             $table->bigInteger('icon_id')->unsigned();
             $table->foreign('icon_id')->references('id')->on('issue_status_icons');
+            $table->bigInteger('type_id')->unsigned()->nullable();
+            $table->foreign('type_id')->references('id')->on('issue_status_types');
             $table->bigInteger('organization_id')->unsigned();
             $table->foreign('organization_id')->references('id')->on('organizations');
             $table->text('description')->nullable();
+            $table->boolean('active')->default(true);
             $table->softDeletes();
             $table->timestamps();
         });

@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Auth;
  * @method save()
  * @method fresh()
  * @method static findOrFail($id)
- * @property mixed id
+ * @property int id
+ * @property int employee_id
  */
 class Issue extends Model
 {
@@ -48,11 +49,6 @@ class Issue extends Model
         return $this->hasOne('App\User', 'id', 'author_id');
     }
 
-    public function setCreatedAtAttribute($value)
-    {
-        $this->attributes['created_at'] = '2020-05-02 00:00:00';
-    }
-
     public function employee()
     {
         return $this->hasOne('App\User', 'id', 'employee_id');
@@ -60,7 +56,7 @@ class Issue extends Model
 
     public function status()
     {
-        return $this->belongsTo('App\IssueStatus', 'issue_status_id', 'id');
+        return $this->belongsTo('App\IssueStatus', 'issue_status_id', 'id')->withTrashed();
     }
 
     public function type()
@@ -93,7 +89,7 @@ class Issue extends Model
         return (boolean)(FavoriteIssue::whereUserId(Auth::id())->whereIssueId($this->id)->count());
     }
 
-    public function getMyAttribute()
+    public function getMyAttribute(): bool
     {
         return (boolean)(Auth::id() === $this->employee_id);
     }

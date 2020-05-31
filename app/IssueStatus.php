@@ -3,13 +3,23 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @property mixed active
+ */
 class IssueStatus extends Model
 {
     //
-    protected $with = ['icon', 'color'];
-    protected $hidden = ['icon_id', 'color_id'];
+    use SoftDeletes;
+
+    protected $attributes = [
+        'active' => true,
+    ];
+
+    protected $guarded = [];
+    protected $with = ['icon', 'color', 'type'];
     protected $appends = ['issuesCount'];
 
     public function icon()
@@ -20,6 +30,11 @@ class IssueStatus extends Model
     public function color()
     {
         return $this->hasOne('App\IssueStatusColor', 'id', 'color_id');
+    }
+
+    public function type()
+    {
+        return $this->hasOne('App\IssueStatusType', 'id', 'type_id');
     }
 
     public function organization()
