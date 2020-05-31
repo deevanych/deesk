@@ -49,11 +49,6 @@ class Issue extends Model
         return $this->hasOne('App\User', 'id', 'author_id');
     }
 
-    public function setCreatedAtAttribute($value)
-    {
-        $this->attributes['created_at'] = '2020-05-02 00:00:00';
-    }
-
     public function employee()
     {
         return $this->hasOne('App\User', 'id', 'employee_id');

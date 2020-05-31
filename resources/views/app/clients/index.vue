@@ -1,7 +1,7 @@
 <template>
     <div>
         <vue-headful
-            title="Настройки"
+            title="Клиенты"
         />
         <div class="row mb-2">
             <div class="col">
@@ -16,7 +16,7 @@
                                   d="M107.515 150.971L8.485 250c-4.686 4.686-4.686 12.284 0 16.971L107.515 366c7.56 7.56 20.485 2.206 20.485-8.485v-71.03h308c6.627 0 12-5.373 12-12v-32c0-6.627-5.373-12-12-12H128v-71.03c0-10.69-12.926-16.044-20.485-8.484z"
                                   class=""></path>
                         </svg>
-                        Настройки
+                        Клиенты
                     </a>
                 </h1>
             </div>
@@ -27,11 +27,9 @@
                     <div class="col">
                         <div class="row mb-5">
                             <div class="col">
-                                <h5>Заявки</h5>
-                                <router-link :to="{name: 'settings.issues.types'}" class="d-block mt-1">Типы</router-link>
-                                <router-link :to="{name: 'settings.issues.priorities'}" class="d-block mt-1">Приоритеты</router-link>
-                                <router-link :to="{name: 'settings.issues.statuses'}" class="d-block mt-1">Статусы</router-link>
-                                <router-link :to="{name: 'settings.issues.rules'}" class="d-block mt-1">Действия по умолчанию</router-link>
+                                <h5>Клиенты</h5>
+                                <router-link :to="{name: 'clients.organizations'}" class="d-block mt-1">Организации</router-link>
+                                <router-link :to="{name: 'settings.issues.priorities'}" class="d-block mt-1">Контакты</router-link>
                             </div>
                         </div>
                     </div>

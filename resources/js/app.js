@@ -27,6 +27,10 @@ import IssueShow from '../views/app/issues/show';
 import Login from '../views/app/auth/login';
 // settings
 import Settings from '../views/app/settings/index';
+// clients
+import Clients from '../views/app/clients/index';
+// organizations
+import Organizations from '../views/app/organizations/show';
 
 window.$ = window.jQuery = jquery;
 lottie.setQuality('low');
@@ -129,10 +133,62 @@ const routes = [
             },
             {
                 path: '/organizations/:id',
-                name: 'organizations',
+                name: 'organizations.show',
                 components: {
-                    default: Home
+                    default: Organizations,
                 },
+                // redirect: {
+                //     name: 'organizations.activity'
+                // },
+                // children: [
+                //     {
+                //         path: '/organizations/:id/contacts',
+                //         name: 'organizations.contacts',
+                //         components: {
+                //             default: () => import('../views/app/organizations/components/contacts'),
+                //         },
+                //     },
+                //     {
+                //         path: '/organizations/:id/issues',
+                //         name: 'organizations.issues',
+                //         components: {
+                //             default: () => import('../views/app/organizations/components/issues'),
+                //         },
+                //     },
+                //     {
+                //         path: '/organizations/:id/activity',
+                //         name: 'organizations.activity',
+                //         components: {
+                //             default: () => import('../views/app/organizations/components/activity'),
+                //         },
+                //     },
+                //     {
+                //         path: '/organizations/:id/objects',
+                //         name: 'organizations.objects',
+                //         components: {
+                //             default: () => import('../views/app/organizations/components/objects'),
+                //         },
+                //     },
+                // ],
+            },
+            {
+                path: '/clients',
+                name: 'clients',
+                components: {
+                    default: Clients
+                },
+                redirect: {
+                    name: 'clients.organizations'
+                },
+                children: [
+                    {
+                        path: '/clients/organizations',
+                        name: 'clients.organizations',
+                        components: {
+                            default: () => import('../views/app/clients/organizations'),
+                        },
+                    },
+                ],
             },
             {
                 path: '/settings',

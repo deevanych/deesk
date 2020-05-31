@@ -14,7 +14,7 @@ class Organization extends Model
 {
     //
 
-    protected $appends = ['image'];
+//    protected $appends = ['image'];
 
     public function issueStatuses()
     {
@@ -67,8 +67,12 @@ class Organization extends Model
         return $this->belongsTo('App\Organization', 'parent_id');
     }
 
-    public function getImageAttribute()
-    {
-        return asset('/storage/clients/' . $this->id . '.jpg');
+    public function profile() {
+        return $this->hasOne('App\OrganizationProfile');
     }
+
+//    public function getImageAttribute()
+//    {
+//        return asset('/storage/clients/' . $this->id . '.jpg');
+//    }
 }

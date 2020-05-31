@@ -6,6 +6,7 @@ use App\IssuePriority;
 use App\IssueRule;
 use App\IssueStatus;
 use App\IssueType;
+use App\Organization;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Route;
 
@@ -49,6 +50,9 @@ class RouteServiceProvider extends ServiceProvider
         });
         Route::bind('rule', function ($id) {
             return IssueRule::withTrashed()->find($id);
+        });
+        Route::bind('organization', function ($id) {
+            return Organization::find($id);
         });
     }
 

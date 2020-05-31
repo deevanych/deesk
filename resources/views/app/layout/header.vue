@@ -6,15 +6,19 @@
                 <div class="col">
                     <router-link :to="{name: 'home'}" class="logo">
                         <span class="d-block position-absolute w-100 h-100"></span>
-                        <img src="/images/logo/logo-small.png" width="120"/>
+                        <img src="/images/logo/logo-small.png"/>
                     </router-link>
                 </div>
-                <nav class="col-10 d-flex align-items-center justify-content-end">
+                <nav class="col-9 d-flex align-items-center justify-content-end">
                     <form class="mr-4 mb-0" id="search">
                         <input type="text" class="p-2 px-3 rounded-pill shadow-sm" placeholder="поиск .."/>
                     </form>
                     <li class="mx-4"><a href="#">Заявки</a></li>
-                    <li class="mx-4"><a href="#">Контакты</a></li>
+                    <li class="mx-4">
+                        <router-link :to="{name: 'clients'}">
+                            Клиенты
+                        </router-link>
+                    </li>
                     <li class="mx-4">
                         <router-link :to="{name: 'settings'}">
                             Настройки

@@ -5,6 +5,7 @@
 
 html {
     overflow-x: hidden;
+    font-size: 14px;
 }
 
 div#loading-bar {
@@ -71,10 +72,11 @@ nav li {
 
 //header
 a.logo {
-    font-weight: 900;
     text-decoration: none;
-    color: #232323;
-    font-size: 2rem;
+}
+
+a.logo > img {
+    height: 52px;
 }
 
 header nav li a {
@@ -262,7 +264,6 @@ table.table tr:not(:first-child) {
     //background: #6190E8; /* fallback for old browsers */
     //background: -webkit-linear-gradient(to right, #A7BFE8, #6190E8); /* Chrome 10-25, Safari 5.1-6 */
     //background: linear-gradient(to right, #A7BFE8, #6190E8); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
 }
 
 table.table th {
@@ -279,6 +280,10 @@ table.table td {
 
 table.table td:nth-child(1) {
     border-radius: 5px 0 0 5px;
+}
+
+table.table td:nth-child(1), table.table th:nth-child(1) {
+    width: 4rem;
 }
 
 table.table td:nth-last-child(1) {
@@ -394,10 +399,6 @@ table.table td:nth-last-child(1) {
     background-image: url('../images/icons/dropdown-white.svg');
 }
 
-.user-short {
-    font-size: .8rem;
-}
-
 .comment-text p {
     color: #232323;
 }
@@ -447,8 +448,8 @@ table.table td:nth-last-child(1) {
 
 .user-avatar {
     border-radius: 50%;
-    width: 30px;
-    height: 30px;
+    width: 2rem;
+    height: 2rem;
     background-position: center;
     background-size: cover;
 }
@@ -587,6 +588,7 @@ input[type=radio] + label.radio-button::before {
     margin-right: 10px;
     border: 1px solid #fff;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    transition: .3s;
 }
 
 input[type=radio]:checked + label.radio-button::before {
@@ -672,4 +674,23 @@ input[type=radio]:checked + label.radio-button::before {
 
 .tooltip-inner * {
     color: #fff;
+}
+
+a[target=_blank] {
+    padding-left: 30px;
+    background-image: url(/images/icons/external-link.svg);
+    background-size: 20px;
+    background-position: left;
+    background-repeat: no-repeat;
+    text-decoration: underline;
+}
+
+.tab-navigation .router-link-active {
+    color: #fff;
+    background: #159957;
+    background: linear-gradient(to right, #155799, #159957);
+}
+
+.mw-80 {
+    max-width: 80%;
 }

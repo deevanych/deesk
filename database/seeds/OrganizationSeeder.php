@@ -16,19 +16,18 @@ class OrganizationSeeder extends Seeder
         DB::table('organizations')->insert([
             'title' => 'Сервис',
             'full_name' => 'Обслуживающая компания',
-            'domain' => 'service',
         ]);
         DB::table('organizations')->insert([
-            'title' => 'Клиент',
-            'full_name' => 'Ресторан',
-            'domain' => 'client',
+            'title' => 'Окинава',
+            'full_name' => 'ИП Зиннуров Алмаз Минзахитович',
             'parent_id' => 1,
+            'image' => 'okinava.jpg'
         ]);
         DB::table('organizations')->insert([
-            'title' => 'Второй клиент',
-            'full_name' => 'Ресторан',
-            'domain' => 'client2',
+            'title' => 'Макдональдс',
+            'full_name' => 'ООО «Макдоналдс»',
             'parent_id' => 1,
+            'image' => 'mcdonalds.svg'
         ]);
     }
 }

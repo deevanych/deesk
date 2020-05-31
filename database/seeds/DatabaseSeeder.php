@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             IssueSeeder::class,
             IssueCommentSeeder::class,
             OauthClientSeeder::class,
+            OrganizationProfileSeeder::class,
         ]);
     }
 }
