@@ -23,6 +23,7 @@ import Home from '../views/app/index';
 import HeaderApp from '../views/app/layout/header';
 // issues
 import IssueShow from '../views/app/issues/show';
+import IssueCreate from '../views/app/issues/create';
 // login
 import Login from '../views/app/auth/login';
 // settings
@@ -115,6 +116,13 @@ const routes = [
                 name: 'home',
                 components: {
                     default: Home,
+                },
+            },
+            {
+                path: '/issues/create',
+                name: 'issues.create',
+                components: {
+                    default: IssueCreate,
                 },
             },
             {

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api\v1;
 
 use App\Activity;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class ActivityController extends Controller
