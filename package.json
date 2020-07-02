@@ -23,6 +23,7 @@
         "bootstrap": "^4.4.1",
         "jquery": "^3.5.0",
         "lottie-web": "^5.6.8",
+        "moment": "^2.27.0",
         "popper": "^1.0.1",
         "popper.js": "^1.16.1",
         "select2": "^4.0.13",

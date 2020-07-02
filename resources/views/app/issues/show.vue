@@ -65,7 +65,7 @@
             </div>
             <div class="row mb-4">
                 <div class="col">
-                    <span>{{ issue.description }}</span>
+                    <span v-html="issue.description"></span>
                 </div>
             </div>
             <comments></comments>

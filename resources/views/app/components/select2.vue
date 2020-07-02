@@ -1,13 +1,20 @@
 <template>
-    <select v-bind:multiple="multiple" class="select2" v-model="value" v-bind:name="name" ref="select2" data-po="ewew">
+    <select v-bind:multiple="multiple" class="select2" v-model="value" v-bind:name="name" ref="select2">
         <option v-if="nullable" v-bind:value="null">{{ nullTitle }}</option>
-        <option v-for="(value, key) in values" v-bind:value="value.id">{{ value.title}}</option>
+        <template v-if="groups">
+            <optgroup v-for="(value, key) in values" v-bind:label="value.title">
+                <option v-for="(user, key) in value.users" v-bind:value="user.id">{{ user.title}}</option>
+            </optgroup>
+        </template>
+        <template v-else>
+            <option v-for="(value, key) in values" v-bind:value="value.id">{{ value.title}}</option>
+        </template>
     </select>
 </template>
 
 <script>
     export default {
-        props: ['value', 'name', 'values', 'nullable', 'nullTitle', 'multiple'],
+        props: ['value', 'name', 'values', 'nullable', 'nullTitle', 'multiple', 'groups'],
         data: function () {
             return {
                 // value: '',

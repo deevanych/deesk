@@ -14,6 +14,10 @@ use Illuminate\Support\Facades\Auth;
  * @method static findOrFail($id)
  * @property int id
  * @property int employee_id
+ * @property int organization_id
+ * @property int author_organization_id
+ * @property int author_id
+ * @property int issue_status_id
  */
 class Issue extends Model
 {
@@ -38,11 +42,10 @@ class Issue extends Model
     protected $appends = [
         'link',
         'my',
+        'favorite'
     ];
-    protected $attributes = [
-        'favorite',
-    ];
-    protected $guarded = [];
+
+    protected $guarded = ['created_at'];
 
     public function author()
     {
@@ -81,7 +84,7 @@ class Issue extends Model
 
     public function getLinkAttribute()
     {
-        return route('api.issues.show', $this->id);
+        return route('issues.show', $this->id);
     }
 
     public function getFavoriteAttribute()

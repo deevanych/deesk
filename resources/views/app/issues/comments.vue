@@ -20,7 +20,20 @@
                 <div class="comments" v-else>
                     Комментариев нет
                 </div>
-                <summernote v-bind="{comments: comments, name: 'text'}"></summernote>
+                <div class="row mt-5">
+                    <div class="col">
+                        <form @submit.prevent="submitComment" id="submit-comment">
+                            <summernote v-bind="{name: 'text', placeholder: 'Введите комментарий ..', onEnter: submitComment}"></summernote>
+                        </form>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="offset-8 col">
+                        <button type="submit" :disabled="disable" form="submit-comment"
+                                class="button ml-auto p-3 px-4 rounded-pill shadow-sm blue text-center d-block">Отправить
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -38,7 +51,6 @@
                         <PuSkeleton width="50px" height="1rem" class="comment-date flex-shrink-0"></PuSkeleton>
                     </div>
                 </div>
-                <summernote v-bind="{comments: comments, name: 'text'}"></summernote>
             </div>
         </div>
     </div>
@@ -51,6 +63,7 @@
         data: function () {
             return {
                 comments: null,
+                disable: false,
             }
         },
         updated() {
@@ -63,6 +76,31 @@
                     self.comments = response.data;
                 });
         },
+        methods: {
+            submitComment() {
+                let self = this;
+                self.disable = true;
+                header.loading = true;
+                let textInput = $('#submit-comment').find('[name=text]');
+                axios.post('/api/v1/issues/' + self.$route.params.id + '/comments', {
+                    text: textInput.val(),
+                })
+                    .then(function (response) {
+                        header.loading = false;
+                        self.disable = false;
+                        toastr[response.data.status](response.data.message);
+                        if (response.data.published) {
+                            $('#summernote').summernote('reset');
+                            self.comments.push(response.data.comment);
+                        }
+                    })
+                    .catch(function () {
+                        header.loading = false;
+                        self.disable = false;
+                        toastr['error']('Произошла ошибка');
+                    });
+            }
+        }
     }
 </script>
 

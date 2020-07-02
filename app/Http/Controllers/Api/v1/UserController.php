@@ -19,7 +19,16 @@ class UserController extends Controller
     public function index()
     {
         //
-        return Auth::user()->organization->users;
+        $organization = Auth::user()->organization;
+        if ($organization->isClient()) {
+            $users[] = ['title' => $organization->parent->title, 'users' => $organization->parent->users];
+        } else {
+            foreach ($organization->clients as $client) {
+                $users[] = ['title' => $client->title, 'users' => $client->users];
+            }
+        }
+        $users[] = ['title' => $organization->title, 'users' => $organization->users];
+        return collect($users);
     }
 
     /**

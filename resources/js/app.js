@@ -44,6 +44,7 @@ window.axios = require('axios');
 window.Vue = require('vue');
 window.toastr = require('toastr');
 window.lottie = lottie;
+window.moment = require('moment');
 window.header = {};
 
 Vue.config.productionTip = false;

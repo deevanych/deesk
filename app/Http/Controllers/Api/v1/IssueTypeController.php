@@ -18,6 +18,10 @@ class IssueTypeController extends Controller
     public function index()
     {
         //
+        $organization = Auth::user()->organization;
+        if ($organization->isClient()) {
+            return Auth::user()->organization->parent->issueTypes;
+        }
         return Auth::user()->organization->issueTypes;
     }
 

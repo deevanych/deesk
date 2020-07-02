@@ -54,6 +54,7 @@
                             localStorage.setItem('_token', token);
                             axios.get('/api/v1/users/my').then(function (response) {
                                 localStorage.setItem('user_id', response.data.id);
+                                localStorage.setItem('userInfo', JSON.stringify(response.data));
                             });
                             self.$router.push({name: 'home'});
                         }

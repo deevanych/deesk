@@ -551,6 +551,11 @@ table.table td:nth-last-child(1) {
     font-size: .8rem;
 }
 
+.form-group > .note-editor + span {
+    top: -34px;
+    font-size: .8rem;
+}
+
 .description {
     color: #a7a7a7;
 }
@@ -701,4 +706,13 @@ a[target=_blank] {
 
 .mw-80 {
     max-width: 80%;
+}
+
+#toast-container > div, .toast {
+    max-width: 500px;
+    width: initial;
+}
+
+.toast-message a, .toast-message label {
+    color: #2e08ff;
 }

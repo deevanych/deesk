@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Issue;
+use App\IssueStatus;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class IssueController extends Controller
 {
@@ -40,6 +43,31 @@ class IssueController extends Controller
     public function store(Request $request)
     {
         //
+        $request->validate([
+            'title' => 'required|max:50|min:4',
+            'description' => 'max:10000000',
+        ]);
+
+        $organization = Auth::user()->organization;
+        $observers = $request->observer_ids;
+        $request = $request->except('author', 'observer_ids');
+
+        $issueStatus = $organization->issueStatuses()->where('type_id', '=', 2)->first();
+        if (!$issueStatus) {
+            $issueStatus = $organization->issueStatuses()->first();
+        }
+
+        $issue = new Issue($request);
+        $issue->author_id = Auth::user()->id;
+        $issue->issue_status_id = $issueStatus->id;
+        $issue->author_organization_id = $organization->id;
+        $issue->organization_id = ($organization->isClient() ? $organization->parent_id : $organization->id);
+
+        $issue->save();
+
+        $issue->observers()->attach($observers);
+
+        return array('status' => 'success', 'created' => true, 'message' => 'Заявка создана. <a href="'.$issue->link.'">Перейти к ней</a> или <a href="/issues/create">создать новую</a>?', 'issue' => $issue);
     }
 
     /**

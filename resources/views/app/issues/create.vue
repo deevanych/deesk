@@ -4,7 +4,7 @@
             <vue-headful
                 v-bind:title="issue.title"
             />
-            <div class="row mb-2">
+            <div class="row mb-5">
                 <div class="col">
                     <h1 class="font-weight-bolder mb-4 d-flex align-items-center">
                         <a class="back-link d-flex align-items-center" v-on:click="router.go(-1)">
@@ -37,9 +37,25 @@
                     </div>
                 </div>
             </div>
-            <div class="row mb-4">
+            <div class="row">
                 <div class="col">
-                    <textarea></textarea>
+                    <div class="form-group w-100">
+                        <summernote v-model="issue.description" v-bind="{placeholder: 'Введите текст заявки ..', name: 'text', required: true}"></summernote>
+                        <span>
+                            <span>Текст</span>
+                            <span class="text-warning"
+                                  v-if="!$v.issue.description.required">(обязательное поле)</span>
+                            <span class="text-warning" v-if="!$v.issue.description.minLength">(минимальная длина - {{$v.issue.description.$params.minLength.min}} знака)</span>
+                            <span class="text-warning" v-if="!$v.issue.description.maxLength">(максимальная длина - {{$v.issue.description.$params.maxLength.max}} знаков)</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="offset-8 col">
+                    <button type="submit" :disabled="disable" v-on:click.prevent="createIssue"
+                            class="button ml-auto p-3 px-4 rounded-pill shadow-sm blue text-center d-block">Создать заявку
+                    </button>
                 </div>
             </div>
         </div>
@@ -50,12 +66,6 @@
                     <h5>{{ issue.created_at }}</h5>
                 </div>
             </div>
-            <div class="row mb-4" v-if="issue.updated_at">
-                <div class="col">
-                    <h6 class="text-gray">Дата обновления</h6>
-                    <h5>{{ issue.updated_at }}</h5>
-                </div>
-            </div>
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Автор</h6>
@@ -64,35 +74,26 @@
             </div>
             <div class="row mb-4">
                 <div class="col">
-                    <h6 class="text-gray">Ответственный</h6>
-                    <user-info v-if="issue.employee" v-bind:users="issue.employee"></user-info>
-                    <h5 v-else>Не назначен</h5>
-                </div>
-            </div>
-            <div class="row mb-4">
-                <div class="col">
                     <h6 class="text-gray">Тип заявки</h6>
-                    <h5 v-if="issue.type">{{ issue.type.title }}</h5>
-                    <h5 v-else="issue.type">Не назначен</h5>
+                    <select2
+                        v-model="issue.issue_type_id"
+                        v-bind="{values: issueTypes, name: 'issue_type_id', nullable: true, nullTitle: 'Не назначен'}"></select2>
                 </div>
             </div>
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Приоритет заявки</h6>
-                    <h5 v-if="issue.priority">{{ issue.priority.title }}</h5>
-                    <h5 v-else="issue.priority">Не назначен</h5>
+                    <select2
+                        v-model="issue.issue_priority_id"
+                        v-bind="{values: issuePriorities, name: 'issue_priority_id', nullable: true, nullTitle: 'Не назначен'}"></select2>
                 </div>
             </div>
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Наблюдатели</h6>
-                    <div class="d-flex align-items-center" v-if="issue.observers">
-                        <user-info v-if="issue.observers.length > 0" v-bind:users="issue.observers"></user-info>
-                        <template v-else>
-                            <h5>Наблюдателей нет</h5>
-                        </template>
-                    </div>
-                    <h5 v-else>Наблюдателей нет</h5>
+                    <select2
+                        v-model="issue.observer_ids"
+                        v-bind="{values: employees, name: 'observer_ids[]', nullable: false, nullTitle: 'Не назначены', multiple: true, groups: true}"></select2>
                 </div>
             </div>
         </div>
@@ -107,8 +108,19 @@
         data: function () {
             return {
                 issue: {
-                    title: 'Новая заявка'
+                    title: 'Новая заявка',
+                    description: null,
+                    created_at: null,
+                    issue_type_id: null,
+                    issue_priority_id: null,
+                    registration_type_id: 1,
+                    author: JSON.parse(localStorage.getItem('userInfo')),
+                    observer_ids: [],
                 },
+                issueTypes: null,
+                issuePriorities: null,
+                employees: null,
+                disable: false,
                 router: this.$router,
                 statuses: null,
                 config: {
@@ -123,10 +135,35 @@
                     minLength: minLength(4),
                     maxLength: maxLength(100)
                 },
+                description: {
+                    required,
+                    minLength: minLength(10),
+                    maxLength: maxLength(10000000)
+                },
             },
         },
         mounted() {
             let self = this;
+            header.loading = false;
+            axios.get('/api/v1/issues/types')
+                .then(function (response) {
+                    header.loading = false;
+                    self.issueTypes = response.data;
+                });
+            axios.get('/api/v1/issues/priorities')
+                .then(function (response) {
+                    header.loading = false;
+                    self.issuePriorities = response.data;
+                });
+            axios.get('/api/v1/users')
+                .then(function (response) {
+                    header.loading = false;
+                    self.employees = response.data;
+                });
+            self.setCreatedTime();
+            setInterval(function () {
+                self.setCreatedTime();
+            }, 10000);
         },
         methods: {
             setDefaultTitle() {
@@ -135,6 +172,33 @@
                     self.issue.title = 'Новая заявка';
                 }
             },
+            setCreatedTime() {
+                let self = this;
+                self.issue.created_at = moment().format('DD.MM.YYYY / HH:mm');
+            },
+            createIssue() {
+                let self = this;
+                if (!self.$v.$invalid) {
+                    header.loading = true;
+                    self.disabled = true;
+                    axios.post('/api/v1/issues', self.issue)
+                        .then(function (response) {
+                            header.loading = false;
+                            self.disabled = false;
+                            toastr[response.data.status](response.data.message);
+                            if (response.data.created) {
+                                console.log(response);
+                            }
+                        })
+                        .catch(function () {
+                            header.loading = false;
+                            self.disabled = false;
+                            toastr['error']('Произошла ошибка');
+                        });
+                } else {
+                    toastr['error']('Неверно заполнены поля');
+                }
+            }
         },
         components: {
             UserInfo,

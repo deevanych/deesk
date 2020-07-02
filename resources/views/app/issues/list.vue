@@ -21,7 +21,7 @@
                 </li>
             </nav>
             <div class="inline-block ml-auto header-links">
-                <router-link :to="{name: 'home'}" class="button p-3 px-4 rounded-pill shadow-sm tonight">Создать заявку
+                <router-link :to="{name: 'issues.create'}" class="button p-3 px-4 rounded-pill shadow-sm tonight">Создать заявку
                 </router-link>
             </div>
         </div>

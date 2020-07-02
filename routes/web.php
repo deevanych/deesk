@@ -34,6 +34,7 @@ Route::domain('panel.deesk.ru')->group(function () {
     Route::view('/{path?}', 'app.index')
         ->where('path', '.*')
         ->name('app');
+    Route::resource('issues', 'IssueController', ['only' => ['show']]);
 });
 
 Route::domain('deesk.ru')->group(function () {

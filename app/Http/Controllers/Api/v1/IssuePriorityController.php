@@ -18,6 +18,10 @@ class IssuePriorityController extends Controller
     public function index()
     {
         //
+        $organization = Auth::user()->organization;
+        if ($organization->isClient()) {
+            return Auth::user()->organization->parent->issuePriorities;
+        }
         return Auth::user()->organization->issuePriorities;
     }
 

@@ -101,7 +101,7 @@
                                 <div class="d-flex flex-row">
                                     <select2
                                         v-model="issueRule.employee_id"
-                                        v-bind="{values: employees, name: 'employee_id', nullable: true, nullTitle: 'Любой'}"></select2>
+                                        v-bind="{values: employees, name: 'employee_id', nullable: true, nullTitle: 'Любой', groups: true}"></select2>
                                 </div>
                             </div>
                             <div class="form-group w-100 mb-2">
@@ -111,7 +111,7 @@
                                 <div class="d-flex flex-row">
                                     <select2
                                         v-model="issueRule.observer_ids"
-                                        v-bind="{values: employees, name: 'observers[]', nullable: false, nullTitle: 'Любой', multiple: true}"></select2>
+                                        v-bind="{values: employees, name: 'observers[]', nullable: false, nullTitle: 'Любой', multiple: true, groups: true}"></select2>
                                 </div>
                             </div>
                         </div>
@@ -189,7 +189,7 @@
                                 <div class="d-flex flex-row">
                                     <select2
                                         v-model="issueRule.employee_id"
-                                        v-bind="{values: employees, name: 'employee_id', nullable: true, nullTitle: 'Любой'}"></select2>
+                                        v-bind="{values: employees, name: 'employee_id', nullable: true, nullTitle: 'Любой', groups: true}"></select2>
                                 </div>
                             </div>
                             <div class="form-group w-100 mb-2">
@@ -199,7 +199,7 @@
                                 <div class="d-flex flex-row">
                                     <select2
                                         v-model="issueRule.observer_ids"
-                                        v-bind="{values: employees, name: 'observer_ids[]', nullable: false, nullTitle: 'Любой', multiple: true}"></select2>
+                                        v-bind="{values: employees, name: 'observer_ids[]', nullable: false, nullTitle: 'Любой', multiple: true, groups: true}"></select2>
                                 </div>
                             </div>
                         </div>
