@@ -71,6 +71,7 @@ class Organization extends Model
         return $this->hasOne('App\OrganizationProfile');
     }
 
+
 //    public function getImageAttribute()
 //    {
 //        return asset('/storage/clients/' . $this->id . '.jpg');

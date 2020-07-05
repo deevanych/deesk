@@ -86,20 +86,16 @@
 
 <script>
     export default {
+        props: ['issues'],
         data: function () {
             return {
-                issues: null,
                 issueStatuses: null,
             }
         },
         mounted() {
-            let self = this;
-            axios.get('/api/v1/issues')
-                .then(function (response) {
-                    self.issues = response.data;
-                    header.loading = false;
-                });
-            axios.get('/api/v1/issues/statuses')
+            let self = this,
+                url = (this.$route.params.id ? '/api/v1/issues/statuses?organization=' + this.$route.params.id : '/api/v1/issues/statuses');
+            axios.get(url)
                 .then(function (response) {
                     self.issueStatuses = response.data;
                 });

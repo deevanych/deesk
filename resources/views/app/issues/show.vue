@@ -27,20 +27,22 @@
                     <button class="button rounded-pill fave mr-auto p-4 shadow-sm" :class="{remove: issue.favorite}"
                             :disabled="disabled.favorite"
                             v-on:click="toggleFavorite(issue.id, issue.favorite)"></button>
-                    <template v-if="!issue.employee">
-                        <a href="/"
-                           class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
-                           v-on:click.prevent="acceptIssue">
-                            Принять
-                        </a>
-                    </template>
-                    <template v-else>
-                        <a href="/"
-                           class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
-                           v-if="issue.my"
-                           v-on:click.prevent="acceptIssue">
-                            Передать
-                        </a>
+                    <template v-if="$type('service')">
+                        <template v-if="!issue.employee">
+                            <a href="/"
+                               class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
+                               v-on:click.prevent="acceptIssue">
+                                Принять
+                            </a>
+                        </template>
+                        <template v-else>
+                            <a href="/"
+                               class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
+                               v-if="issue.my"
+                               v-on:click.prevent="acceptIssue">
+                                Передать
+                            </a>
+                        </template>
                     </template>
                     <button
                         class="ml-3 button p-3 px-4 rounded-pill shadow-sm tonight router-link-exact-active router-link-active dropdown-toggle"
@@ -214,7 +216,7 @@
                 self.disabled.accept = true;
                 header.loading = true;
                 axios.put('/api/v1/issues/' + this.$route.params.id, {
-                    employee_id: window.user.id,
+                    employee_id: this.$user.id,
                 })
                     .then(function (response) {
                         toastr[response.data.status](response.data.message);

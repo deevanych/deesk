@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Issue;
-use App\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -20,8 +18,7 @@ class IssueController extends Controller
     public function index(Request $request)
     {
         //
-        $organization = ($request->get('organization') ? Organization::findOrFail($request->get('organization')) : $request->user()->organization);
-        return $organization->issues;
+        return $request->user()->organization->issues;
     }
 
     /**

@@ -12,7 +12,7 @@
                data-toggle="tooltip"
                data-placement="top"
                data-original-title="Редактировать"
-               class="ml-3 button p-2 px-3 rounded-pill shadow-sm blue"
+               class="button p-2 px-3 rounded-pill shadow-sm blue"
                v-bind:class="issueStatus.color.title">
                 <span class="status white"
                       v-bind:class="issueStatus.icon.title">

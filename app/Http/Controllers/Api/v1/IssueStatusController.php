@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\IssueStatus;
+use App\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,8 @@ class IssueStatusController extends Controller
     public function index(Request $request)
     {
         //
-        return $request->user()->organization->issueStatuses;
+        $organization = ($request->get('organization') ? Organization::findOrFail($request->get('organization')) : Auth::user()->organization);
+        return $organization->issueStatuses;
     }
 
     /**

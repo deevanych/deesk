@@ -65,7 +65,12 @@ axios.interceptors.response.use(function (response) {
         router.push({name: 'login'});
     }
     if (error.response.status === 429) {
-        alert('Пизда');
+        alert('Слишком много запросов');
+        router.go(-1);
+    }
+    if (error.response.status === 403) {
+        alert('Нет доступа');
+        router.go(-1);
     }
 })
 

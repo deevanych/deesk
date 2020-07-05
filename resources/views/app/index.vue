@@ -3,7 +3,7 @@
         <vue-headful
             title="Главная"
         />
-        <issue-list/>
+        <issue-list v-bind:issues="issues"/>
         <client-list v-if="$type('service')"/>
     </div>
 </template>
@@ -15,11 +15,22 @@
     export default {
         path: '/',
         name: 'home',
+        data: function () {
+            return {
+                issues: null,
+            }
+        },
         components: {
             issueList: IssueList,
             clientList: ClientList
         },
         mounted() {
+            let self = this;
+            axios.get('/api/v1/issues')
+                .then(function (response) {
+                    self.issues = response.data;
+                    header.loading = false;
+                });
             header.loading = true;
         }
     }

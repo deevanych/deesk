@@ -19,7 +19,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.', 'middl
     Route::post('login', 'AuthController@login')->name('login');
     Route::get('logout', 'AuthController@logout')->name('logout');
     Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
-    Route::resource('organizations', 'OrganizationController', ['except' => ['create', 'edit']]);
+    Route::resource('organizations', 'OrganizationController', ['except' => ['create', 'edit']])->middleware('organization.check');
     Route::resource('issues/types', 'IssueTypeController', ['except' => ['create', 'edit']]);
     Route::resource('issues/priorities', 'IssuePriorityController', ['except' => ['create', 'edit']]);
     Route::resource('issues/rules', 'IssueRuleController', ['except' => ['create', 'edit']]);
@@ -28,7 +28,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.', 'middl
     Route::resource('issues/statuses/icons', 'IssueStatusIconController', ['except' => ['create', 'edit']]);
     Route::resource('issues/statuses/types', 'IssueStatusTypeController', ['except' => ['create', 'edit'], 'as' => 'statusTypes']);
     Route::resource('issues/statuses', 'IssueStatusController', ['except' => ['create', 'edit']]);
-    Route::resource('issues/{id}/comments', 'IssueCommentController', ['except' => ['create', 'edit']]);
-    Route::resource('issues', 'IssueController', ['except' => ['create', 'edit']]);
+    Route::resource('issues/{id}/comments', 'IssueCommentController', ['except' => ['create', 'edit']])->middleware('issue.check');
+    Route::resource('issues', 'IssueController', ['except' => ['create', 'edit']])->middleware('issue.check');
 });
 

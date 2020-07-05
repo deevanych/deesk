@@ -66,7 +66,7 @@
                 <div class="col-9">
                     <div class="row">
                         <div class="col">
-                            <issue-list/>
+                            <issue-list v-bind:issues="issues"/>
                         </div>
                     </div>
                 </div>
@@ -86,10 +86,16 @@
             return {
                 organization: null,
                 router: this.$router,
+                issues: null,
             }
         },
         mounted() {
             let self = this;
+            axios.get('/api/v1/issues?organization=' + this.$route.params.id)
+                .then(function (response) {
+                    self.issues = response.data;
+                    header.loading = false;
+                });
             axios.get('/api/v1/organizations/' + this.$route.params.id)
                 .then(function (response) {
                     self.organization = response.data;

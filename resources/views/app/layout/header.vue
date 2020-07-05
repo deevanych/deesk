@@ -28,13 +28,23 @@
                             </router-link>
                         </li>
                         <li class="ml-4">
-                            <router-link :to="{name: 'logout'}" class="button white p-3 px-4 rounded-pill shadow-sm">
+                            <button
+                                class="button white p-3 px-4 rounded-pill shadow-sm dropdown-toggle"
+                                data-toggle="dropdown"
+                                aria-haspopup="true"
+                                aria-expanded="false">
                                 {{ this.$user.title }}
-                            </router-link>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right">
+                                <router-link :to="{name: 'logout'}" class="dropdown-item">
+                                    <span>Выйти</span>
+                                </router-link>
+                            </div>
                         </li>
                     </template>
                     <template v-else>
-                        <PuSkeleton v-for="(observer, n) in 3" :key="n"  height="18px" width="60px" class="mx-4"></PuSkeleton>
+                        <PuSkeleton v-for="(observer, n) in 3" :key="n" height="18px" width="60px"
+                                    class="mx-4"></PuSkeleton>
                     </template>
                 </nav>
             </div>

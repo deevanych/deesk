@@ -399,8 +399,13 @@ table.table td:nth-last-child(1) {
     width: 1rem;
     height: 1.5rem;
     background-repeat: no-repeat;
+    background-size: contain;
     border: none;
     margin-left: 1rem;
+}
+
+.dropdown-toggle[aria-expanded="true"]::after {
+    background-image: url('../images/icons/dropdown-up.svg');
 }
 
 .dropdown-toggle[data-color=white]::after {
