@@ -2,7 +2,9 @@
 # activate maintenance mode
 php7.3 artisan down
 # update source code
-git pull
+git fetch --all
+git reset --hard origin/master
+git pull origin master
 # update PHP dependencies
 composer-php7.3 install --no-interaction --no-dev --prefer-dist
 composer-php7.3 update
