@@ -114,7 +114,7 @@
                     issue_type_id: null,
                     issue_priority_id: null,
                     registration_type_id: 1,
-                    author: JSON.parse(localStorage.getItem('userInfo')),
+                    author: this.$user,
                     observer_ids: [],
                 },
                 issueTypes: null,
@@ -187,7 +187,7 @@
                             self.disabled = false;
                             toastr[response.data.status](response.data.message);
                             if (response.data.created) {
-                                console.log(response);
+                                self.router.push({ name: 'issues.show', params: { id: response.data.issue.id } });
                             }
                         })
                         .catch(function () {

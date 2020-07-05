@@ -26,6 +26,8 @@
 </template>
 
 <script>
+    import Vue from "vue";
+
     export default {
         path: '/login',
         name: 'login',
@@ -46,16 +48,17 @@
             auth() {
                 this.disabled = true;
                 let self = this;
+                header.loading = true;
                 axios.post('/oauth/token', this.data)
                     .then(function (response) {
                         if (!response.data.error) {
+                            header.loading = false;
                             let token = response.data.token_type + ' ' + response.data.access_token;
                             axios.defaults.headers.common['Authorization'] = token;
-                            localStorage.setItem('_token', token);
                             axios.get('/api/v1/users/my').then(function (response) {
-                                localStorage.setItem('user_id', response.data.id);
-                                localStorage.setItem('userInfo', JSON.stringify(response.data));
+                                Vue.prototype.$user = response.data;
                             });
+                            localStorage.setItem('_token', token);
                             self.$router.push({name: 'home'});
                         }
                     });

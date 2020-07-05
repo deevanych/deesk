@@ -214,7 +214,7 @@
                 self.disabled.accept = true;
                 header.loading = true;
                 axios.put('/api/v1/issues/' + this.$route.params.id, {
-                    employee_id: userId,
+                    employee_id: window.user.id,
                 })
                     .then(function (response) {
                         toastr[response.data.status](response.data.message);

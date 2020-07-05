@@ -92,7 +92,6 @@
             let self = this;
             axios.get('/api/v1/organizations/' + this.$route.params.id)
                 .then(function (response) {
-                    console.log(response);
                     self.organization = response.data;
                     header.loading = false;
                 });

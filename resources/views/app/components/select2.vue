@@ -13,6 +13,7 @@
 </template>
 
 <script>
+
     export default {
         props: ['value', 'name', 'values', 'nullable', 'nullTitle', 'multiple', 'groups'],
         data: function () {

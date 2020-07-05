@@ -13,22 +13,29 @@
                     <form class="mr-4 mb-0" id="search">
                         <input type="text" class="p-2 px-3 rounded-pill shadow-sm" placeholder="поиск .."/>
                     </form>
-                    <li class="mx-4"><a href="#">Заявки</a></li>
-                    <li class="mx-4">
-                        <router-link :to="{name: 'clients'}">
-                            Клиенты
-                        </router-link>
-                    </li>
-                    <li class="mx-4">
-                        <router-link :to="{name: 'settings'}">
-                            Настройки
-                        </router-link>
-                    </li>
-                    <li class="ml-4">
-                        <router-link :to="{name: 'logout'}" class="button white p-3 px-4 rounded-pill shadow-sm">
-                            Личный кабинет
-                        </router-link>
-                    </li>
+                    <template v-if="this.$user">
+                        <li class="mx-4" v-if="$can('issue.view')">
+                            <a href="#">Заявки</a>
+                        </li>
+                        <li class="mx-4" v-if="$can('client.view')">
+                            <router-link :to="{name: 'clients'}">
+                                Клиенты
+                            </router-link>
+                        </li>
+                        <li class="mx-4" v-if="$can('settings.view')">
+                            <router-link :to="{name: 'settings'}">
+                                Настройки
+                            </router-link>
+                        </li>
+                        <li class="ml-4">
+                            <router-link :to="{name: 'logout'}" class="button white p-3 px-4 rounded-pill shadow-sm">
+                                {{ this.$user.title }}
+                            </router-link>
+                        </li>
+                    </template>
+                    <template v-else>
+                        <PuSkeleton v-for="(observer, n) in 3" :key="n"  height="18px" width="60px" class="mx-4"></PuSkeleton>
+                    </template>
                 </nav>
             </div>
         </header>
@@ -39,7 +46,7 @@
     export default {
         data: function () {
             return {
-                loading: true,
+                loading: false,
             }
         },
         mounted() {

@@ -4,7 +4,7 @@
             title="Главная"
         />
         <issue-list/>
-        <client-list/>
+        <client-list v-if="$type('service')"/>
     </div>
 </template>
 
@@ -19,5 +19,8 @@
             issueList: IssueList,
             clientList: ClientList
         },
+        mounted() {
+            header.loading = true;
+        }
     }
 </script>

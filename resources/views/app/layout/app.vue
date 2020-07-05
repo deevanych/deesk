@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="this.$user">
         <header-app></header-app>
         <router-view></router-view>
     </div>
@@ -7,6 +7,10 @@
 
 <script>
     export default {
-
+        data: function () {
+            return {
+                user: null,
+            }
+        },
     }
 </script>

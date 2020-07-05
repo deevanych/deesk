@@ -4,8 +4,6 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Issue;
-use App\IssueStatus;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -67,7 +65,7 @@ class IssueController extends Controller
 
         $issue->observers()->attach($observers);
 
-        return array('status' => 'success', 'created' => true, 'message' => 'Заявка создана. <a href="'.$issue->link.'">Перейти к ней</a> или <a href="/issues/create">создать новую</a>?', 'issue' => $issue);
+        return array('status' => 'success', 'created' => true, 'message' => 'Заявка создана', 'issue' => $issue);
     }
 
     /**

@@ -4,12 +4,15 @@ namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Hash;
+use Kodeine\Acl\Traits\HasRole;
 use Laravel\Passport\HasApiTokens;
 
+/**
+ * @property mixed role
+ */
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, HasRole;
 
     /**
      * The attributes that are mass assignable.
@@ -17,7 +20,9 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name',
+        'email',
+        'password',
     ];
 
     /**
@@ -26,7 +31,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'organization_id'
+        'password',
+        'remember_token',
+        'organization_id',
+        'roles',
+        'email_verified_at',
     ];
 
     /**
@@ -38,7 +47,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    protected $with = ['organization'];
+    protected $with = [
+        'organization'
+    ];
+
+    protected $appends = [
+        'permissions',
+        'role',
+    ];
+
 
     public function organization()
     {
@@ -48,5 +65,16 @@ class User extends Authenticatable
     public function favoriteIssues()
     {
         return $this->belongsToMany('App\Issue', 'favorite_issues', 'user_id', 'issue_id');
+    }
+
+    public function getRoleAttribute()
+    {
+        return $this->roles->first();
+    }
+
+    public function getPermissionsAttribute()
+    {
+        $role = $this->roles->first();
+        return ($role ? $role->getPermissions() : null);
     }
 }

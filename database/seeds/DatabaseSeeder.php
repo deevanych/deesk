@@ -25,6 +25,9 @@ class DatabaseSeeder extends Seeder
             IssueCommentSeeder::class,
             OauthClientSeeder::class,
             OrganizationProfileSeeder::class,
+            RoleSeeder::class,
+            PermissionSeeder::class,
+            UserRoleSeeder::class,
         ]);
     }
 }

@@ -10,11 +10,9 @@ import Vuelidate from 'vuelidate';
 import jquery from 'jquery';
 import lottie from 'lottie-web';
 import '../js/common';
-
 // components
 import Summernote from '../views/app/components/summernote';
 import SelectComponent from '../views/app/components/select2';
-
 //app
 import App from '../views/app/layout/app';
 // home
@@ -32,6 +30,12 @@ import Settings from '../views/app/settings/index';
 import Clients from '../views/app/clients/index';
 // organizations
 import Organizations from '../views/app/organizations/show';
+//scripts
+import Permissions from '../js/scripts/permissions';
+// middlewares
+import service_admin from "./middleware/service.admin";
+
+Vue.mixin(Permissions);
 
 window.$ = window.jQuery = jquery;
 lottie.setQuality('low');
@@ -46,19 +50,22 @@ window.toastr = require('toastr');
 window.lottie = lottie;
 window.moment = require('moment');
 window.header = {};
+window.select2 = Select2;
 
 Vue.config.productionTip = false;
 
 if (localStorage.getItem('_token')) {
     axios.defaults.headers.common['Authorization'] = localStorage.getItem('_token');
-    window.userId = localStorage.getItem('user_id');
 }
 
 axios.interceptors.response.use(function (response) {
-    return response
+    return response;
 }, function (error) {
     if (error.response.status === 401 && router.currentRoute.name !== 'login') {
         router.push({name: 'login'});
+    }
+    if (error.response.status === 429) {
+        alert('Пизда');
     }
 })
 
@@ -128,7 +135,7 @@ const routes = [
             },
             {
                 path: '/issues/:id',
-                name: 'issues',
+                name: 'issues.show',
                 components: {
                     default: IssueShow,
                 },
@@ -215,6 +222,11 @@ const routes = [
                         components: {
                             default: () => import('../views/app/settings/issues/types'),
                         },
+                        meta: {
+                            middleware: [
+                                service_admin
+                            ]
+                        },
                     },
                     {
                         path: '/settings/priorities',
@@ -264,10 +276,6 @@ const routes = [
     }
 ];
 
-function isAuthenticated() {
-    return false;
-}
-
 const messages = {
     ru: {
         message: {
@@ -285,11 +293,28 @@ const i18n = new VueI18n({
 const router = new VueRouter({routes, mode: 'history'});
 
 router.beforeEach((to, from, next) => {
-    window.header.loading = true;
-    next();
+    if (to.name === 'login') {
+        next();
+    }
+    if (Vue.prototype.$user === undefined || from.name === 'login') {
+        axios.get('/api/v1/users/my').then(function (response) {
+            Vue.prototype.$user = response.data;
+            if (to.meta.middleware) {
+                to.meta.middleware[0](next);
+            }
+            window.header.loading = true;
+            next();
+        });
+    } else {
+        if (to.meta.middleware) {
+            to.meta.middleware[0](next);
+        }
+        window.header.loading = true;
+        next();
+    }
 });
 
 const app = new Vue({
     router,
-    i18n
+    i18n,
 }).$mount('#app');

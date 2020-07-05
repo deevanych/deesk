@@ -44,7 +44,7 @@
                     <tr class="shadow-sm" v-for="issue in issues">
                         <td class="text-center">{{ issue.id }}</td>
                         <td>
-                            <router-link :to="{ name: 'issues', params: { id: issue.id } }">
+                            <router-link :to="{ name: 'issues.show', params: { id: issue.id } }">
                                 {{ issue.title }}
                             </router-link>
                             <br/>
