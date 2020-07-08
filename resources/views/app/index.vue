@@ -3,7 +3,7 @@
         <vue-headful
             title="Главная"
         />
-        <issue-list v-bind:issues="issues"/>
+        <issue-list v-bind:url="'/api/v1/issues'"/>
         <client-list v-if="$type('service')"/>
     </div>
 </template>
@@ -25,12 +25,6 @@
             clientList: ClientList
         },
         mounted() {
-            let self = this;
-            axios.get('/api/v1/issues')
-                .then(function (response) {
-                    self.issues = response.data;
-                    header.loading = false;
-                });
             header.loading = true;
         }
     }

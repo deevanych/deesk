@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Issue;
 use App\Organization;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
@@ -19,9 +20,48 @@ class IssueController extends Controller
      */
     public function index(Request $request)
     {
-        //
-        $organization = ($request->get('organization') ? Organization::findOrFail($request->get('organization')) : $request->user()->organization);
-        return $organization->issues;
+        $organization = Auth::user()->organization;
+        if ($organization->isClient()) {
+            $type = 'author_organization_id';
+        } else {
+            $type = 'organization_id';
+            if ($request->get('organization')) {
+                $type = 'author_organization_id';
+                $organization = Organization::findOrFail($request->get('organization'));
+            }
+        }
+        $columns = ['id', 'title', null, null, 'created_at'];
+        $search = $request->get('search')['value'];
+        $issues = Issue::where($type, $organization->id);
+        if ($request->get('status')) {
+            $issues = $issues->where('issue_status_id', '=', $request->get('status'));
+        }
+        if ($request->get('employee')) {
+            $employeeId = ($request->get('employee') === 'my' ? Auth::user()->id : $request->get('employee'));
+            $issues = $issues->where('employee_id', '=', $employeeId);
+        }
+        $issues = $issues->where(function ($query) use ($search) {
+            $query->where('title', 'LIKE', '%' . $search . '%')
+                ->OrWhereHas('author', function (Builder $query) use ($search) {
+                    $query->where('title', 'LIKE', '%' . $search . '%');
+                })->OrWhereHas('employee', function (Builder $query) use ($search) {
+                    $query->where('title', 'LIKE', '%' . $search . '%');
+                })->OrWhereHas('status', function (Builder $query) use ($search) {
+                    $query->where('title', 'LIKE', '%' . $search . '%');
+                })->OrWhereHas('author', function (Builder $query) use ($search) {
+                    $query->whereHas('organization', function (Builder $query) use ($search) {
+                        $query->where('title', 'LIKE', '%' . $search . '%');
+                    });
+                });
+        });
+        foreach ($request->get('order') as $order) {
+            $issues = $issues->orderBy($columns[$order['column']], $order['dir']);
+        }
+        $issues = $issues->get();
+        $filteredCount = count($issues);
+        $issues = $issues->slice($request->get('start'), $request->get('length'))->values();
+        $issuesCount = $organization->issues->count();
+        return array('data' => $issues, 'recordsTotal' => $issuesCount, 'recordsFiltered' => $filteredCount, 'draw' => $request->get('draw'));
     }
 
     /**
@@ -29,7 +69,8 @@ class IssueController extends Controller
      *
      * @return Response
      */
-    public function create()
+    public
+    function create()
     {
         //
     }
@@ -40,7 +81,8 @@ class IssueController extends Controller
      * @param Request $request
      * @return Response
      */
-    public function store(Request $request)
+    public
+    function store(Request $request)
     {
         //
         $request->validate([
@@ -76,7 +118,8 @@ class IssueController extends Controller
      * @param Issue $issue
      * @return Issue
      */
-    public function show(Issue $issue)
+    public
+    function show(Issue $issue)
     {
         //
         return $issue->load('type', 'priority', 'observers')->append('favorite');
@@ -88,7 +131,8 @@ class IssueController extends Controller
      * @param Issue $issue
      * @return Response
      */
-    public function edit(Issue $issue)
+    public
+    function edit(Issue $issue)
     {
         //
     }
@@ -100,7 +144,8 @@ class IssueController extends Controller
      * @param Issue $issue
      * @return Issue
      */
-    public function update(Request $request, Issue $issue)
+    public
+    function update(Request $request, Issue $issue)
     {
         //
         $issue->update($request->all());
@@ -113,7 +158,8 @@ class IssueController extends Controller
      * @param Issue $issue
      * @return Response
      */
-    public function destroy(Issue $issue)
+    public
+    function destroy(Issue $issue)
     {
         //
     }

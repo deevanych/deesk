@@ -58,6 +58,15 @@ nav li {
     outline: none;
 }
 
+input:not([type=submit]).button {
+    line-height: 34px;
+    font-weight: normal;
+}
+
+input:not([type=submit]).button:hover {
+    color: inherit;
+}
+
 .button:hover {
     color: #fff;
 }
@@ -720,4 +729,28 @@ a[target=_blank] {
 
 .toast-message a, .toast-message label {
     color: #2e08ff;
+}
+
+th.sorting {
+    cursor: pointer;
+    background-image: url(/images/icons/sort.svg);
+    background-repeat: no-repeat;
+    background-position: center right 10px;
+    background-size: 10px;
+}
+
+th.sorting_asc {
+    cursor: pointer;
+    background-image: url(/images/icons/sort-asc.svg);
+    background-repeat: no-repeat;
+    background-position: center right 10px;
+    background-size: 10px;
+}
+
+th.sorting_desc {
+    cursor: pointer;
+    background-image: url(/images/icons/sort-desc.svg);
+    background-repeat: no-repeat;
+    background-position: center right 10px;
+    background-size: 10px;
 }

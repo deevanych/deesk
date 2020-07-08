@@ -43,6 +43,7 @@ lottie.setQuality('low');
 require('summernote');
 require('bootstrap');
 require('lodash');
+require('datatables.net-bs4');
 
 window.axios = require('axios');
 window.Vue = require('vue');
@@ -318,6 +319,9 @@ router.beforeEach((to, from, next) => {
         next();
     }
 });
+
+
+Vue.prototype.$globalRouter = router;
 
 const app = new Vue({
     router,

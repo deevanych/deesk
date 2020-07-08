@@ -2,7 +2,6 @@
 
 namespace App;
 
-use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -51,6 +50,11 @@ class IssueStatus extends Model
     public function getIssuesCountAttribute()
     {
         $issues = Issue::where('issue_status_id', $this->id);
+        $organization = Auth::user()->organization;
+        if ($organization->isClient()) {
+            $issues = $issues->where('author_organization_id', $organization->id);
+            return $issues->count();
+        }
         if (isset($_GET['organization'])) {
             $issues = $issues->where('author_organization_id', $_GET['organization']);
         }

@@ -21,6 +21,8 @@
     },
     "dependencies": {
         "bootstrap": "^4.4.1",
+        "datatables.net": "^1.10.21",
+        "datatables.net-bs4": "^1.10.21",
         "jquery": "^3.5.0",
         "lottie-web": "^5.6.8",
         "moment": "^2.27.0",

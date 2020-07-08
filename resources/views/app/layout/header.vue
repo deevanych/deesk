@@ -11,7 +11,7 @@
                 </div>
                 <nav class="col-9 d-flex align-items-center justify-content-end">
                     <form class="mr-4 mb-0" id="search">
-                        <input type="text" class="p-2 px-3 rounded-pill shadow-sm" placeholder="поиск .."/>
+                        <input type="text" class="p-2 px-4 rounded-pill shadow-sm button" placeholder="поиск .."/>
                     </form>
                     <template v-if="this.$user">
                         <li class="mx-4" v-if="$can('issue.view')">
