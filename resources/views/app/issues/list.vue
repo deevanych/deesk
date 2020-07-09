@@ -1,33 +1,42 @@
 <template>
     <div class="row mb-5">
-        <div class="col block-header d-flex align-items-center">
-            <h3 class="font-weight-bold d-inline-block mb-0">Заявки</h3>
-            <nav class="d-flex filter ml-4" v-if="issueStatuses">
-                <li class="mx-3" v-if="$type('service')">
-                    <a href="#" @click.prevent="changeData" data-href="?employee=my">Мои</a>
-                </li>
-                <li class="mx-3">
-                    <a href="#" @click.prevent="changeData" class="active">Все</a>
-                    <span class="badge count ml-2" v-if="issuesCount">{{ issuesCount }}</span>
-                </li>
-                <li class="mx-3" v-for="status in issueStatuses">
-                    <a href="#" @click.prevent="changeData" :data-href="'?status='+status.id">{{ status.title }}</a>
-                    <span class="badge count ml-2" v-if="status.issuesCount">{{ status.issuesCount }}</span>
-                </li>
-            </nav>
-            <nav class="d-flex filter ml-4" v-else>
-                <li class="mx-3 d-flex align-items-center" v-for="n in 4">
-                    <PuSkeleton width="4rem" height="1rem"></PuSkeleton>
-                    <PuSkeleton width="1.2rem" height="1.2rem" class="ml-1"></PuSkeleton>
-                </li>
-            </nav>
-            <div class="inline-block ml-auto header-links">
-                <router-link :to="{name: 'issues.create'}" class="button p-3 px-4 rounded-pill shadow-sm tonight">
-                    Создать заявку
-                </router-link>
+        <div class="col-12 block-header">
+            <div class="row align-items-center">
+                <h3 class="font-weight-bold col flex-grow-0 mb-0 mr-2">Заявки</h3>
+                <perfect v-bind:settings="{suppressScrollY: true}"
+                         class="col filter position-relative overflow-hidden" v-if="issueStatuses">
+                    <nav class="d-flex">
+                        <li class="mx-3 d-inline-flex align-items-baseline" v-if="$type('service')">
+                            <a href="#" @click.prevent="changeData" data-param="employee" data-value="my">Мои</a>
+                        </li>
+                        <li class="mx-3 d-inline-flex align-items-baseline">
+                            <a href="#" @click.prevent="changeData" class="active">Все</a>
+                            <span class="badge count ml-2" v-if="issuesCount">{{ issuesCount }}</span>
+                        </li>
+                        <li class="mx-3 d-inline-flex flex-shrink-0 align-items-baseline"
+                            v-for="status in issueStatuses">
+                            <a href="#" @click.prevent="changeData" data-param="status" :data-value="status.id">{{
+                                status.title
+                                }}</a>
+                            <span class="badge count ml-2" v-if="status.issuesCount">{{ status.issuesCount }}</span>
+                        </li>
+                    </nav>
+                </perfect>
+                <nav class="d-flex filter ml-4 col" v-else>
+                    <li class="mx-3 d-flex align-items-center" v-for="n in 4">
+                        <PuSkeleton width="4rem" height="1rem"></PuSkeleton>
+                        <PuSkeleton width="1.2rem" height="1.2rem" class="ml-1"></PuSkeleton>
+                    </li>
+                </nav>
+                <div class="col-3 flex-grow-0 header-links d-flex justify-content-end">
+                    <router-link :to="{name: 'issues.create'}"
+                                 class="button flex-shrink-0 p-3 px-4 rounded-pill shadow-sm tonight">
+                        Создать заявку
+                    </router-link>
+                </div>
             </div>
         </div>
-        <div class="col-12 block-content">
+        <div class="col block-content">
             <div class="row">
                 <div class="col-3 d-flex align-items-center">
                     <span class="flex-shrink-0 mr-3">Показывать по:</span>
@@ -36,7 +45,7 @@
                         v-bind="{values: pageMenu, name: 'page_count', nullable: false, nullTitle: 'Любой'}"
                         v-on:input="changePageLength"></select2>
                 </div>
-                <div class="col-3 ml-auto text-right">
+                <div class="col-4 ml-auto text-right">
                     <input type="text" v-model="q" placeholder="поиск .." @keyup="search(q)"
                            class="p-2 px-4 rounded-pill shadow-sm button" name="search[value]">
                 </div>
@@ -219,10 +228,13 @@
             },
             changeData(event) {
                 let self = this,
-                    link = (event.target.dataset.href ? event.target.dataset.href : '');
+                    url = new URL(window.location.origin + self.url);
                 $('.filter a').removeClass('active');
                 $(event.target).addClass('active');
-                self.table.ajax.url(self.url + link);
+                if (event.target.dataset.param && event.target.dataset.value) {
+                    url.searchParams.append(event.target.dataset.param, event.target.dataset.value);
+                }
+                self.table.ajax.url(url);
                 self.table.ajax.reload();
             },
         }

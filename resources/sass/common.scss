@@ -300,7 +300,12 @@ table.table td:nth-child(1) {
 }
 
 table.table td:nth-child(1), table.table th:nth-child(1) {
-    width: 4rem;
+    padding-left: 0;
+    min-width: 3rem;
+}
+
+table.table td:nth-last-child(1), table.table th:nth-last-child(1) {
+    padding-right: 0;
 }
 
 table.table td:nth-last-child(1) {
@@ -753,4 +758,12 @@ th.sorting_desc {
     background-repeat: no-repeat;
     background-position: center right 10px;
     background-size: 10px;
+}
+
+.ps__rail-x {
+    height: 9px !important;
+}
+
+.ps__rail-x:hover > .ps__thumb-x {
+    height: 5px !important;
 }

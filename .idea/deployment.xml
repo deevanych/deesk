@@ -2,7 +2,7 @@
 <project version="4">
   <component name="PublishConfigData" serverName="deesk">
     <serverData>
-      <paths name="deesk">
+      <paths name="deesk (project level)">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />
