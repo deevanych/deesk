@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * @property mixed author
- * @property  issue_id
+ * @property int issue_id
  * @method static create($all)
  * @method belongsTo(string $string)
  * @method hasOne(string $string, string $string1, string $string2)
@@ -18,9 +18,6 @@ class IssueComment extends Model
     //
     protected $with = ['author'];
     protected $hidden = ['author_id'];
-    protected $casts = [
-        'created_at' => 'datetime:d.m.Y / H:i',
-    ];
     protected $guarded = [];
     protected $appends = ['self'];
 

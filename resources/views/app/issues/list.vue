@@ -50,7 +50,7 @@
                            class="p-2 px-4 rounded-pill shadow-sm button" name="search[value]">
                 </div>
             </div>
-            <table class="table">
+            <table class="table dataTable">
                 <thead>
                 <tr>
                     <th class="text-center">#</th>
@@ -192,7 +192,12 @@
                         },
                         'orderable': false,
                     },
-                    {"data": "created_at"},
+                    {
+                        "data": "created_at",
+                        'render': function (data, type, issue) {
+                            return Vue.options.methods.getFormattedTime(data);
+                        },
+                    },
                     {
                         "data": "status.title",
                         'render': function (data, type, issue) {

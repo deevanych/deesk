@@ -35,10 +35,6 @@ class Issue extends Model
         'issue_type_id',
         'issue_priority_id',
     ];
-    protected $casts = [
-        'created_at' => 'datetime:d.m.Y / H:i',
-        'updated_at' => 'datetime:d.m.Y / H:i',
-    ];
     protected $appends = [
         'link',
         'my',

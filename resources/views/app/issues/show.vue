@@ -76,13 +76,13 @@
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Дата создания</h6>
-                    <h5>{{ issue.created_at }}</h5>
+                    <h5>{{ getFormattedTime(issue.created_at) }}</h5>
                 </div>
             </div>
             <div class="row mb-4" v-if="issue.updated_at">
                 <div class="col">
                     <h6 class="text-gray">Дата обновления</h6>
-                    <h5>{{ issue.updated_at }}</h5>
+                    <h5>{{ getFormattedTime(issue.updated_at) }}</h5>
                 </div>
             </div>
             <div class="row mb-4">

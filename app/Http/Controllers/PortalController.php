@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\IssueFile;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,7 +17,9 @@ class PortalController extends Controller
     public function index()
     {
         //
-        return Auth::user()->id;
+        return CarbonTimeZone::create();
+        return Carbon::now();
+        return date(time());
     }
 
     /**

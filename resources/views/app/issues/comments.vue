@@ -14,7 +14,7 @@
                             <span class="comment-author font-weight-bolder">{{ comment.author.title }}</span>
                             <span class="comment-text" v-html="comment.text"></span>
                         </div>
-                        <span class="comment-date flex-shrink-0">{{ comment.created_at }}</span>
+                        <span class="comment-date flex-shrink-0">{{ getFormattedTime(comment.created_at) }}</span>
                     </div>
                 </perfect>
                 <div class="comments" v-else>
@@ -99,7 +99,7 @@
                         self.disable = false;
                         toastr['error']('Произошла ошибка');
                     });
-            }
+            },
         }
     }
 </script>

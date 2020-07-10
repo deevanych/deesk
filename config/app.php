@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'timezone' => 'Europe/Moscow',
+    'timezone' => date_default_timezone_get(),
 
     /*
     |--------------------------------------------------------------------------
