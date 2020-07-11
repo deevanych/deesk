@@ -61,7 +61,7 @@ class UserController extends Controller
     public function show(Request $request)
     {
         //
-        return ($request->user === 'my') ? Auth::user() : User::findOrFail($request->user);
+        return ($request->user === 'my') ? Auth::user()->load('profile') : User::findOrFail($request->user)->load('profile');
     }
 
     /**

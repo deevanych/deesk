@@ -8,6 +8,10 @@ html {
     font-size: 14px;
 }
 
+:focus {
+    outline: none;
+}
+
 div#loading-bar {
     height: 4px;
     background-color: #EB5757;
@@ -708,11 +712,11 @@ input[type=radio]:checked + label.radio-button::before {
     color: #fff;
 }
 
-a[target=_blank] {
-    padding-left: 30px;
+a[target=_blank], .icon {
+    padding-left: 1.5rem;
     background-image: url(/images/icons/external-link.svg);
-    background-size: 20px;
-    background-position: left;
+    background-size: 1rem;
+    background-position: left .4rem;
     background-repeat: no-repeat;
     text-decoration: underline;
 }
@@ -767,3 +771,37 @@ th.sorting_desc {
 .ps__rail-x:hover > .ps__thumb-x {
     height: 5px !important;
 }
+
+#toast-container > div {
+    padding: 15px 30px 15px 50px;
+}
+
+.icon.telegram {
+    background-image: url(/images/icons/telegram.svg) !important;
+}
+
+.icon.instagram {
+    background-image: url(/images/icons/instagram.svg) !important;
+}
+
+.icon.facebook {
+    background-image: url(/images/icons/facebook.svg) !important;
+}
+
+.icon.vk {
+    background-image: url(/images/icons/vk.svg) !important;
+}
+
+.icon.email {
+    background-image: url(/images/icons/email.svg) !important;
+}
+
+.icon.phone {
+    background-image: url(/images/icons/phone.svg) !important;
+}
+
+.user-status {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+

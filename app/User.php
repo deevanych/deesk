@@ -62,6 +62,10 @@ class User extends Authenticatable
         return $this->belongsTo('App\Organization');
     }
 
+    public function profile() {
+        return $this->hasOne('App\UserProfile');
+    }
+
     public function favoriteIssues()
     {
         return $this->belongsToMany('App\Issue', 'favorite_issues', 'user_id', 'issue_id');

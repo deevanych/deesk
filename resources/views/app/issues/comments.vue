@@ -8,8 +8,9 @@
                 <perfect class="comments" v-if="comments.length">
                     <div class="comment d-flex align-items-end" v-for="comment in comments"
                          v-bind:class="{ self: comment.self}">
-                        <div class="user-avatar flex-shrink-0"
-                             style="background-image: url(https://deesk.ru/storage/clients/2.jpg);"></div>
+                        <div v-if="comment.author.profile && comment.author.profile.avatar" class="user-avatar flex-shrink-0"
+                             style=""></div>
+                        <div v-else class="user-avatar flex-shrink-0" style="background-image: url(/images/site/avatar_default.gif)"></div>
                         <div class="comment-body d-flex flex-column px-4 py-3">
                             <span class="comment-author font-weight-bolder">{{ comment.author.title }}</span>
                             <span class="comment-text" v-html="comment.text"></span>

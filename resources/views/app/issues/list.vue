@@ -75,7 +75,7 @@
 
 <script>
     export default {
-        props: ['url'],
+        props: ['url', 'type'],
         data: function () {
             return {
                 issueStatuses: null,
@@ -95,7 +95,7 @@
         },
         mounted() {
             let self = this,
-                url = (this.$route.params.id ? '/api/v1/issues/statuses?organization=' + this.$route.params.id : '/api/v1/issues/statuses');
+                url = (this.$route.params.id ? '/api/v1/issues/statuses?' + self.type + '=' + this.$route.params.id : '/api/v1/issues/statuses');
             self.pageCount = 10;
             axios.get(url)
                 .then(function (response) {
@@ -161,10 +161,10 @@
                         "data": "author.title",
                         'render': function (data, type, issue) {
                             return '<a href="' + self.$router.resolve({
-                                name: 'users',
+                                name: 'users.show',
                                 params: {id: issue.author.id}
                             }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                                name: 'users',
+                                name: 'users.show',
                                 params: {id: issue.author.id}
                             }).href + '\'); return false;">' + issue.author.title + '</a> / <a href="' + self.$router.resolve({
                                 name: 'organizations.show',
@@ -183,10 +183,10 @@
                                 return 'Не назначен';
                             }
                             return '<a href="' + self.$router.resolve({
-                                name: 'users',
+                                name: 'users.show',
                                 params: {id: issue.employee.id}
                             }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                                name: 'organizations.show',
+                                name: 'users.show',
                                 params: {id: issue.employee.id}
                             }).href + '\'); return false;">' + issue.employee.title + '</a>';
                         },

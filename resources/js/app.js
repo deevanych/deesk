@@ -29,13 +29,15 @@ import Settings from '../views/app/settings/index';
 // clients
 import Clients from '../views/app/clients/index';
 // organizations
-import Organizations from '../views/app/organizations/show';
+import OrganizationShow from '../views/app/organizations/show';
+// users
+import UserShow from '../views/app/users/show';
 //scripts
-import Permissions from '../js/scripts/permissions';
-// middlewares
+import Common from '../js/scripts/common';
+// middleware
 import service_admin from "./middleware/service.admin";
 
-Vue.mixin(Permissions);
+Vue.mixin(Common);
 
 window.$ = window.jQuery = jquery;
 lottie.setQuality('low');
@@ -148,16 +150,16 @@ const routes = [
             },
             {
                 path: '/users/:id',
-                name: 'users',
+                name: 'users.show',
                 components: {
-                    default: Home,
+                    default: UserShow,
                 },
             },
             {
                 path: '/organizations/:id',
                 name: 'organizations.show',
                 components: {
-                    default: Organizations,
+                    default: OrganizationShow,
                 },
                 // redirect: {
                 //     name: 'organizations.activity'

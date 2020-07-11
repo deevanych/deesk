@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Issue;
 use App\Organization;
+use App\User;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -32,7 +33,17 @@ class IssueController extends Controller
         }
         $columns = ['id', 'title', null, null, 'created_at'];
         $search = $request->get('search')['value'];
-        $issues = Issue::where($type, $organization->id);
+        if ($request->get('user')) {
+            $type = 'author_id';
+            $organization = User::findOrFail($request->get('user'))->organization;
+            if (!$organization->isClient()) {
+                $type = 'employee_id';
+            }
+            $issues = Issue::where($type, $request->get('user'));
+        } else {
+            $issues = Issue::where($type, $organization->id);
+        }
+        $issuesCount = $issues->count();
         if ($request->get('status')) {
             $issues = $issues->where('issue_status_id', '=', $request->get('status'));
         }
@@ -60,7 +71,6 @@ class IssueController extends Controller
         $issues = $issues->get();
         $filteredCount = count($issues);
         $issues = $issues->slice($request->get('start'), $request->get('length'))->values();
-        $issuesCount = $organization->issues->count();
         return array('data' => $issues, 'recordsTotal' => $issuesCount, 'recordsFiltered' => $filteredCount, 'draw' => $request->get('draw'));
     }
 

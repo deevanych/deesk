@@ -36,6 +36,9 @@
                                 {{ this.$user.title }}
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
+                                <router-link class="dropdown-item" :to="{ name: 'users.show', params: { id: this.$user.id } }">
+                                    <span>Моя страница</span>
+                                </router-link>
                                 <router-link :to="{name: 'logout'}" class="dropdown-item">
                                     <span>Выйти</span>
                                 </router-link>

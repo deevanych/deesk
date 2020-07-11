@@ -66,7 +66,7 @@
                 <div class="col-9">
                     <div class="row">
                         <div class="col">
-                            <issue-list v-bind:url="'/api/v1/issues?organization=' + this.$route.params.id"/>
+                            <issue-list v-bind:type="'organization'" v-bind:url="'/api/v1/issues?organization=' + this.$route.params.id"/>
                         </div>
                     </div>
                 </div>
