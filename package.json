@@ -20,6 +20,10 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
+        "@uppy/core": "^1.11.0",
+        "@uppy/dashboard": "^1.10.1",
+        "@uppy/file-input": "^1.4.13",
+        "@uppy/xhr-upload": "^1.6.0",
         "bootstrap": "^4.4.1",
         "datatables.net": "^1.10.21",
         "datatables.net-bs4": "^1.10.21",

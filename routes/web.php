@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Client\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -35,9 +37,12 @@ Route::domain('panel.deesk.ru')->group(function () {
         ->where('path', '.*')
         ->name('app');
     Route::resource('issues', 'IssueController', ['only' => ['show']]);
+    Route::post('/files/{model}/{id}/{type}', 'FileController@store');
 });
 
 Route::domain('deesk.ru')->group(function () {
     Route::get('/', 'PortalController@index')->name('portal.index');
-    Route::any('deploy', 'Controller@deploy')->name('deploy');
+    Route::get('/linkstorage', function () {
+        Artisan::call('storage:link');
+    });
 });

@@ -50,6 +50,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //
+        return $request;
     }
 
     /**
@@ -85,6 +86,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         //
+        return $request;
     }
 
     /**

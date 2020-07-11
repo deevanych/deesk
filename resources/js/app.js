@@ -6,10 +6,10 @@ import Skeleton from 'vue-loading-skeleton';
 import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import Select2 from 'select2';
 import Vuelidate from 'vuelidate';
-
 import jquery from 'jquery';
 import lottie from 'lottie-web';
 import '../js/common';
+
 // components
 import Summernote from '../views/app/components/summernote';
 import SelectComponent from '../views/app/components/select2';

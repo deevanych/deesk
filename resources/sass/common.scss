@@ -805,3 +805,12 @@ th.sorting_desc {
     padding-bottom: 1rem;
 }
 
+.avatar-upload {
+    display: none;
+    background-color: rgba(0, 0, 0, .4);
+    cursor: pointer;
+}
+
+.profile-avatar:hover .avatar-upload {
+    display: flex;
+}

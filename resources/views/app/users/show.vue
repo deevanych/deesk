@@ -23,10 +23,19 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col">
-                    <img v-if="user.profile && user.profile.avatar" v-bind:src="'/images/site/avatar_default.gif'"
-                         class="mw-80 mb-5 rounded" alt="">
-                    <img v-else src="/images/site/avatar_default.gif" class="mw-80 mb-5 rounded" alt="">
+                <div class="col-3">
+                    <div class="row ml-1 mb-5 mw-80 rounded profile-avatar overflow-hidden position-relative">
+                        <img v-if="user.profile && user.profile.avatar" v-bind:src="user.profile.avatar"
+                             class="w-100" alt="">
+                        <img v-else src="/images/site/avatar_default.gif" class="w-100" alt="">
+                        <label for="avatar-upload" class="position-absolute w-100 h-100 avatar-upload"
+                               ref="avatarUpload">
+                            Загрузить фото
+                        </label>
+                        <form class="d-none">
+                            <input id="avatar-upload" @change="uploadAvatar" type="file" name="files[]"/>
+                        </form>
+                    </div>
                     <div class="row mb-4" v-if="user.profile && user.profile.status">
                         <div class="col">
                             <h6 class="user-status">{{ user.profile.status }}</h6>
@@ -82,7 +91,8 @@
                             <div class="col">
                                 <h6 class="text-gray">Facebook</h6>
                                 <h5>
-                                    <a target="_blank" class="icon facebook" v-bind:href="'https://facebook.com/'+user.profile.facebook">{{
+                                    <a target="_blank" class="icon facebook"
+                                       v-bind:href="'https://facebook.com/'+user.profile.facebook">{{
                                         user.profile.facebook
                                         }}</a>
                                 </h5>
@@ -102,7 +112,8 @@
                             <div class="col">
                                 <h6 class="text-gray">Instagram</h6>
                                 <h5>
-                                    <a target="_blank" class="icon instagram" v-bind:href="'https://instagram.com/'+user.profile.instagram">{{
+                                    <a target="_blank" class="icon instagram"
+                                       v-bind:href="'https://instagram.com/'+user.profile.instagram">{{
                                         user.profile.instagram
                                         }}</a>
                                 </h5>
@@ -112,7 +123,8 @@
                             <div class="col">
                                 <h6 class="text-gray">Telegram</h6>
                                 <h5>
-                                    <a target="_blank" class="icon telegram" v-bind:href="'https://t.me/'+user.profile.telegram">{{
+                                    <a target="_blank" class="icon telegram"
+                                       v-bind:href="'https://t.me/'+user.profile.telegram">{{
                                         user.profile.telegram
                                         }}</a>
                                 </h5>
@@ -135,6 +147,9 @@
 
 <script>
     import IssueList from '../issues/list.vue';
+    import XHRUpload from "@uppy/xhr-upload";
+    import Uppy from "@uppy/core";
+    import FileInput from "@uppy/file-input";
 
     export default {
         components: {
@@ -154,7 +169,50 @@
                     self.user = response.data;
                     header.loading = false;
                 });
+            self.instantiateUppy();
         },
-        methods: {},
+        methods: {
+            instantiateUppy() {
+                let self = this;
+                this.uppy = Uppy({
+                    autoProceed: true,
+                    allowMultipleUploads: true,
+                    restrictions: {
+                        maxFileSize: 3145728,
+                        allowedFileTypes: ['image/*']
+                    }
+                }).use(XHRUpload, {
+                    endpoint: '/files/user/' + this.$route.params.id + '/avatar',
+                    fieldName: 'avatar',
+                    method: 'POST',
+                    limit: 0,
+                    headers: {
+                        'Authorization': localStorage.getItem('_token'),
+                    }
+                });
+                this.uppy.on('complete', (event) => {
+                    toastr['success']('Изображение загружено');
+                    self.user.profile.avatar = event.successful[0].response.body.url;
+                });
+            },
+            uploadAvatar(event) {
+                let files = Array.from(event.target.files);
+                files.forEach((file) => {
+                    try {
+                        this.uppy.addFile({
+                            name: file.name,
+                            type: file.type,
+                            data: file
+                        })
+                    } catch (err) {
+                        if (err.isRestriction) {
+                            toastr['error'](err);
+                        } else {
+                            console.error(err)
+                        }
+                    }
+                });
+            }
+        },
     }
 </script>
