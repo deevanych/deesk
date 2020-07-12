@@ -23,14 +23,16 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-3">
-                    <div class="row ml-1 mb-5 mw-80 rounded profile-avatar overflow-hidden position-relative">
+                <div class="col-3 pr-5">
+                    <div class="row mb-5 w-100 ml-0 rounded profile-avatar overflow-hidden position-relative">
                         <img v-if="user.profile && user.profile.avatar" v-bind:src="user.profile.avatar"
                              class="w-100" alt="">
                         <img v-else src="/images/site/avatar_default.gif" class="w-100" alt="">
-                        <label for="avatar-upload" class="position-absolute w-100 h-100 avatar-upload"
+                        <label v-if="$isOwner('user')" for="avatar-upload" class="position-absolute w-100 h-100 avatar-upload"
                                ref="avatarUpload">
-                            Загрузить фото
+                            <span class="button white p-3 px-4 rounded-pill shadow-sm m-auto">
+                                Загрузить фото
+                            </span>
                         </label>
                         <form class="d-none">
                             <input id="avatar-upload" @change="uploadAvatar" type="file" name="files[]"/>
@@ -180,9 +182,10 @@
                     restrictions: {
                         maxFileSize: 3145728,
                         allowedFileTypes: ['image/*']
-                    }
+                    },
+                    locale: Russian,
                 }).use(XHRUpload, {
-                    endpoint: '/files/user/' + this.$route.params.id + '/avatar',
+                    endpoint: '/api/v1/files/user/' + this.$route.params.id + '/avatar',
                     fieldName: 'avatar',
                     method: 'POST',
                     limit: 0,
@@ -191,11 +194,17 @@
                     }
                 });
                 this.uppy.on('complete', (event) => {
-                    toastr['success']('Изображение загружено');
-                    self.user.profile.avatar = event.successful[0].response.body.url;
+                    header.loading = false;
+                    if (event.successful.length) {
+                        toastr['success']('Изображение загружено');
+                        self.user.profile.avatar = event.successful[0].response.body.url;
+                    } else {
+                        toastr['error']('Произошла ошибка');
+                    }
                 });
             },
             uploadAvatar(event) {
+                header.loading = true;
                 let files = Array.from(event.target.files);
                 files.forEach((file) => {
                     try {
@@ -205,10 +214,11 @@
                             data: file
                         })
                     } catch (err) {
+                        header.loading = false;
                         if (err.isRestriction) {
-                            toastr['error'](err);
-                        } else {
-                            console.error(err)
+                            let error = err.toString();
+                            error = error.split('Error: ');
+                            toastr['error'](error[1]);
                         }
                     }
                 });

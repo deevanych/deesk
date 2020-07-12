@@ -14,6 +14,13 @@
                 }
                 return (permissions[permission[0]][permission[1]] ? permissions[permission[0]][permission[1]] : false);
             },
+            $isOwner(type) {
+                switch (type) {
+                    case 'user':
+                        return this.$user.id == this.$route.params.id;
+                        break;
+                }
+            },
             $type(type) {
                 if (this.$user.organization.parent_id && type === 'client') {
                     return true;

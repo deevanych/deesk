@@ -55,6 +55,8 @@ window.moment = require('moment');
 window.header = {};
 window.select2 = Select2;
 
+window.Russian = require('@uppy/locales/lib/ru_RU');
+
 Vue.config.productionTip = false;
 
 if (localStorage.getItem('_token')) {

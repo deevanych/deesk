@@ -9,10 +9,12 @@
                     <div class="comment d-flex align-items-end" v-for="comment in comments"
                          v-bind:class="{ self: comment.self}">
                         <div v-if="comment.author.profile && comment.author.profile.avatar" class="user-avatar flex-shrink-0"
-                             style=""></div>
+                             v-bind:style="'background-image: url('+comment.author.profile.avatar+')'"></div>
                         <div v-else class="user-avatar flex-shrink-0" style="background-image: url(/images/site/avatar_default.gif)"></div>
                         <div class="comment-body d-flex flex-column px-4 py-3">
-                            <span class="comment-author font-weight-bolder">{{ comment.author.title }}</span>
+                            <router-link class="comment-author font-weight-bolder" :to="{ name: 'users.show', params: { id: comment.author.id } }">
+                                {{ comment.author.title }}
+                            </router-link>
                             <span class="comment-text" v-html="comment.text"></span>
                         </div>
                         <span class="comment-date flex-shrink-0">{{ getFormattedTime(comment.created_at) }}</span>

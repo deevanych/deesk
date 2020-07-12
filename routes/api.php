@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.', 'middleware' => 'auth:api'], function () {
     Route::post('login', 'AuthController@login')->name('login');
     Route::get('logout', 'AuthController@logout')->name('logout');
+    Route::post('/files/{model}/{id}/{type}', 'FileController@store');
     Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
     Route::resource('organizations', 'OrganizationController', ['except' => ['create', 'edit']])->middleware('organization.check');
     Route::resource('issues/types', 'IssueTypeController', ['except' => ['create', 'edit']]);

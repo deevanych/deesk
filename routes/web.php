@@ -37,7 +37,6 @@ Route::domain('panel.deesk.ru')->group(function () {
         ->where('path', '.*')
         ->name('app');
     Route::resource('issues', 'IssueController', ['only' => ['show']]);
-    Route::post('/files/{model}/{id}/{type}', 'FileController@store');
 });
 
 Route::domain('deesk.ru')->group(function () {

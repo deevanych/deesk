@@ -23,6 +23,7 @@
         "@uppy/core": "^1.11.0",
         "@uppy/dashboard": "^1.10.1",
         "@uppy/file-input": "^1.4.13",
+        "@uppy/locales": "^1.15.0",
         "@uppy/xhr-upload": "^1.6.0",
         "bootstrap": "^4.4.1",
         "datatables.net": "^1.10.21",

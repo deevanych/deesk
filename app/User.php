@@ -48,7 +48,8 @@ class User extends Authenticatable
     ];
 
     protected $with = [
-        'organization'
+        'organization',
+        'profile'
     ];
 
     protected $appends = [
