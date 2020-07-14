@@ -22,7 +22,7 @@
         },
         components: {
             issueList: IssueList,
-            clientList: ClientList
+            clientList: ClientList,
         },
         mounted() {
             header.loading = true;
