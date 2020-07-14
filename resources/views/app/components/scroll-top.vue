@@ -39,10 +39,16 @@
         background-repeat: no-repeat;
         background-position: center;
         background-size: 1rem;
-        opacity: 0;
+        display: none;
+        opacity: .3;
     }
 
     #scroll-top.show {
+        display: block;
+    }
+
+    #scroll-top.show:hover {
+        display: block;
         opacity: 1;
     }
 </style>
