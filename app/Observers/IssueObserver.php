@@ -11,7 +11,7 @@ class IssueObserver
     /**
      * Handle the issue "created" event.
      *
-     * @param  \App\Issue  $issue
+     * @param \App\Issue $issue
      * @return void
      */
     public function created(Issue $issue)
@@ -40,7 +40,7 @@ class IssueObserver
     /**
      * Handle the issue "updating" event.
      *
-     * @param  \App\Issue  $issue
+     * @param \App\Issue $issue
      * @return void
      */
     public function updated(Issue $issue)
@@ -67,6 +67,9 @@ class IssueObserver
             $activity->issue_status_id = $changes['issue_status_id'];
             $type = Activity::ISSUE_STATUS_CHANGED;
         }
+        if (array_key_exists('employee_id', $changes)) {
+            $type = Activity::ISSUE_ACCEPTED;
+        }
         $activity->type = $type;
 
         $activity->save();
@@ -75,7 +78,7 @@ class IssueObserver
     /**
      * Handle the issue "deleted" event.
      *
-     * @param  \App\Issue  $issue
+     * @param \App\Issue $issue
      * @return void
      */
     public function deleted(Issue $issue)
@@ -86,7 +89,7 @@ class IssueObserver
     /**
      * Handle the issue "restored" event.
      *
-     * @param  \App\Issue  $issue
+     * @param \App\Issue $issue
      * @return void
      */
     public function restored(Issue $issue)
@@ -97,7 +100,7 @@ class IssueObserver
     /**
      * Handle the issue "force deleted" event.
      *
-     * @param  \App\Issue  $issue
+     * @param \App\Issue $issue
      * @return void
      */
     public function forceDeleted(Issue $issue)

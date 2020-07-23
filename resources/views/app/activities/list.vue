@@ -90,7 +90,6 @@
                             name: 'issues.show',
                             params: {id: activity.issue.id}
                         }).href + '\'); return false;">' + activity.issue.title + ' (#' + activity.issue.id + ')</a>';
-
                     case 3:
                         return '<a href="' + self.$router.resolve({
                             name: 'users.show',
@@ -105,6 +104,20 @@
                             name: 'issues.show',
                             params: {id: activity.issue.id}
                         }).href + '\'); return false;">' + activity.issue.title + ' (#' + activity.issue.id + ')</a> на <span class="status ml-1 ' + activity.issue_status.icon.title + ' ' + activity.issue_status.color.title + '">' + activity.issue_status.title + '</span>';
+                    case 4:
+                        return '<a href="' + self.$router.resolve({
+                            name: 'users.show',
+                            params: {id: activity.author.id}
+                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
+                            name: 'users.show',
+                            params: {id: activity.author.id}
+                        }).href + '\'); return false;">' + activity.author.title + '</a> принял заявку <a href="' + self.$router.resolve({
+                            name: 'issues.show',
+                            params: {id: activity.issue.id}
+                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
+                            name: 'issues.show',
+                            params: {id: activity.issue.id}
+                        }).href + '\'); return false;">' + activity.issue.title + ' (#' + activity.issue.id + ')</a>';
                     case 7:
                         return '<a href="' + self.$router.resolve({
                             name: 'users.show',
