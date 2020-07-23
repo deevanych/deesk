@@ -132,7 +132,7 @@ class IssueController extends Controller
     function show(Issue $issue)
     {
         //
-        return $issue->load('type', 'priority', 'observers')->append('favorite');
+        return $issue->load('type', 'priority', 'observers', 'activity')->append('favorite');
     }
 
     /**

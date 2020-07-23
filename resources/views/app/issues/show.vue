@@ -72,7 +72,7 @@
             </div>
             <comments></comments>
         </div>
-        <div class="col offset-1">
+        <div class="col-4 offset-1">
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Дата создания</h6>
@@ -124,6 +124,8 @@
                     <h5 v-else>Наблюдателей нет</h5>
                 </div>
             </div>
+            <activity-list v-bind:url="'/api/v1/activity?issue=' + this.$route.params.id"
+                           v-bind:type="'issue'"/>
         </div>
     </div>
     <div class="row mb-4" v-else>
@@ -161,6 +163,7 @@
 <script>
     import comments from "./comments";
     import UserInfo from "../components/user-info";
+    import ActivityList from "../activities/list";
 
     export default {
         data: function () {
@@ -261,6 +264,7 @@
         components: {
             UserInfo,
             comments: comments,
+            activityList: ActivityList,
         }
     }
 </script>

@@ -137,6 +137,8 @@
                 <div class="col-9">
                     <div class="row">
                         <div class="col">
+                            <activity-list v-bind:url="'/api/v1/activity?user=' + this.$route.params.id"
+                                           v-bind:type="'user'"/>
                             <issue-list v-bind:url="'/api/v1/issues?user=' + this.$route.params.id"
                                         v-bind:type="'user'"/>
                         </div>
@@ -149,6 +151,7 @@
 
 <script>
     import IssueList from '../issues/list.vue';
+    import ActivityList from '../activities/list.vue';
     import XHRUpload from "@uppy/xhr-upload";
     import Uppy from "@uppy/core";
     import FileInput from "@uppy/file-input";
@@ -156,6 +159,7 @@
     export default {
         components: {
             issueList: IssueList,
+            activityList: ActivityList,
         },
         data: function () {
             return {

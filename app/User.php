@@ -9,6 +9,7 @@ use Laravel\Passport\HasApiTokens;
 
 /**
  * @property mixed role
+ * @method static findOrFail($get)
  */
 class User extends Authenticatable
 {
@@ -65,6 +66,10 @@ class User extends Authenticatable
 
     public function profile() {
         return $this->hasOne('App\UserProfile');
+    }
+
+    public function activity() {
+        return $this->hasMany('App\Activity', 'author_id')->orderByDesc('id');
     }
 
     public function favoriteIssues()

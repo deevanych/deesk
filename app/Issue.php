@@ -48,6 +48,10 @@ class Issue extends Model
         return $this->hasOne('App\User', 'id', 'author_id');
     }
 
+    public function activity() {
+        return $this->hasMany('App\Activity', 'issue_id')->orderByDesc('id');
+    }
+
     public function employee()
     {
         return $this->hasOne('App\User', 'id', 'employee_id');

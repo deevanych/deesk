@@ -66,6 +66,8 @@
                 <div class="col-9">
                     <div class="row">
                         <div class="col">
+                            <activity-list v-bind:url="'/api/v1/activity?organization=' + this.$route.params.id"
+                                           v-bind:type="'organization'"/>
                             <issue-list v-bind:type="'organization'" v-bind:url="'/api/v1/issues?organization=' + this.$route.params.id"/>
                         </div>
                     </div>
@@ -77,10 +79,12 @@
 
 <script>
     import IssueList from '../issues/list.vue';
+    import ActivityList from "../activities/list";
 
     export default {
         components: {
             issueList: IssueList,
+            activityList: ActivityList,
         },
         data: function () {
             return {

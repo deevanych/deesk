@@ -814,3 +814,34 @@ th.sorting_desc {
 .profile-avatar:hover .avatar-upload {
     display: flex;
 }
+
+.timeline {
+    border-left: 2px solid;
+    margin-left: 1rem;
+}
+
+.timeline-item:before {
+    content: '';
+    background-image: url(/images/statuses/dot.svg);
+    width: 1rem;
+    height: 1.65rem;
+    display: block;
+    background-color: #fff;
+    position: absolute;
+    background-size: 1rem;
+    left: -0.6rem;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.timeline-item:last-of-type {
+    margin-bottom: 0 !important;
+}
+
+.button.refresh {
+    background-image: url(/images/icons/refresh.svg);
+    background-repeat: no-repeat;
+    background-position: 1.2rem;
+    background-size: 1rem;
+    padding-left: 3rem!important;
+}

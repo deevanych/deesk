@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property mixed clients
  * @property mixed parent_id
  * @property mixed id
+ * @method static findOrFail($get)
  */
 class Organization extends Model
 {
@@ -22,6 +23,11 @@ class Organization extends Model
             return $this->hasMany('App\IssueStatus', 'organization_id', 'parent_id');
         }
         return $this->hasMany('App\IssueStatus');
+    }
+
+    public function activity() {
+        $key = ($this->isClient()) ? 'client_organization_id' : 'service_organization_id';
+        return $this->hasMany('App\Activity', $key)->orderByDesc('id');
     }
 
     public function issues()

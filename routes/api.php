@@ -20,6 +20,7 @@ Route::group(['prefix' => '/v1', 'namespace' => 'Api\v1', 'as' => 'api.', 'middl
     Route::get('logout', 'AuthController@logout')->name('logout');
     Route::post('/files/{model}/{id}/{type}', 'FileController@store');
     Route::resource('users', 'UserController', ['except' => ['create', 'edit']]);
+    Route::resource('activity', 'ActivityController', ['except' => ['create', 'edit']]);
     Route::resource('organizations', 'OrganizationController', ['except' => ['create', 'edit']])->middleware('organization.check');
     Route::resource('issues/types', 'IssueTypeController', ['except' => ['create', 'edit']]);
     Route::resource('issues/priorities', 'IssuePriorityController', ['except' => ['create', 'edit']]);

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Auth;
 /**
  * @property mixed author
  * @property int issue_id
+ * @property int id
+ * @property mixed issue
  * @method static create($all)
  * @method belongsTo(string $string)
  * @method hasOne(string $string, string $string1, string $string2)

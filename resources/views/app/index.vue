@@ -4,13 +4,19 @@
             title="Главная"
         />
         <issue-list v-bind:url="'/api/v1/issues'"/>
-        <client-list v-if="$type('service')"/>
+        <div class="row">
+            <div class="col-6">
+        <activity-list v-bind:url="'/api/v1/activity'"
+                       v-bind:type="'organization'"/></div><div class="col-6">
+        <client-list v-if="$type('service')"/></div>
+        </div>
     </div>
 </template>
 
 <script>
     import IssueList from './issues/list.vue';
     import ClientList from './organizations/list.vue';
+    import ActivityList from "./activities/list";
 
     export default {
         path: '/',
@@ -23,6 +29,7 @@
         components: {
             issueList: IssueList,
             clientList: ClientList,
+            activityList: ActivityList,
         },
         mounted() {
             header.loading = true;
