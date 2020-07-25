@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Issue;
+use App\IssueRule;
 use App\Organization;
 use App\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -102,22 +103,36 @@ class IssueController extends Controller
 
         $organization = Auth::user()->organization;
         $observers = $request->observer_ids;
-        $request = $request->except('author', 'observer_ids');
+        $issueData = $request->except('author', 'observer_ids');
 
         $issueStatus = $organization->issueStatuses()->where('type_id', '=', 2)->first();
         if (!$issueStatus) {
             $issueStatus = $organization->issueStatuses()->first();
         }
 
-        $issue = new Issue($request);
+        $organization_id = ($organization->isClient() ? $organization->parent_id : $organization->id);
+        $rule = IssueRule::whereOrganizationId($organization_id)->whereIssueTypeId($request->issue_type_id)->whereIssuePriorityId($request->issue_priority_id)->where(function ($query) use ($organization) {
+            $query->where('client_id', '=', $organization->id)
+                ->orWhereNull('client_id');
+        })->first();
+
+        $issue = new Issue($issueData);
         $issue->author_id = Auth::user()->id;
         $issue->issue_status_id = $issueStatus->id;
         $issue->author_organization_id = $organization->id;
-        $issue->organization_id = ($organization->isClient() ? $organization->parent_id : $organization->id);
+        $issue->organization_id = $organization_id;
+
+        if (isset($rule)) {
+            $issue->employee_id = $rule->employee_id;
+        }
 
         $issue->save();
 
         $issue->observers()->attach($observers);
+
+        if (isset($rule)) {
+            $issue->observers()->attach($rule->issueObservers);
+        }
 
         return array('status' => 'success', 'created' => true, 'message' => 'Заявка создана', 'issue' => $issue);
     }
