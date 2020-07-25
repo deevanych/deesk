@@ -68,8 +68,16 @@ class User extends Authenticatable
         return $this->hasOne('App\UserProfile');
     }
 
-    public function activity() {
+    public function createdActivity() {
         return $this->hasMany('App\Activity', 'author_id')->orderByDesc('id');
+    }
+
+    public function relatedActivity() {
+        return $this->hasMany('App\Activity', 'user_id')->orderByDesc('id');
+    }
+
+    public function activity() {
+        return $this->createdActivity()->union($this->relatedActivity()->toBase())->orderByDesc('id');
     }
 
     public function favoriteIssues()

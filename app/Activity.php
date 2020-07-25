@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int type
  * @property int comment_id
  * @property int issue_status_id
+ * @property int user_id
  */
 class Activity extends Model
 {
@@ -33,6 +34,7 @@ class Activity extends Model
 
     protected $with = [
         'author',
+        'user',
         'issueStatus'
     ];
 
@@ -41,6 +43,11 @@ class Activity extends Model
     public function author()
     {
         return $this->belongsTo('App\User', 'author_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo('App\User', 'user_id');
     }
 
     public function issue()

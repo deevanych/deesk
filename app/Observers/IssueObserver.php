@@ -68,7 +68,9 @@ class IssueObserver
             $type = Activity::ISSUE_STATUS_CHANGED;
         }
         if (array_key_exists('employee_id', $changes)) {
-            $type = Activity::ISSUE_ACCEPTED;
+            $currentEmployee = $issue->getOriginal('employee_id');
+            $type = ($currentEmployee ? Activity::ISSUE_EMPLOYEE_CHANGED : Activity::ISSUE_ACCEPTED);
+            $activity->user_id = $issue->employee_id;
         }
         $activity->type = $type;
 

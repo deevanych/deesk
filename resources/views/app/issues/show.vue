@@ -29,17 +29,17 @@
                             v-on:click="toggleFavorite(issue.id, issue.favorite)"></button>
                     <template v-if="$type('service')">
                         <template v-if="!issue.employee">
-                            <a href="/"
+                            <button href="/"
                                class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
-                               v-on:click.prevent="acceptIssue">
+                               v-on:click.prevent="acceptIssue" :disabled="disabled.accept">
                                 Принять
-                            </a>
+                            </button>
                         </template>
                         <template v-else>
                             <a href="/"
                                class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
                                v-if="issue.my"
-                               v-on:click.prevent="acceptIssue">
+                               data-toggle="modal" data-target="#transferIssue">
                                 Передать
                             </a>
                         </template>
@@ -127,6 +127,54 @@
             <activity-list v-bind:url="'/api/v1/activity?issue=' + this.$route.params.id"
                            v-bind:type="'issue'"/>
         </div>
+
+        <!--        modal-->
+        <form class="modal fade"
+              ref="editForm" id="transferIssue"
+              tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true"
+              v-on:submit.prevent="transferIssue">
+            <div class="modal-dialog modal-dialog-centered " role="document">
+                <div class="modal-content shadow-sm p-5 m-0">
+                    <div class="modal-header px-0 pt-0 pb-4 border-0">
+                        <h5 class="modal-title">Передать заявку</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-0">
+                        <div class="form">
+                            <div class="form-group w-100 mb-2">
+                                <span class="position-relative">
+                                    <span>Сотрудник</span>
+                                </span>
+                                <div class="d-flex flex-row">
+                                    <select2
+                                        v-model="employee_id"
+                                        v-bind="{values: employees, name: 'employee_id', nullable: true, nullTitle: 'Выберите сотрудника', groups: true}"></select2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="annotations mb-3">
+                            <small><span class="text-danger">*</span> - поля, обязательные для заполнения</small>
+                        </div>
+                    </div>
+                    <div class="modal-footer p-0">
+                        <button data-dismiss="modal"
+                                class="button p-3 px-4 rounded-pill shadow-sm white">
+                            Отмена
+                        </button>
+                        <button
+                            type="submit"
+                            class="ml-3 button p-3 px-4 rounded-pill shadow-sm tonight green"
+                            :disabled="disabled.transfer">
+                            Передать
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="row mb-4" v-else>
         <div class="col-7">
@@ -158,6 +206,7 @@
             </div>
         </div>
     </div>
+
 </template>
 
 <script>
@@ -168,19 +217,21 @@
     export default {
         data: function () {
             return {
-                issue: null,
                 router: this.$router,
                 statuses: null,
                 disabled: {
                     status: false,
                     favorite: false,
                     accept: false,
+                    transfer: false,
                 },
                 comments: null,
                 content: null,
                 config: {
                     placeholder: 'введите комментарий ..',
                 },
+                employees: null,
+                employee_id: null,
             }
         },
         mounted() {
@@ -192,7 +243,13 @@
                 });
             axios.get('/api/v1/issues/statuses')
                 .then(function (response) {
+                    header.loading = false;
                     self.statuses = response.data;
+                });
+            axios.get('/api/v1/users')
+                .then(function (response) {
+                    header.loading = false;
+                    self.employees = response.data;
                 });
         },
         methods: {
@@ -209,6 +266,25 @@
                         header.loading = false;
                         if (response.data.updated) {
                             self.issue = response.data.issue;
+                        }
+                    }).catch(function () {
+                    toastr[response.data.status](response.data.message);
+                });
+            },
+            transferIssue(e) {
+                let self = this;
+                header.loading = true;
+                self.disabled.transfer = true;
+                axios.put('/api/v1/issues/' + this.$route.params.id, {
+                    employee_id: self.employee_id
+                })
+                    .then(function (response) {
+                        toastr[response.data.status](response.data.message);
+                        self.disabled.transfer = false;
+                        header.loading = false;
+                        if (response.data.updated) {
+                            self.issue = response.data.issue;
+                            $(e.target).modal('toggle');
                         }
                     }).catch(function () {
                     toastr[response.data.status](response.data.message);
