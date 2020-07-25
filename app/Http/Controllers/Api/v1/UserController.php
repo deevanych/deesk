@@ -14,15 +14,17 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         $organization = Auth::user()->organization;
         if ($organization->isClient()) {
             $users[] = ['title' => $organization->parent->title, 'users' => $organization->parent->users];
         } else {
+            return $organization->users;
             foreach ($organization->clients as $client) {
                 $users[] = ['title' => $client->title, 'users' => $client->users];
             }

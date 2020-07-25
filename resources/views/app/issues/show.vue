@@ -152,7 +152,7 @@
                                 <div class="d-flex flex-row">
                                     <select2
                                         v-model="employee_id"
-                                        v-bind="{values: employees, name: 'employee_id', nullable: true, nullTitle: 'Выберите сотрудника', groups: true}"></select2>
+                                        v-bind="{values: employees, name: 'employee_id', nullable: true, nullTitle: 'Выберите сотрудника'}"></select2>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +162,8 @@
                     </div>
                     <div class="modal-footer p-0">
                         <button data-dismiss="modal"
-                                class="button p-3 px-4 rounded-pill shadow-sm white">
+                                class="button p-3 px-4 rounded-pill shadow-sm white"
+                                :disabled="disabled.transfer">
                             Отмена
                         </button>
                         <button
@@ -246,11 +247,13 @@
                     header.loading = false;
                     self.statuses = response.data;
                 });
-            axios.get('/api/v1/users')
-                .then(function (response) {
-                    header.loading = false;
-                    self.employees = response.data;
-                });
+            if (self.$type('service')) {
+                axios.get('/api/v1/users?type=employee')
+                    .then(function (response) {
+                        header.loading = false;
+                        self.employees = response.data;
+                    });
+            }
         },
         methods: {
             changeStatus(status) {
