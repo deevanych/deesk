@@ -7,6 +7,7 @@ import VuePerfectScrollbar from 'vue-perfect-scrollbar';
 import Select2 from 'select2';
 import Vuelidate from 'vuelidate';
 import jquery from 'jquery';
+import Chart from 'chart.js';
 import lottie from 'lottie-web';
 import '../js/common';
 
@@ -54,6 +55,7 @@ window.lottie = lottie;
 window.moment = require('moment');
 window.header = {};
 window.select2 = Select2;
+window.chart = Chart;
 
 window.Russian = require('@uppy/locales/lib/ru_RU');
 

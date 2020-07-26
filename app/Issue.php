@@ -84,7 +84,7 @@ class Issue extends Model
 
     public function getLinkAttribute()
     {
-        return route('issues.show', $this->id);
+        return ($this->id ? route('issues.show', $this->id) : null);
     }
 
     public function getFavoriteAttribute()

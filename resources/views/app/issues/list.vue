@@ -5,7 +5,7 @@
                 <h3 class="font-weight-bold col flex-grow-0 mb-0 mr-2">Заявки</h3>
                 <perfect v-bind:settings="{suppressScrollY: true}"
                          class="col filter position-relative overflow-hidden" v-if="issueStatuses">
-                    <nav class="d-flex">
+                    <nav class="d-flex" ref="nav">
                         <li class="mx-3 d-inline-flex align-items-baseline" v-if="$type('service')">
                             <a href="#" @click.prevent="changeData" data-param="employee" data-value="my">Мои</a>
                         </li>
@@ -234,7 +234,7 @@
             changeData(event) {
                 let self = this,
                     url = new URL(window.location.origin + self.url);
-                $('.filter a').removeClass('active');
+                $(self.$refs.nav).find('a').removeClass('active');
                 $(event.target).addClass('active');
                 if (event.target.dataset.param && event.target.dataset.value) {
                     url.searchParams.append(event.target.dataset.param, event.target.dataset.value);
