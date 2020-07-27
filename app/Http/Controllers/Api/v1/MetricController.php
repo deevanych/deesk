@@ -83,7 +83,9 @@ class MetricController extends Controller
             foreach ($datePeriod as $date) {
                 $data[$date->format('Y-m-d')] = 0;
             }
-            $issues = Issue::where('created_at', '>=', $period)->where('organization_id', '=', Auth::user()->organization->id)->groupBy('date')
+            $organization = Auth::user()->organization;
+            $key = ($organization->isClient() ? 'author_organization_id' : 'organization_id');
+            $issues = Issue::where('created_at', '>=', $period)->where($key, '=', $organization->id)->groupBy('date')
                 ->get(array(
                     DB::raw('Date(created_at) as date'),
                     DB::raw('COUNT(*) as count')
