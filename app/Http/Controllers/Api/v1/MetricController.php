@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\v1;
 use App\Activity;
 use App\Http\Controllers\Controller;
 use App\Issue;
+use App\IssueStatusType;
 use App\Metric;
+use App\Organization;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
@@ -100,6 +102,18 @@ class MetricController extends Controller
         } elseif ($request->metric === 'activitiesCount') {
             $key = ($organization->isClient() ? 'client_organization_id' : 'service_organization_id');
             $activities = Activity::where('created_at', '>=', $period)->where($key, '=', $organization->id)->groupBy('date')
+                ->get(array(
+                    DB::raw('Date(created_at) as date'),
+                    DB::raw('COUNT(*) as count')
+                ));
+
+            foreach ($activities as $date) {
+                $data[$date->date] = $date->count;
+            }
+        } elseif ($request->metric === 'issuesCompletedCount') {
+            $issueCompletedStatus = $organization->issueStatuses(true)->where('type_id', IssueStatusType::ISSUE_COMPLETED)->first();
+            $key = ($organization->isClient() ? 'client_organization_id' : 'service_organization_id');
+            $activities = Activity::where('created_at', '>=', $period)->where('issue_status_id', '=', $issueCompletedStatus->id)->where($key, '=', $organization->id)->groupBy('date')
                 ->get(array(
                     DB::raw('Date(created_at) as date'),
                     DB::raw('COUNT(*) as count')
