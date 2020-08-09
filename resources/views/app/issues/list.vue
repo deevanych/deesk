@@ -10,6 +10,9 @@
                             <a href="#" @click.prevent="changeData" data-param="employee" data-value="my">Мои</a>
                         </li>
                         <li class="mx-3 d-inline-flex align-items-baseline">
+                            <a href="#" @click.prevent="changeData" data-param="type" data-value="observed">Наблюдаю</a>
+                        </li>
+                        <li class="mx-3 d-inline-flex align-items-baseline">
                             <a href="#" @click.prevent="changeData" class="active">Все</a>
                             <span class="badge count ml-2" v-if="issuesCount">{{ issuesCount }}</span>
                         </li>

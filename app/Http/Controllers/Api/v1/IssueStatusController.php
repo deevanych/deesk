@@ -21,7 +21,7 @@ class IssueStatusController extends Controller
     {
         //
         $organization = ($request->get('organization') ? Organization::findOrFail($request->get('organization')) : Auth::user()->organization);
-        return $organization->issueStatuses;
+        return $organization->issueStatuses($request->withDeleted);
     }
 
     /**

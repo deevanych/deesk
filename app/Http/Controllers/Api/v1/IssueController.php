@@ -52,8 +52,13 @@ class IssueController extends Controller
             $employeeId = ($request->get('employee') === 'my' ? Auth::user()->id : $request->get('employee'));
             $issues = $issues->where('employee_id', '=', $employeeId);
         }
+        if ($request->get('type') == 'observed') {
+//            $issues = Auth::user()->favoriteIssues()->get();
+            $issues = Issue::where('employee_id', 1);
+        }
         $issues = $issues->where(function ($query) use ($search) {
             $query->where('title', 'LIKE', '%' . $search . '%')
+                ->OrWhere('id', '=', $search)
                 ->OrWhereHas('author', function (Builder $query) use ($search) {
                     $query->where('title', 'LIKE', '%' . $search . '%');
                 })->OrWhereHas('employee', function (Builder $query) use ($search) {

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use http\Env\Request;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -17,12 +18,16 @@ class Organization extends Model
 
 //    protected $appends = ['image'];
 
-    public function issueStatuses()
+    public function issueStatuses($withDeleted)
     {
         if ($this->isClient()) {
-            return $this->hasMany('App\IssueStatus', 'organization_id', 'parent_id');
+            $issueStatuses = $this->hasMany('App\IssueStatus', 'organization_id', 'parent_id');
         }
-        return $this->hasMany('App\IssueStatus');
+        $issueStatuses = $this->hasMany('App\IssueStatus');
+        if ($withDeleted) {
+            return $issueStatuses->get();
+        }
+        return $issueStatuses->whereActive(true)->get();
     }
 
     public function activity() {

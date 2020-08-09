@@ -330,7 +330,7 @@
         mounted() {
             let self = this;
             header.loading = true;
-            axios.get('/api/v1/issues/statuses')
+            axios.get('/api/v1/issues/statuses?withDeleted=true')
                 .then(function (response) {
                     header.loading = false;
                     self.issueStatuses = response.data;

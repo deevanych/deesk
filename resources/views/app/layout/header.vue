@@ -33,10 +33,16 @@
                                 data-toggle="dropdown"
                                 aria-haspopup="true"
                                 aria-expanded="false">
+                                <div v-if="this.$user.profile && this.$user.profile.avatar"
+                                     v-bind:style="'background-image: url('+this.$user.profile.avatar+')'"
+                                     class="user-avatar mr-3"></div>
+                                <div v-else class="user-avatar mr-3"
+                                     style="background-image: url(/images/site/avatar_default.gif)"></div>
                                 {{ this.$user.title }}
                             </button>
                             <div class="dropdown-menu dropdown-menu-right">
-                                <router-link class="dropdown-item" :to="{ name: 'users.show', params: { id: this.$user.id } }">
+                                <router-link class="dropdown-item"
+                                             :to="{ name: 'users.show', params: { id: this.$user.id } }">
                                     <span>Моя страница</span>
                                 </router-link>
                                 <router-link :to="{name: 'logout'}" class="dropdown-item">

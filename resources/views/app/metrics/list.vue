@@ -34,8 +34,8 @@
                             v-bind:title="'Создано заявок'"></metric>
                 </div>
                 <div class="col-3">
-                    <metric v-bind:url="'/api/v1/metrics/issuesCount'" v-model="type" v-bind:color="'#b1d5fd'"
-                            v-bind:title="'Решено заявок'"></metric>
+                    <metric v-bind:url="'/api/v1/metrics/activitiesCount'" v-model="type" v-bind:color="'#b1d5fd'"
+                            v-bind:title="'Количество событий'"></metric>
                 </div>
                 <div class="col-3">
                     <metric v-bind:url="'/api/v1/metrics/issuesCount'" v-model="type" v-bind:color="'#f8ffbf'"

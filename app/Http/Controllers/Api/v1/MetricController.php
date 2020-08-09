@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\v1;
 
+use App\Activity;
 use App\Http\Controllers\Controller;
 use App\Issue;
 use App\Metric;
@@ -54,37 +55,39 @@ class MetricController extends Controller
     {
         //
         $data = [];
+
+        switch ($request->period) {
+            case 'month':
+                $period = Carbon::now()->subMonth();
+                break;
+
+            case 'week':
+                $period = Carbon::now()->subWeek();
+                break;
+
+            case 'day':
+                $period = Carbon::now()->subDay();
+                break;
+
+            case 'quarter':
+                $period = Carbon::now()->subQuarter();
+                break;
+
+            case 'year':
+                $period = Carbon::now()->subYear();
+                break;
+
+            default:
+                $period = Carbon::now()->subWeek();
+        }
+        $datePeriod = CarbonPeriod::create($period, Carbon::now());
+        foreach ($datePeriod as $date) {
+            $data[$date->format('Y-m-d')] = 0;
+        }
+        $organization = Auth::user()->organization;
+        $key = ($organization->isClient() ? 'author_organization_id' : 'organization_id');
+
         if ($request->metric === 'issuesCount') {
-            switch ($request->period) {
-                case 'month':
-                    $period = Carbon::now()->subMonth();
-                    break;
-
-                case 'week':
-                    $period = Carbon::now()->subWeek();
-                    break;
-
-                case 'day':
-                    $period = Carbon::now()->subDay();
-                    break;
-
-                case 'quarter':
-                    $period = Carbon::now()->subQuarter();
-                    break;
-
-                case 'year':
-                    $period = Carbon::now()->subYear();
-                    break;
-
-                default:
-                    $period = Carbon::now()->subWeek();
-            }
-            $datePeriod = CarbonPeriod::create($period, Carbon::now());
-            foreach ($datePeriod as $date) {
-                $data[$date->format('Y-m-d')] = 0;
-            }
-            $organization = Auth::user()->organization;
-            $key = ($organization->isClient() ? 'author_organization_id' : 'organization_id');
             $issues = Issue::where('created_at', '>=', $period)->where($key, '=', $organization->id)->groupBy('date')
                 ->get(array(
                     DB::raw('Date(created_at) as date'),
@@ -92,6 +95,17 @@ class MetricController extends Controller
                 ));
 
             foreach ($issues as $date) {
+                $data[$date->date] = $date->count;
+            }
+        } elseif ($request->metric === 'activitiesCount') {
+            $key = ($organization->isClient() ? 'client_organization_id' : 'service_organization_id');
+            $activities = Activity::where('created_at', '>=', $period)->where($key, '=', $organization->id)->groupBy('date')
+                ->get(array(
+                    DB::raw('Date(created_at) as date'),
+                    DB::raw('COUNT(*) as count')
+                ));
+
+            foreach ($activities as $date) {
                 $data[$date->date] = $date->count;
             }
         }
