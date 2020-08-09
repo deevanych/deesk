@@ -15,7 +15,7 @@ composer dumpautoload -o
 # update database
 #php artisan migrate --force
 # --force  Required to run when in production.
-php7.3 artisan migrate:fresh --seed --force
+php7.3 artisan migrate --force
 # clear and cache config
 php7.3 artisan config:cache
 # clear and cache route
