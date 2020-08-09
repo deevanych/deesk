@@ -114,7 +114,7 @@
             <div class="modal-dialog modal-dialog-centered " role="document">
                 <div class="modal-content shadow-sm p-5 m-0">
                     <div class="modal-header px-0 pt-0 pb-4 border-0">
-                        <h5 class="modal-title">Редактировать тип</h5>
+                        <h5 class="modal-title">Редактировать приоритет</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>

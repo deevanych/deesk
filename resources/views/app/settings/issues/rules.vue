@@ -143,7 +143,7 @@
             <div class="modal-dialog modal-dialog-centered " role="document">
                 <div class="modal-content shadow-sm p-5 m-0">
                     <div class="modal-header px-0 pt-0 pb-4 border-0">
-                        <h5 class="modal-title">Добавить правило</h5>
+                        <h5 class="modal-title">Редактировать правило</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -333,6 +333,8 @@
             },
             addIssueRule: function (e) {
                 let self = this;
+                header.loading = true;
+                self.disabled = true;
                 axios.post('/api/v1/issues/rules', self.issueRule)
                     .then(function (response) {
                         header.loading = false;
