@@ -15,14 +15,14 @@ class IssuePriorityController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         $organization = Auth::user()->organization;
         if ($organization->isClient()) {
-            return Auth::user()->organization->parent->issuePriorities;
+            return Auth::user()->organization->parent->issuePriorities($request->withDeleted);
         }
-        return Auth::user()->organization->issuePriorities;
+        return Auth::user()->organization->issuePriorities($request->withDeleted);
     }
 
     /**

@@ -13,16 +13,18 @@ class IssueTypeController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
         $organization = Auth::user()->organization;
         if ($organization->isClient()) {
-            return Auth::user()->organization->parent->issueTypes;
+            return Auth::user()->organization->parent->issueTypes($request->withDeleted);
         }
-        return Auth::user()->organization->issueTypes;
+
+        return Auth::user()->organization->issueTypes($request->withDeleted);
     }
 
     /**

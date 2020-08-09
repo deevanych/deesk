@@ -18,7 +18,7 @@ class Organization extends Model
 
 //    protected $appends = ['image'];
 
-    public function issueStatuses($withDeleted)
+    public function issueStatuses($withDeleted = false)
     {
         if ($this->isClient()) {
             $issueStatuses = $this->hasMany('App\IssueStatus', 'organization_id', 'parent_id');
@@ -41,12 +41,20 @@ class Organization extends Model
         return $this->hasMany('App\Issue', $key);
     }
 
-    public function issueTypes() {
-        return $this->hasMany('App\IssueType');
+    public function issueTypes($withDeleted = false) {
+        $issueTypes = $this->hasMany('App\IssueType');
+        if ($withDeleted) {
+            return $issueTypes->get();
+        }
+        return $issueTypes->whereActive(true)->get();
     }
 
-    public function issuePriorities() {
-        return $this->hasMany('App\IssuePriority');
+    public function issuePriorities($withDeleted = false) {
+        $issuePriorities = $this->hasMany('App\IssuePriority');
+        if ($withDeleted) {
+            return $issuePriorities->get();
+        }
+        return $issuePriorities->whereActive(true)->get();
     }
 
     public function issueRules() {

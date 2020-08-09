@@ -192,7 +192,7 @@
         mounted() {
             let self = this;
             header.loading = true;
-            axios.get('/api/v1/issues/types')
+            axios.get('/api/v1/issues/types?withDeleted=true')
                 .then(function (response) {
                     header.loading = false;
                     self.issueTypes = response.data;

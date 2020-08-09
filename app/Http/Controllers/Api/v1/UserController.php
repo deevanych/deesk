@@ -24,7 +24,9 @@ class UserController extends Controller
         if ($organization->isClient()) {
             $users[] = ['title' => $organization->parent->title, 'users' => $organization->parent->users];
         } else {
-            return $organization->users;
+            if ($request->type == 'employee') {
+                return $organization->users;
+            }
             foreach ($organization->clients as $client) {
                 $users[] = ['title' => $client->title, 'users' => $client->users];
             }
