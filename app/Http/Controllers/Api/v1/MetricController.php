@@ -7,7 +7,6 @@ use App\Http\Controllers\Controller;
 use App\Issue;
 use App\IssueStatusType;
 use App\Metric;
-use App\Organization;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Http\Request;
