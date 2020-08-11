@@ -15,7 +15,9 @@
                     </form>
                     <template v-if="this.$user">
                         <li class="mx-4" v-if="$can('issue.view')">
-                            <a href="#">Заявки</a>
+                            <router-link :to="{name: 'issues.list'}">
+                                Заявки
+                            </router-link>
                         </li>
                         <li class="mx-4" v-if="$can('client.view')">
                             <router-link :to="{name: 'clients'}">

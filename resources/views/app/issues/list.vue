@@ -78,7 +78,14 @@
 
 <script>
     export default {
-        props: ['url', 'type'],
+        props: {
+            url: {
+                default: '/api/v1/issues',
+            },
+            type: {
+
+            }
+        },
         data: function () {
             return {
                 issueStatuses: null,

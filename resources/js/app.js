@@ -9,6 +9,7 @@ import Vuelidate from 'vuelidate';
 import jquery from 'jquery';
 import Chart from 'chart.js';
 import lottie from 'lottie-web';
+import Pusher from "pusher-js";
 import '../js/common';
 
 // components
@@ -22,6 +23,7 @@ import Home from '../views/app/index';
 import HeaderApp from '../views/app/layout/header';
 // issues
 import IssueShow from '../views/app/issues/show';
+import IssueList from '../views/app/issues/list';
 import IssueCreate from '../views/app/issues/create';
 // login
 import Login from '../views/app/auth/login';
@@ -56,6 +58,9 @@ window.moment = require('moment');
 window.header = {};
 window.select2 = Select2;
 window.chart = Chart;
+window.pusher = new Pusher('9e7acbe1016c7a8d1598', {
+    cluster: 'eu'
+});
 
 window.Russian = require('@uppy/locales/lib/ru_RU');
 
@@ -136,6 +141,13 @@ const routes = [
                 name: 'home',
                 components: {
                     default: Home,
+                },
+            },
+            {
+                path: '/issues',
+                name: 'issues.list',
+                components: {
+                    default: IssueList,
                 },
             },
             {

@@ -30,8 +30,8 @@
                     <template v-if="$type('service')">
                         <template v-if="!issue.employee">
                             <button href="/"
-                               class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
-                               v-on:click.prevent="acceptIssue" :disabled="disabled.accept">
+                                    class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
+                                    v-on:click.prevent="acceptIssue" :disabled="disabled.accept">
                                 Принять
                             </button>
                         </template>
@@ -241,6 +241,7 @@
                 .then(function (response) {
                     self.issue = response.data;
                     header.loading = false;
+                    let channel = pusher.subscribe('issues-' + self.issue.id);
                 });
             axios.get('/api/v1/issues/statuses')
                 .then(function (response) {
@@ -253,6 +254,12 @@
                         header.loading = false;
                         self.employees = response.data;
                     });
+            }
+        },
+        beforeDestroy() {
+            let self = this;
+            if (self.issue) {
+                pusher.unsubscribe('issues-' + self.issue.id);
             }
         },
         methods: {

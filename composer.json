@@ -17,7 +17,8 @@
         "kodeine/laravel-acl": "^2.0",
         "laravel/framework": "^7.0",
         "laravel/passport": "^8.4",
-        "laravel/tinker": "^2.0"
+        "laravel/tinker": "^2.0",
+        "pusher/pusher-php-server": "^4.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.3",
