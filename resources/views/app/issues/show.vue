@@ -38,7 +38,7 @@
                         <template v-else>
                             <a href="/"
                                class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
-                               v-if="issue.my"
+                               v-if="checkEmployee(issue)"
                                data-toggle="modal" data-target="#transferIssue">
                                 Передать
                             </a>
@@ -70,7 +70,7 @@
                     <span v-html="issue.description"></span>
                 </div>
             </div>
-            <comments></comments>
+            <comments :comments="comments"></comments>
         </div>
         <div class="col-4 offset-1">
             <div class="row mb-4">
@@ -124,8 +124,9 @@
                     <h5 v-else>Наблюдателей нет</h5>
                 </div>
             </div>
-            <activity-list v-bind:url="'/api/v1/activity?issue=' + this.$route.params.id"
-                           v-bind:type="'issue'"/>
+            <activity-list :activities="activities" :count="count"
+                           :url="'/api/v1/activity?issue=' + this.$route.params.id"
+                           :type="'issue'"/>
         </div>
 
         <!--        modal-->
@@ -226,6 +227,9 @@
                     accept: false,
                     transfer: false,
                 },
+                activities: null,
+                issue: null,
+                count: 0,
                 comments: null,
                 content: null,
                 config: {
@@ -241,12 +245,30 @@
                 .then(function (response) {
                     self.issue = response.data;
                     header.loading = false;
-                    let channel = pusher.subscribe('issues-' + self.issue.id);
+                    let channel = pusher.subscribe('issue-' + self.issue.id);
+                    channel.bind('activityCreated', function (data) {
+                        self.activities.unshift(data.activity);
+                        self.activities.pop();
+                    });
+                    channel.bind('commentAdded', function (data) {
+                        self.comments.push(data.comment);
+                    });
+                    channel.bind('issueUpdated', function (data) {
+                        self.issue = data.issue;
+                    });
                 });
             axios.get('/api/v1/issues/statuses')
                 .then(function (response) {
                     header.loading = false;
                     self.statuses = response.data;
+                });
+            axios.get('/api/v1/activity?issue=' + this.$route.params.id).then(function (response) {
+                self.activities = response.data.activities;
+                self.count = response.data.count;
+            });
+            axios.get('/api/v1/issues/' + this.$route.params.id + '/comments')
+                .then(function (response) {
+                    self.comments = response.data;
                 });
             if (self.$type('service')) {
                 axios.get('/api/v1/users?type=employee')
@@ -259,10 +281,13 @@
         beforeDestroy() {
             let self = this;
             if (self.issue) {
-                pusher.unsubscribe('issues-' + self.issue.id);
+                pusher.unsubscribe('issue-' + self.issue.id);
             }
         },
         methods: {
+            checkEmployee(issue) {
+                return (this.$user.id === issue.employee.id);
+            },
             changeStatus(status) {
                 let self = this;
                 self.disabled.status = true;

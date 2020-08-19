@@ -32,7 +32,7 @@ class IssueController extends Controller
                 $organization = Organization::findOrFail($request->get('organization'));
             }
         }
-        $columns = ['id', 'title', null, null, 'created_at'];
+        $columns = ['issues.id', 'title', null, null, 'created_at'];
         $search = $request->get('search')['value'];
         if ($request->get('user')) {
             $type = 'author_id';
@@ -53,12 +53,11 @@ class IssueController extends Controller
             $issues = $issues->where('employee_id', '=', $employeeId);
         }
         if ($request->get('type') == 'observed') {
-//            $issues = Auth::user()->favoriteIssues()->get();
-            $issues = Issue::where('employee_id', 1);
+            $issues = Auth::user()->favoriteIssues()->getQuery();
         }
         $issues = $issues->where(function ($query) use ($search) {
             $query->where('title', 'LIKE', '%' . $search . '%')
-                ->OrWhere('id', '=', $search)
+                ->OrWhere('issues.id', '=', $search)
                 ->OrWhereHas('author', function (Builder $query) use ($search) {
                     $query->where('title', 'LIKE', '%' . $search . '%');
                 })->OrWhereHas('employee', function (Builder $query) use ($search) {

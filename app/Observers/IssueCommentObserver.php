@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Activity;
+use App\Events\IssueCommentAdded;
 use App\IssueComment;
 use Illuminate\Support\Facades\Auth;
 
@@ -17,6 +18,9 @@ class IssueCommentObserver
     public function created(IssueComment $issueComment)
     {
         //
+
+        event(new IssueCommentAdded($issueComment));
+
         $user = Auth::user();
         $organization = $user->organization;
 

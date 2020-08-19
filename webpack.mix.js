@@ -13,6 +13,7 @@ mix
     .copyDirectory('resources/images', 'public/images')
     .copyDirectory('resources/fonts', 'public/fonts')
     .copyDirectory('resources/animated-icons', 'public/icons')
+    .copyDirectory('resources/sounds', 'public/sounds')
     .js('resources/js/app.js', 'public/js')
     .sass('resources/sass/app.scss', 'public/css')
     .version();

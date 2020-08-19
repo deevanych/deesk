@@ -66,8 +66,9 @@
                 <div class="col-9">
                     <div class="row">
                         <div class="col">
-                            <activity-list v-bind:url="'/api/v1/activity?organization=' + this.$route.params.id"
-                                           v-bind:type="'organization'"/>
+                            <activity-list :activities="activities" :count="count"
+                                           :url="'/api/v1/activity?organization=' + this.$route.params.id"
+                                           :type="'organization'"/>
                             <issue-list v-bind:type="'organization'" v-bind:url="'/api/v1/issues?organization=' + this.$route.params.id"/>
                         </div>
                     </div>
@@ -91,6 +92,8 @@
                 organization: null,
                 router: this.$router,
                 issues: null,
+                activities: null,
+                count: 0
             }
         },
         mounted() {
@@ -100,6 +103,10 @@
                     self.organization = response.data;
                     header.loading = false;
                 });
+            axios.get('/api/v1/activity?organization=' + this.$route.params.id).then(function (response) {
+                self.activities = response.data.activities;
+                self.count = response.data.count;
+            });
         },
         methods: {},
     }

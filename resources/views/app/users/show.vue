@@ -28,7 +28,8 @@
                         <img v-if="user.profile && user.profile.avatar" v-bind:src="user.profile.avatar"
                              class="w-100" alt="">
                         <img v-else src="/images/site/avatar_default.gif" class="w-100" alt="">
-                        <label v-if="$isOwner('user')" for="avatar-upload" class="position-absolute w-100 h-100 avatar-upload"
+                        <label v-if="$isOwner('user')" for="avatar-upload"
+                               class="position-absolute w-100 h-100 avatar-upload"
                                ref="avatarUpload">
                             <span class="button white p-3 px-4 rounded-pill shadow-sm m-auto">
                                 Загрузить фото
@@ -137,8 +138,9 @@
                 <div class="col-9">
                     <div class="row">
                         <div class="col">
-                            <activity-list v-bind:url="'/api/v1/activity?user=' + this.$route.params.id"
-                                           v-bind:type="'user'"/>
+                            <activity-list :activities="activities" :count="count"
+                                           :url="'/api/v1/activity?user=' + this.$route.params.id"
+                                           :type="'user'"/>
                             <issue-list v-bind:url="'/api/v1/issues?user=' + this.$route.params.id"
                                         v-bind:type="'user'"/>
                         </div>
@@ -154,7 +156,6 @@
     import ActivityList from '../activities/list.vue';
     import XHRUpload from "@uppy/xhr-upload";
     import Uppy from "@uppy/core";
-    import FileInput from "@uppy/file-input";
 
     export default {
         components: {
@@ -166,6 +167,8 @@
                 user: null,
                 router: this.$router,
                 issues: null,
+                activities: null,
+                count: 0
             }
         },
         mounted() {
@@ -175,6 +178,10 @@
                     self.user = response.data;
                     header.loading = false;
                 });
+            axios.get('/api/v1/activity?user=' + this.$route.params.id).then(function (response) {
+                self.activities = response.data.activities;
+                self.count = response.data.count;
+            });
             self.instantiateUppy();
         },
         methods: {

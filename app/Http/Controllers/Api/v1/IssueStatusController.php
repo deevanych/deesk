@@ -20,7 +20,12 @@ class IssueStatusController extends Controller
     public function index(Request $request)
     {
         //
-        $organization = ($request->get('organization') ? Organization::findOrFail($request->get('organization')) : Auth::user()->organization);
+        if ($request->get('organization')) {
+            $organization = Organization::findOrFail($request->get('organization'));
+        } else {
+            $organization = Auth::user()->organization;
+            $organization = (!$organization->isClient() ? $organization : $organization->parent);
+        }
         return $organization->issueStatuses($request->withDeleted);
     }
 

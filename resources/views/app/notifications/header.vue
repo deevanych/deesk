@@ -1,16 +1,13 @@
 <template>
-    <div class="row mb-5 flex-column align-items-start">
-        <div class="col-12 block-header">
-            <div class="row align-items-center">
-                <h3 class="font-weight-bold col flex-grow-0 mb-0 mr-2">Активность</h3>
-            </div>
-        </div>
-        <div class="col block-content timeline">
-            <template v-if="activities">
-                <template v-if="count > 0">
-                    <div class="timeline-item mb-3" v-for="activity in activities">
-                        <span class="d-block font-weight-bold" v-html="getActivity(activity)"></span>
-                        <span class="d-block text-secondary small" v-html="getDescription(activity)"></span>
+    <div class="row p-3">
+        <perfect class="col block-content m-0" @ps-y-reach-end="changeData" :settings="{wheelPropagation: false}">
+            <template v-if="notifications">
+                <template v-if="countSelf > 0">
+                    <div class="header-timeline-item" v-on:mouseenter="(!notification.is_read ? markAsRead(notification) : null)"
+                         :class="{unread: !notification.is_read}" v-for="notification in notifications">
+                        <span class="d-block font-weight-bold" v-html="getActivity(notification.activity)"></span>
+                        <span class="d-block text-secondary small"
+                              v-html="getDescription(notification.activity)"></span>
                     </div>
                 </template>
                 <template v-else>
@@ -18,52 +15,58 @@
                 </template>
             </template>
             <template v-else>
-                <div class="timeline-item mb-3" v-for="n in 5">
+                <div class="header-timeline-item mb-3" v-for="n in 5">
                     <PuSkeleton class="d-block font-weight-bold mb-2 w-100"></PuSkeleton>
                     <PuSkeleton class="d-block text-secondary small mw-80"></PuSkeleton>
                 </div>
             </template>
-        </div>
-        <template v-if="count >= 5">
-            <button v-bind:disabled="disable"
-                    class="mt-3 ml-3 button white p-3 px-4 rounded-pill shadow-sm refresh"
-                    @click.prevent="changeData">
-                Еще
-            </button>
-        </template>
+        </perfect>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'activities',
-        props: ['activities', 'count', 'url', 'type'],
+        name: 'notifications',
+        props: ['notifications', 'count', 'url', 'type'],
         data: function () {
             return {
                 offset: 1,
                 disable: false,
+                countSelf: 10,
             }
         },
-        mounted() {
-        },
         methods: {
+            markAsRead(notification) {
+                let self = this;
+                axios.put('/api/v1/notifications/' + notification.id, {
+                    is_read: true
+                })
+                    .then(function (response) {
+                        notification.is_read = true;
+                        self.$emit('readMessage');
+                    })
+            },
             changeData() {
                 let self = this,
-                    url = new URL(window.location.origin + self.url);
-                header.loading = true;
-                url.searchParams.append('offset', self.offset);
-                self.disable = true;
-                axios.get(url.href)
-                    .then(function (response) {
-                        header.loading = false;
-                        self.offset = self.offset + 1;
-                        let activities = response.data.activities;
-                        for (let activity in activities) {
-                            self.activities.push(activities[activity]);
-                        }
-                        self.count = (response.data.count !== 0 ? response.data.count : 1);
-                        self.disable = false;
-                    });
+                    url = new URL(window.location.origin + self.url),
+                    activitiesBlock = document.getElementsByClassName('dropdown-menu activities')[0],
+                    visible = (window.getComputedStyle(activitiesBlock, null).getPropertyValue("display") !== 'none');
+                if (self.countSelf >= 10 && visible) {
+                    header.loading = true;
+                    url.searchParams.append('offset', self.offset);
+                    self.disable = true;
+                    axios.get(url.href)
+                        .then(function (response) {
+                            header.loading = false;
+                            self.offset = self.offset + 1;
+                            let notifications = response.data.notifications;
+                            for (let notification in notifications) {
+                                self.notifications.push(notifications[notification]);
+                            }
+                            self.countSelf = (response.data.count !== 0 ? response.data.count : 1);
+                            self.disable = false;
+                        });
+                }
             },
             getActivity(activity) {
                 let self = this;
@@ -159,3 +162,21 @@
         }
     }
 </script>
+
+<style scoped lang="scss">
+    .block-content {
+        max-height: 300px;
+        overflow: auto;
+    }
+
+    .header-timeline-item {
+        font-size: .8rem;
+        border-bottom: 1px solid #eee;
+        padding: 1rem;
+        transition: background-color 2s;
+
+        &.unread {
+            background-color: #fbffde;
+        }
+    }
+</style>

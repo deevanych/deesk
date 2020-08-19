@@ -7,8 +7,11 @@
         <issue-list v-bind:url="'/api/v1/issues'"/>
         <div class="row">
             <div class="col-6">
-                <activity-list v-bind:url="'/api/v1/activity'"
-                               v-bind:type="'organization'"/>
+                <activity-list
+                    :count="count"
+                    :activities="activities"
+                    :url="'/api/v1/activity'"
+                    :type="'organization'"/>
             </div>
             <div class="col-6">
                 <client-list v-if="$type('service')"/>
@@ -29,6 +32,8 @@
         data: function () {
             return {
                 issues: null,
+                activities: null,
+                count: 0,
             }
         },
         components: {
@@ -38,7 +43,12 @@
             metricsList: MetricsList,
         },
         mounted() {
+            let self = this;
             header.loading = true;
+            axios.get('/api/v1/activity?organization').then(function (response) {
+                self.activities = response.data.activities;
+                self.count = response.data.count;
+            });
         }
     }
 </script>

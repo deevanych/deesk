@@ -7,6 +7,7 @@ use App\Organization;
 use App\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -38,6 +39,30 @@ class Controller extends BaseController
     }
 
     public function test(Request $request) {
-        return 404;
+        Auth::loginUsingId(1);
+        if ($request->get('user')) {
+            $object = User::findOrFail($request->get('user'));
+        } elseif ($request->get('organization')) {
+            $object = Organization::findOrFail($request->get('organization'));
+        } elseif ($request->get('issue')) {
+            $object = Issue::findOrFail($request->get('issue'));
+        } else {
+            if ($request->get('type') === 'notifications') {
+                $user = Auth::user();
+                $count = ($request->get('count') ? $request->get('count') : 5);
+                $offset = ($request->get('offset') ? $request->get('offset') * $count : 0);
+
+                $activity = $user->notifications()->sortByDesc('id')->load('issue');
+
+                return dd($activity->pluck('id'));
+            }
+            $object = Auth::user()->organization;
+        }
+
+        $count = ($request->get('count') ? $request->get('count') : 5);
+        $offset = ($request->get('offset') ? $request->get('offset') * $count : 0);
+        $activity = $object->activity->skip($offset)->take($count)->load('issue');
+
+        return array('activities' => $activity, 'count' => count($activity));
     }
 }

@@ -66,7 +66,7 @@
                                     padding: {
                                         left: 0,
                                         right: 0,
-                                        top: 10,
+                                        top: 12,
                                         bottom: 0
                                     }
                                 },

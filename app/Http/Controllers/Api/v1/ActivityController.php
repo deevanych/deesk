@@ -29,11 +29,20 @@ class ActivityController extends Controller
         } elseif ($request->get('issue')) {
             $object = Issue::findOrFail($request->get('issue'));
         } else {
+            if ($request->get('organization') === 'notifications') {
+                $user = Auth::user();
+                $count = ($request->get('count') ? $request->get('count') : 5);
+                $offset = ($request->get('offset') ? $request->get('offset') * $count : 0);
+                $activity = $user->notifications()->skip($offset)->take($count);
+
+                return array('activities' => $activity, 'count' => count($activity));
+            }
             $object = Auth::user()->organization;
         }
 
-        $offset = ($request->get('offset') ? $request->get('offset') * 5 : 0);
-        $activity = $object->activity->skip($offset)->take(5)->load('issue');
+        $count = ($request->get('count') ? $request->get('count') : 5);
+        $offset = ($request->get('offset') ? $request->get('offset') * $count : 0);
+        $activity = $object->activity->skip($offset)->take($count);
 
         return array('activities' => $activity, 'count' => count($activity));
     }

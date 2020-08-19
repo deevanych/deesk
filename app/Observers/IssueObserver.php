@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Activity;
+use App\Events\IssueUpdated;
 use App\Issue;
 use Illuminate\Support\Facades\Auth;
 
@@ -46,6 +47,8 @@ class IssueObserver
     public function updated(Issue $issue)
     {
         //
+        event(new IssueUpdated($issue));
+
         $changes = $issue->getDirty();
 
         $user = Auth::user();

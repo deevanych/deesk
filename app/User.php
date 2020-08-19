@@ -9,6 +9,9 @@ use Laravel\Passport\HasApiTokens;
 
 /**
  * @property mixed role
+ * @property mixed organization
+ * @property mixed favoriteActivity
+ * @property mixed relatedIssueActivity
  * @method static findOrFail($get)
  */
 class User extends Authenticatable
@@ -58,7 +61,6 @@ class User extends Authenticatable
         'role',
     ];
 
-
     public function organization()
     {
         return $this->belongsTo('App\Organization');
@@ -76,13 +78,29 @@ class User extends Authenticatable
         return $this->hasMany('App\Activity', 'user_id')->orderByDesc('id');
     }
 
+    public function favoriteActivity()
+    {
+        return $this->hasManyThrough('App\Activity', 'App\FavoriteIssue', 'user_id', 'issue_id', 'id', 'issue_id');
+    }
+
+    public function relatedIssueActivity()
+    {
+        $key = ($this->organization->isClient() ? 'author_id' : 'employee_id');
+        return $this->hasManyThrough('App\Activity', 'App\Issue', $key, 'issue_id', 'id', 'id');
+    }
+
+    public function notifications()
+    {
+        return $this->hasMany(Notification::class)->orderByDesc('id');
+    }
+
     public function activity() {
         return $this->createdActivity()->union($this->relatedActivity()->toBase())->orderByDesc('id');
     }
 
     public function favoriteIssues()
     {
-        return $this->belongsToMany('App\Issue', 'favorite_issues', 'user_id', 'issue_id');
+        return $this->belongsToMany('App\Issue', 'favorite_issues', 'user_id', 'issue_id', 'id', 'id', 'App\User');
     }
 
     public function getRoleAttribute()

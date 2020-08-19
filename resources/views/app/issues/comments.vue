@@ -5,14 +5,17 @@
                 <h4 class="text-gray mb-4 font-weight-bold">Комментарии <span
                     class="badge count ml-2">{{ comments.length }}</span>
                 </h4>
-                <perfect class="comments" v-if="comments.length">
+                <perfect class="comments" v-if="comments.length" :settings="{wheelPropagation: false}">
                     <div class="comment d-flex align-items-end" v-for="comment in comments"
-                         v-bind:class="{ self: comment.self}">
-                        <div v-if="comment.author.profile && comment.author.profile.avatar" class="user-avatar flex-shrink-0"
+                         v-bind:class="{ self: checkOwn(comment)}">
+                        <div v-if="comment.author.profile && comment.author.profile.avatar"
+                             class="user-avatar flex-shrink-0"
                              v-bind:style="'background-image: url('+comment.author.profile.avatar+')'"></div>
-                        <div v-else class="user-avatar flex-shrink-0" style="background-image: url(/images/site/avatar_default.gif)"></div>
+                        <div v-else class="user-avatar flex-shrink-0"
+                             style="background-image: url(/images/site/avatar_default.gif)"></div>
                         <div class="comment-body d-flex flex-column px-4 py-3">
-                            <router-link class="comment-author font-weight-bolder" :to="{ name: 'users.show', params: { id: comment.author.id } }">
+                            <router-link class="comment-author font-weight-bolder"
+                                         :to="{ name: 'users.show', params: { id: comment.author.id } }">
                                 {{ comment.author.title }}
                             </router-link>
                             <span class="comment-text" v-html="comment.text"></span>
@@ -26,14 +29,16 @@
                 <div class="row mt-5">
                     <div class="col">
                         <form @submit.prevent="submitComment" id="submit-comment">
-                            <summernote v-bind="{name: 'text', placeholder: 'Введите комментарий ..', onEnter: submitComment}"></summernote>
+                            <summernote
+                                v-bind="{name: 'text', placeholder: 'Введите комментарий ..', onEnter: submitComment}"></summernote>
                         </form>
                     </div>
                 </div>
                 <div class="row mt-3">
                     <div class="offset-8 col">
                         <button type="submit" :disabled="disable" form="submit-comment"
-                                class="button ml-auto p-3 px-4 rounded-pill shadow-sm blue text-center d-block">Отправить
+                                class="button ml-auto p-3 px-4 rounded-pill shadow-sm blue text-center d-block">
+                            Отправить
                         </button>
                     </div>
                 </div>
@@ -62,10 +67,9 @@
 <script>
     export default {
         name: 'comments',
-        props: ['content'],
+        props: ['content', 'comments'],
         data: function () {
             return {
-                comments: null,
                 disable: false,
             }
         },
@@ -74,12 +78,11 @@
         },
         mounted() {
             let self = this;
-            axios.get('/api/v1/issues/' + this.$route.params.id + '/comments')
-                .then(function (response) {
-                    self.comments = response.data;
-                });
         },
         methods: {
+            checkOwn(comment) {
+                return (this.$user.id === comment.author.id);
+            },
             submitComment() {
                 let self = this;
                 self.disable = true;
@@ -94,7 +97,7 @@
                         toastr[response.data.status](response.data.message);
                         if (response.data.published) {
                             $('#summernote').summernote('reset');
-                            self.comments.push(response.data.comment);
+                            // self.comments.push(response.data.comment);
                         }
                     })
                     .catch(function () {

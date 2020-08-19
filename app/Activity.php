@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int comment_id
  * @property int issue_status_id
  * @property int user_id
+ * @property object issue
  */
 class Activity extends Model
 {
@@ -35,7 +36,8 @@ class Activity extends Model
     protected $with = [
         'author',
         'user',
-        'issueStatus'
+        'issueStatus',
+        'issue'
     ];
 
     protected $guarded = [];
