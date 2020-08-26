@@ -69,7 +69,11 @@
             <div class="row mb-4">
                 <div class="col">
                     <h6 class="text-gray">Автор</h6>
-                    <user-info v-if="issue.author" v-bind:users="issue.author"></user-info>
+                    <select2
+                        v-model="issue.author_id"
+                        v-bind="{values: employees, name: 'author_id', nullable: false, nullTitle: 'Не назначен', groups: true, placeholder: 'Выберите автора'}"
+                    v-if="$type('service')"></select2>
+                    <user-info v-else v-bind:users="issue.author"></user-info>
                 </div>
             </div>
             <div class="row mb-4">
@@ -93,7 +97,7 @@
                     <h6 class="text-gray">Наблюдатели</h6>
                     <select2
                         v-model="issue.observer_ids"
-                        v-bind="{values: employees, name: 'observer_ids[]', nullable: false, nullTitle: 'Не назначены', multiple: true, groups: true}"></select2>
+                        v-bind="{values: employees, name: 'observer_ids[]', nullable: false, nullTitle: 'Не назначены', multiple: true, groups: true, placeholder: 'Выберите наблюдателей'}"></select2>
                 </div>
             </div>
         </div>
@@ -114,8 +118,9 @@
                     issue_type_id: null,
                     issue_priority_id: null,
                     registration_type_id: 1,
-                    author: this.$user,
+                    author_id: this.$user.id,
                     observer_ids: [],
+                    author: this.$user
                 },
                 issueTypes: null,
                 issuePriorities: null,

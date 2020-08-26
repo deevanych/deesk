@@ -15,7 +15,7 @@
 <script>
 
     export default {
-        props: ['value', 'name', 'values', 'nullable', 'nullTitle', 'multiple', 'groups'],
+        props: ['value', 'name', 'values', 'nullable', 'nullTitle', 'multiple', 'groups', 'placeholder'],
         data: function () {
             return {
                 // value: '',
@@ -24,14 +24,14 @@
         methods: {},
         mounted() {
             let self = this;
-            $(self.$refs.select2).select2().on('change', function (e) {
+            $(self.$refs.select2).select2({placeholder: self.placeholder}).on('change', function (e) {
                 let val = ($(e.target).val()) ? $(e.target).val() : null;
                 self.$emit('input', val);
             });
         },
         updated() {
             let self = this;
-            $(self.$refs.select2).select2().trigger('update');
+            $(self.$refs.select2).select2({placeholder: self.placeholder}).trigger('update');
         }
     }
 </script>

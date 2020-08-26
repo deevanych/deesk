@@ -105,7 +105,8 @@ class IssueController extends Controller
             'description' => 'max:10000000',
         ]);
 
-        $organization = Auth::user()->organization;
+        $user = Auth::user();
+        $organization = $user->organization;
         $observers = $request->observer_ids;
         $issueData = $request->except('author', 'observer_ids');
 
@@ -121,9 +122,18 @@ class IssueController extends Controller
         })->first();
 
         $issue = new Issue($issueData);
-        $issue->author_id = Auth::user()->id;
         $issue->issue_status_id = $issueStatus->id;
         $issue->author_organization_id = $organization->id;
+        $issue->author_id = $user->id;
+
+        if ($issueData['author_id'] !== (int)$user->id) {
+            if (!$organization->isClient()) {
+                $issue->service_created = true;
+                $issue->author_id = $issueData['author_id'];
+                $issue->author_organization_id = User::findOrFail($issueData['author_id'])->organization_id;
+            }
+        }
+
         $issue->organization_id = $organization_id;
 
         if (isset($rule)) {

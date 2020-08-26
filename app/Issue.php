@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
  * @property int author_organization_id
  * @property int author_id
  * @property int issue_status_id
+ * @property bool service_created
  */
 class Issue extends Model
 {

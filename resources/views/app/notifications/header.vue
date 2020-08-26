@@ -2,7 +2,7 @@
     <div class="row p-3">
         <perfect class="col block-content m-0" @ps-y-reach-end="changeData" :settings="{wheelPropagation: false}">
             <template v-if="notifications">
-                <template v-if="countSelf > 0">
+                <template v-if="notifications.length > 0">
                     <div class="header-timeline-item" v-on:mouseenter="(!notification.is_read ? markAsRead(notification) : null)"
                          :class="{unread: !notification.is_read}" v-for="notification in notifications">
                         <span class="d-block font-weight-bold" v-html="getActivity(notification.activity)"></span>
@@ -11,7 +11,7 @@
                     </div>
                 </template>
                 <template v-else>
-                    Действий не было
+                    Уведомлений нет
                 </template>
             </template>
             <template v-else>

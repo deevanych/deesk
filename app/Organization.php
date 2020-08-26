@@ -20,10 +20,10 @@ class Organization extends Model
 
     public function issueStatuses($withDeleted = false)
     {
+        $issueStatuses = $this->hasMany('App\IssueStatus');
         if ($this->isClient()) {
             $issueStatuses = $this->hasMany('App\IssueStatus', 'organization_id', 'parent_id');
         }
-        $issueStatuses = $this->hasMany('App\IssueStatus');
         if ($withDeleted) {
             return $issueStatuses->get();
         }

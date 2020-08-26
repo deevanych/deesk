@@ -87,7 +87,15 @@
             </div>
             <div class="row mb-4">
                 <div class="col">
-                    <h6 class="text-gray">Автор</h6>
+                    <h6 class="text-gray d-flex align-items-center">Автор
+                        <span v-if="issue.service_created"
+                              data-toggle="tooltip"
+                              data-placement="top"
+                              data-html="true"
+                              class="notification ml-2"
+                              data-original-title="Заявка создана сервисной организацией от имени автора">
+                        </span>
+                    </h6>
                     <user-info v-if="issue.author" v-bind:users="issue.author"></user-info>
                 </div>
             </div>
@@ -211,6 +219,16 @@
 
 </template>
 
+<style scoped lang="scss">
+    .notification {
+        width: 1rem;
+        height: 1rem;
+        display: inline-block;
+        background-image: url(/images/icons/warning.svg);
+        background-size: cover;
+    }
+</style>
+
 <script>
     import comments from "./comments";
     import UserInfo from "../components/user-info";
@@ -256,6 +274,9 @@
                     channel.bind('issueUpdated', function (data) {
                         self.issue = data.issue;
                     });
+                    setTimeout(function () {
+                        $('[data-toggle="tooltip"]').tooltip();
+                    }, 100);
                 });
             axios.get('/api/v1/issues/statuses')
                 .then(function (response) {
