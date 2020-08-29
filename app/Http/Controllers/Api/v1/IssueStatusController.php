@@ -26,7 +26,7 @@ class IssueStatusController extends Controller
             $organization = Auth::user()->organization;
             $organization = (!$organization->isClient() ? $organization : $organization->parent);
         }
-        return $organization->issueStatuses($request->withDeleted);
+        return $organization->getIssueStatuses($request->withDeleted);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Issue;
 use App\IssueRule;
+use App\IssueStatusType;
 use App\Organization;
 use App\User;
 use Illuminate\Database\Eloquent\Builder;
@@ -110,9 +111,9 @@ class IssueController extends Controller
         $observers = $request->observer_ids;
         $issueData = $request->except('author', 'observer_ids');
 
-        $issueStatus = $organization->issueStatuses()->where('type_id', '=', 2)->first();
+        $issueStatus = $organization->getIssueStatuses()->where('type_id', '=', IssueStatusType::NEW_ISSUE)->first();
         if (!$issueStatus) {
-            $issueStatus = $organization->issueStatuses()->first();
+            $issueStatus = $organization->getIssueStatuses()->first();
         }
 
         $organization_id = ($organization->isClient() ? $organization->parent_id : $organization->id);

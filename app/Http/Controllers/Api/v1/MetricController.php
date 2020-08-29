@@ -111,7 +111,7 @@ class MetricController extends Controller
             }
         } elseif ($request->metric === 'issuesCompletedCount') {
             $serviceOrganization = ($organization->isClient() ? $organization->parent : $organization);
-            $issueCompletedStatus = $serviceOrganization->issueStatuses(true)->where('type_id', IssueStatusType::ISSUE_COMPLETED)->first();
+            $issueCompletedStatus = $serviceOrganization->getIssueStatuses(true)->where('type_id', IssueStatusType::ISSUE_COMPLETED)->first();
             $issueCompletedStatusId = ($issueCompletedStatus ? $issueCompletedStatus->id : 0);
             $key = ($organization->isClient() ? 'client_organization_id' : 'service_organization_id');
             $activities = Activity::where('created_at', '>=', $period)->where('issue_status_id', '=', $issueCompletedStatusId)->where($key, '=', $organization->id)->groupBy('date')

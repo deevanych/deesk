@@ -25,6 +25,18 @@ class Organization extends Model
             $issueStatuses = $this->hasMany('App\IssueStatus', 'organization_id', 'parent_id');
         }
         if ($withDeleted) {
+            return $issueStatuses;
+        }
+        return $issueStatuses->whereActive(true);
+    }
+
+    public function getIssueStatuses($withDeleted = false)
+    {
+        $issueStatuses = $this->hasMany('App\IssueStatus');
+        if ($this->isClient()) {
+            $issueStatuses = $this->hasMany('App\IssueStatus', 'organization_id', 'parent_id');
+        }
+        if ($withDeleted) {
             return $issueStatuses->get();
         }
         return $issueStatuses->whereActive(true)->get();

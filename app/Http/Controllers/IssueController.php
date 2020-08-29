@@ -49,9 +49,9 @@ class IssueController extends Controller
         $observers = $request->observer_ids;
         $request = $request->except('author', 'observer_ids');
 
-        $issueStatus = $organization->issueStatuses()->where('type_id', '=', 2)->first();
+        $issueStatus = $organization->getIssueStatuses()->where('type_id', '=', 2)->first();
         if (!$issueStatus) {
-            $issueStatus = $organization->issueStatuses()->first();
+            $issueStatus = $organization->getIssueStatuses()->first();
         }
 
         $issue = new Issue($request);
