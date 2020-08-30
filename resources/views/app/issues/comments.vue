@@ -26,7 +26,7 @@
                 <div class="comments" v-else>
                     Комментариев нет
                 </div>
-                <div class="row mt-5">
+                <div class="row mt-5" v-if="showSendForm">
                     <div class="col">
                         <form @submit.prevent="submitComment" id="submit-comment">
                             <summernote
@@ -34,7 +34,7 @@
                         </form>
                     </div>
                 </div>
-                <div class="row mt-3">
+                <div class="row mt-3" v-if="showSendForm">
                     <div class="offset-8 col">
                         <button type="submit" :disabled="disable" form="submit-comment"
                                 class="button ml-auto p-3 px-4 rounded-pill shadow-sm blue text-center d-block">
@@ -67,7 +67,7 @@
 <script>
     export default {
         name: 'comments',
-        props: ['content', 'comments'],
+        props: ['content', 'comments', 'showSendForm'],
         data: function () {
             return {
                 disable: false,

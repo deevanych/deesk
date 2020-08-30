@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -23,6 +24,8 @@ use Illuminate\Support\Facades\Auth;
 class Issue extends Model
 {
     //
+    use SoftDeletes;
+
     protected $with = [
         'author',
         'employee',
@@ -39,7 +42,8 @@ class Issue extends Model
     protected $appends = [
         'link',
         'my',
-        'favorite'
+        'favorite',
+        'isTrashed'
     ];
 
     protected $guarded = ['created_at'];
@@ -96,5 +100,9 @@ class Issue extends Model
     public function getMyAttribute(): bool
     {
         return (boolean)(Auth::id() === $this->employee_id);
+    }
+
+    public function getIsTrashedAttribute(): bool {
+        return $this->trashed();
     }
 }

@@ -188,6 +188,9 @@ class IssueController extends Controller
     function update(Request $request, Issue $issue)
     {
         //
+        if ($issue->trashed()) {
+            return array('status' => 'error', 'updated' => false, 'message' => 'Удаленная заявка не может быть обновлена', 'issue' => $issue->load('type', 'priority', 'observers')->append('favorite'));
+        }
         $issue->update($request->all());
         return array('status' => 'success', 'updated' => true, 'message' => 'Заявка обновлена', 'issue' => $issue->fresh()->load('type', 'priority', 'observers')->append('favorite'));
     }
@@ -202,5 +205,7 @@ class IssueController extends Controller
     function destroy(Issue $issue)
     {
         //
+        $issue->delete();
+        return array('status' => 'success', 'deleted' => true, 'message' => 'Заявка удалена', 'issue' => $issue);
     }
 }

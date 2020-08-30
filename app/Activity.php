@@ -29,9 +29,10 @@ class Activity extends Model
     const ISSUE_STATUS_CREATED = 9;
     const ISSUE_TYPE_CREATED = 10;
     const ISSUE_PRIORITY_CREATED = 11;
-    const ORGANIZATION_CLIENT_CREATED = 12;
-    const ORGANIZATION_CONTACT_CREATED = 13;
-    const ORGANIZATION_CREATED = 14;
+    const ISSUE_DELETED = 12;
+    const ORGANIZATION_CLIENT_CREATED = 13;
+    const ORGANIZATION_CONTACT_CREATED = 14;
+    const ORGANIZATION_CREATED = 15;
 
     protected $with = [
         'author',
@@ -54,7 +55,7 @@ class Activity extends Model
 
     public function issue()
     {
-        return $this->belongsTo('App\Issue', 'issue_id');
+        return $this->belongsTo('App\Issue', 'issue_id')->withTrashed();
     }
 
     public function issueStatus()

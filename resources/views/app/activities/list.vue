@@ -144,6 +144,20 @@
                             name: 'users.show',
                             params: {id: activity.user.id}
                         }).href + '\'); return false;">' + activity.user.title + '</a>';
+                    case 12:
+                        return '<a href="' + self.$router.resolve({
+                            name: 'users.show',
+                            params: {id: activity.author.id}
+                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
+                            name: 'users.show',
+                            params: {id: activity.author.id}
+                        }).href + '\'); return false;">' + activity.author.title + '</a> удалил заявку <a href="' + self.$router.resolve({
+                            name: 'issues.show',
+                            params: {id: activity.issue.id}
+                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
+                            name: 'issues.show',
+                            params: {id: activity.issue.id}
+                        }).href + '\'); return false;">' + activity.issue.title + ' (#' + activity.issue.id + ')</a>';
                 }
             },
             getDescription(activity) {

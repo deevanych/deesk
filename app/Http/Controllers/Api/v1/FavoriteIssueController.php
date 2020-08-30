@@ -43,7 +43,7 @@ class FavoriteIssueController extends Controller
     {
         //
         Auth::user()->favoriteIssues()->attach($request->favorite);
-        $issue = Issue::find($request->favorite)->load('type', 'priority', 'observers')->append('favorite');
+        $issue = Issue::withTrashed()->find($request->favorite)->load('type', 'priority', 'observers')->append('favorite');
         return array('status' => 'success', 'toggled' => true, 'message' => 'Заявка добавлена в избранное', 'issue' => $issue);
     }
 
@@ -91,7 +91,7 @@ class FavoriteIssueController extends Controller
     {
         //
         Auth::user()->favoriteIssues()->detach($request->favorite);
-        $issue = Issue::find($request->favorite)->load('type', 'priority', 'observers')->append('favorite');
+        $issue = Issue::withTrashed()->find($request->favorite)->load('type', 'priority', 'observers')->append('favorite');
         return array('status' => 'success', 'toggled' => true, 'message' => 'Заявка удалена из избранного', 'issue' => $issue);
     }
 }

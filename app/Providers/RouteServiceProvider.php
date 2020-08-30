@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Issue;
 use App\IssuePriority;
 use App\IssueRule;
 use App\IssueStatus;
@@ -53,6 +54,9 @@ class RouteServiceProvider extends ServiceProvider
         });
         Route::bind('organization', function ($id) {
             return Organization::find($id);
+        });
+        Route::bind('issue', function ($id) {
+            return Issue::withTrashed()->find($id);
         });
     }
 

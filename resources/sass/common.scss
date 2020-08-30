@@ -42,6 +42,10 @@ a:hover {
     text-decoration: none;
 }
 
+.modal-open {
+    padding: 0 !important;
+}
+
 button, .button[disabled] {
     border: none;
     outline: none !important;
@@ -843,5 +847,5 @@ th.sorting_desc {
     background-repeat: no-repeat;
     background-position: 1.2rem;
     background-size: 1rem;
-    padding-left: 3rem!important;
+    padding-left: 3rem !important;
 }

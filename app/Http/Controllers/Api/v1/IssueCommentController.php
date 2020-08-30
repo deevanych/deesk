@@ -21,7 +21,7 @@ class IssueCommentController extends Controller
     public function index(Request $request)
     {
         //
-        $issue = Issue::findOrFail($request->id);
+        $issue = Issue::withTrashed()->findOrFail($request->id);
         return $issue->comments;
     }
 

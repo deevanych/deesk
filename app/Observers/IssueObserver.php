@@ -89,6 +89,24 @@ class IssueObserver
     public function deleted(Issue $issue)
     {
         //
+        event(new IssueUpdated($issue));
+        $user = Auth::user();
+        $organization = $user->organization;
+
+        $client_organization_id = $issue->author_organization_id;
+        $service_organization_id = $organization->id;
+        if ($organization->isClient()) {
+            $client_organization_id = $organization->id;
+            $service_organization_id = $organization->parent_id;
+        }
+        $activity = new Activity();
+        $activity->issue_id = $issue->id;
+        $activity->service_organization_id = $service_organization_id;
+        $activity->client_organization_id = $client_organization_id;
+        $activity->author_id = $user->id;
+        $activity->type = Activity::ISSUE_DELETED;
+
+        $activity->save();
     }
 
     /**

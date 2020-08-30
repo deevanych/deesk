@@ -27,7 +27,7 @@
                     <button class="button rounded-pill fave mr-auto p-4 shadow-sm" :class="{remove: issue.favorite}"
                             :disabled="disabled.favorite"
                             v-on:click="toggleFavorite(issue.id, issue.favorite)"></button>
-                    <template v-if="$type('service')">
+                    <template v-if="$type('service') && !issue.isTrashed">
                         <template v-if="!issue.employee">
                             <button href="/"
                                     class="button p-3 px-4 rounded-pill shadow-sm white router-link-exact-active router-link-active"
@@ -44,10 +44,12 @@
                             </a>
                         </template>
                     </template>
+                    <span v-if="issue.isTrashed" class="text-gray">Заявка удалена</span>
                     <button
-                        class="ml-3 button p-3 px-4 rounded-pill shadow-sm tonight router-link-exact-active router-link-active dropdown-toggle"
-                        v-bind:class="issue.status.color.title" data-toggle="dropdown" data-color="white"
+                        class="ml-3 button p-3 px-4 rounded-pill shadow-sm tonight router-link-exact-active router-link-active"
+                        v-bind:class="[issue.status.color.title, {'dropdown-toggle': !issue.isTrashed}]" data-color="white"
                         aria-haspopup="true"
+                        data-toggle="dropdown"
                         aria-expanded="false"
                         :disabled="disabled.status">
                             <span class="status white"
@@ -55,7 +57,7 @@
                                 {{ issue.status.title }}
                             </span>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right">
+                    <div class="dropdown-menu dropdown-menu-right" v-if="!issue.isTrashed">
                         <a @click="changeStatus(status)" class="dropdown-item status white" v-for="status in statuses">
                             <span class="status"
                                   v-bind:class="[status.icon.title, status.color.title]">
@@ -70,7 +72,7 @@
                     <span v-html="issue.description"></span>
                 </div>
             </div>
-            <comments :comments="comments"></comments>
+            <comments :comments="comments" :showSendForm="!issue.isTrashed"></comments>
         </div>
         <div class="col-4 offset-1">
             <div class="row mb-4">
@@ -135,6 +137,16 @@
             <activity-list :activities="activities" :count="count"
                            :url="'/api/v1/activity?issue=' + this.$route.params.id"
                            :type="'issue'"/>
+
+            <div class="row mb-4" v-if="!issue.isTrashed">
+                <div class="col">
+                    <button href="/"
+                            class="button p-3 px-4 rounded-pill shadow-sm red router-link-exact-active router-link-active"
+                            :disabled="disabled.remove" data-toggle="modal" data-target="#removeIssue">
+                        Удалить заявку
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!--        modal-->
@@ -143,7 +155,7 @@
               tabindex="-1" role="dialog"
               aria-labelledby="exampleModalLabel"
               aria-hidden="true"
-              v-on:submit.prevent="transferIssue">
+              v-on:submit.prevent="transferIssue" v-if="!issue.isTrashed">
             <div class="modal-dialog modal-dialog-centered " role="document">
                 <div class="modal-content shadow-sm p-5 m-0">
                     <div class="modal-header px-0 pt-0 pb-4 border-0">
@@ -185,6 +197,35 @@
                 </div>
             </div>
         </form>
+
+        <form class="modal fade" id="removeIssue" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+              aria-hidden="true" v-on:submit.prevent="removeIssue">
+            <div class="modal-dialog modal-dialog-centered " role="document">
+                <div class="modal-content shadow-sm p-5 m-0">
+                    <div class="modal-header px-0 pt-0 pb-4 border-0">
+                        <h5 class="modal-title">Удаление заявки</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body p-0">
+                        Удалить заявку?
+                    </div>
+                    <div class="modal-footer p-0">
+                        <button data-dismiss="modal"
+                                class="button p-3 px-4 rounded-pill shadow-sm white">
+                            Отмена
+                        </button>
+                        <button
+                            type="submit"
+                            class="ml-3 button p-3 px-4 rounded-pill shadow-sm tonight red"
+                            :disabled="disabled.remove">
+                            Да, удалить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
     <div class="row mb-4" v-else>
         <div class="col-7">
@@ -216,7 +257,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 <style scoped lang="scss">
@@ -244,6 +284,7 @@
                     favorite: false,
                     accept: false,
                     transfer: false,
+                    remove: false
                 },
                 activities: null,
                 issue: null,
@@ -359,6 +400,23 @@
                         header.loading = false;
                         if (response.data.updated) {
                             self.issue = response.data.issue;
+                        }
+                    }).catch(function () {
+                    toastr[response.data.status](response.data.message);
+                });
+            },
+            removeIssue(e) {
+                let self = this;
+                self.disabled.remove = true;
+                header.loading = true;
+                axios.delete('/api/v1/issues/' + this.$route.params.id)
+                    .then(function (response) {
+                        toastr[response.data.status](response.data.message);
+                        header.loading = false;
+                        if (response.data.deleted) {
+                            self.issue = response.data.issue;
+                            self.issue.isTrashed = true;
+                            $(e.target).modal('toggle');
                         }
                     }).catch(function () {
                     toastr[response.data.status](response.data.message);

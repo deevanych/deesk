@@ -27,7 +27,7 @@ class ActivityController extends Controller
         } elseif ($request->get('organization')) {
             $object = Organization::findOrFail($request->get('organization'));
         } elseif ($request->get('issue')) {
-            $object = Issue::findOrFail($request->get('issue'));
+            $object = Issue::withTrashed()->findOrFail($request->get('issue'));
         } else {
             if ($request->get('organization') === 'notifications') {
                 $user = Auth::user();
