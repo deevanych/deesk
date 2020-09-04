@@ -17,21 +17,31 @@
                                       d="M107.515 150.971L8.485 250c-4.686 4.686-4.686 12.284 0 16.971L107.515 366c7.56 7.56 20.485 2.206 20.485-8.485v-71.03h308c6.627 0 12-5.373 12-12v-32c0-6.627-5.373-12-12-12H128v-71.03c0-10.69-12.926-16.044-20.485-8.484z"
                                       class=""></path>
                             </svg>
-                            {{ organization.title }}
+                            <template v-if="organization.title">{{ organization.title }}</template>
+                            <PuSkeleton v-else height="42px" width="100px"></PuSkeleton>
                         </a>
                     </h1>
                 </div>
             </div>
             <div class="row">
                 <div class="col">
-                    <img v-bind:src="'/images/logo/'+organization.image" class="mw-80 mb-5 rounded" alt="">
-                    <div class="row mb-4">
+                    <img v-if="organization.image" v-bind:src="'/images/logo/'+organization.image" class="mw-80 mb-5 rounded" alt="">
+                    <PuSkeleton v-else class="mw-80 mb-5 rounded d-block" height="200px"></PuSkeleton>
+                    <template v-if="!organization.full_name">
+                    <div class="row mb-4" v-for="n in 5">
+                        <div class="col">
+                            <PuSkeleton width="50%" class="mb-2 d-block"></PuSkeleton>
+                            <PuSkeleton height="40px" width="80%" class="mb-2 d-block"></PuSkeleton>
+                        </div>
+                    </div>
+                    </template>
+                    <div class="row mb-4" v-if="organization.full_name">
                         <div class="col">
                             <h6 class="text-gray">Полное наименование</h6>
                             <h5>{{ organization.full_name }}</h5>
                         </div>
                     </div>
-                    <div class="row mb-4">
+                    <div class="row mb-4" v-if="organization.profile && organization.profile.site">
                         <div class="col">
                             <h6 class="text-gray">Сайт</h6>
                             <h5>
@@ -41,7 +51,7 @@
                             </h5>
                         </div>
                     </div>
-                    <div class="row mb-4">
+                    <div class="row mb-4" v-if="organization.profile && organization.profile.phone">
                         <div class="col">
                             <h6 class="text-gray">Телефон</h6>
                             <h5>
@@ -51,7 +61,7 @@
                             </h5>
                         </div>
                     </div>
-                    <div class="row mb-4">
+                    <div class="row mb-4" v-if="organization.profile && organization.profile.address">
                         <div class="col">
                             <h6 class="text-gray">Адрес</h6>
                             <h5>
@@ -89,7 +99,11 @@
         },
         data: function () {
             return {
-                organization: null,
+                organization: {
+                    profile: {
+                        site: null,
+                    }
+                },
                 router: this.$router,
                 issues: null,
                 activities: null,
