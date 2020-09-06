@@ -28,10 +28,25 @@
                         <div class="row mb-5">
                             <div class="col">
                                 <h5>Заявки</h5>
-                                <router-link :to="{name: 'settings.issues.types'}" class="d-block mt-1">Типы</router-link>
-                                <router-link :to="{name: 'settings.issues.priorities'}" class="d-block mt-1">Приоритеты</router-link>
-                                <router-link :to="{name: 'settings.issues.statuses'}" class="d-block mt-1">Статусы</router-link>
-                                <router-link :to="{name: 'settings.issues.rules'}" class="d-block mt-1">Действия по умолчанию</router-link>
+                                <router-link :to="{name: 'settings.issues.types'}" class="d-block mt-1">Типы
+                                </router-link>
+                                <router-link :to="{name: 'settings.issues.priorities'}" class="d-block mt-1">
+                                    Приоритеты
+                                </router-link>
+                                <router-link :to="{name: 'settings.issues.statuses'}" class="d-block mt-1">Статусы
+                                </router-link>
+                                <router-link :to="{name: 'settings.issues.rules'}" class="d-block mt-1">Действия по
+                                    умолчанию
+                                </router-link>
+
+                                <template v-if="$can('client.view')">
+                                    <h5 class="mt-4">Клиенты</h5>
+                                    <router-link :to="{name: 'clients.organizations'}" class="d-block mt-1">
+                                        Организации
+                                    </router-link>
+                                    <router-link :to="{name: 'clients.contacts'}" class="d-block mt-1">Контакты
+                                    </router-link>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -45,24 +60,24 @@
 </template>
 
 <style scoped>
-    .menu {
-        background: #e5edfa;
-        border-radius: 50px;
-    }
+.menu {
+    background: #e5edfa;
+    border-radius: 50px;
+}
 </style>
 
 <script>
-    export default {
-        data: function () {
-            return {
-                router: this.$router,
-            }
-        },
-        mounted() {
-            let self = this;
-            header.loading = true;
-        },
-        methods: {},
-        components: {}
-    }
+export default {
+    data: function () {
+        return {
+            router: this.$router,
+        }
+    },
+    mounted() {
+        let self = this;
+        header.loading = true;
+    },
+    methods: {},
+    components: {}
+}
 </script>

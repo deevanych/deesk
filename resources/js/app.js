@@ -15,6 +15,7 @@ import '../js/common';
 // components
 import Summernote from '../views/app/components/summernote';
 import SelectComponent from '../views/app/components/select2';
+import DataTable from '../views/app/components/table';
 //app
 import App from '../views/app/layout/app';
 // home
@@ -128,6 +129,7 @@ Vue.component('vue-headful', VueHeadFul);
 Vue.component('summernote', Summernote);
 Vue.component('perfect', VuePerfectScrollbar);
 Vue.component('select2', SelectComponent);
+Vue.component('data-table', DataTable);
 
 const routes = [
     {
@@ -212,25 +214,6 @@ const routes = [
                 // ],
             },
             {
-                path: '/clients',
-                name: 'clients',
-                components: {
-                    default: Clients
-                },
-                redirect: {
-                    name: 'clients.organizations'
-                },
-                children: [
-                    {
-                        path: '/clients/organizations',
-                        name: 'clients.organizations',
-                        components: {
-                            default: () => import('../views/app/clients/organizations'),
-                        },
-                    },
-                ],
-            },
-            {
                 path: '/settings',
                 name: 'settings',
                 components: {
@@ -241,7 +224,7 @@ const routes = [
                 },
                 children: [
                     {
-                        path: '/settings/types',
+                        path: '/settings/issues/types',
                         name: 'settings.issues.types',
                         components: {
                             default: () => import('../views/app/settings/issues/types'),
@@ -253,24 +236,39 @@ const routes = [
                         },
                     },
                     {
-                        path: '/settings/priorities',
+                        path: '/settings/issues/priorities',
                         name: 'settings.issues.priorities',
                         components: {
                             default: () => import('../views/app/settings/issues/priorities'),
                         },
                     },
                     {
-                        path: '/settings/statuses',
+                        path: '/settings/issues/statuses',
                         name: 'settings.issues.statuses',
                         components: {
                             default: () => import('../views/app/settings/issues/statuses'),
                         },
                     },
                     {
-                        path: '/settings/rules',
+                        path: '/settings/issues/rules',
                         name: 'settings.issues.rules',
                         components: {
                             default: () => import('../views/app/settings/issues/rules'),
+                        },
+                    },
+
+                    {
+                        path: '/settings/clients/organizations',
+                        name: 'clients.organizations',
+                        components: {
+                            default: () => import('../views/app/clients/organizations'),
+                        },
+                    },
+                    {
+                        path: '/settings/clients/contacts',
+                        name: 'clients.contacts',
+                        components: {
+                            default: () => import('../views/app/clients/contacts'),
                         },
                     },
                 ],
@@ -338,8 +336,7 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-
-Vue.prototype.$globalRouter = router;
+window.router = router;
 
 const app = new Vue({
     router,

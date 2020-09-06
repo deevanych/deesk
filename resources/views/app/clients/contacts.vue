@@ -3,18 +3,18 @@
         <div class="col">
             <div class="row">
                 <div class="col align-items-center d-flex justify-content-between">
-                    <h3 class="font-weight-bold d-inline-block mb-0">{{ title }}</h3>
+                    <h3 class="font-weight-bold d-inline-block mb-0">Контакты</h3>
                     <a href="/"
                        class="button p-3 px-4 rounded-pill shadow-sm tonight router-link-exact-active router-link-active"
                        data-toggle="modal" data-target="#addIssueStatus">
-                        Добавить организацию
+                        Добавить контакт
                     </a>
                 </div>
             </div>
             <div class="row">
                 <div class="col block-content">
                     <data-table :columns="columns"
-                                url="/api/v1/organizations">
+                                url="/api/v1/users?type=clients">
                     </data-table>
                 </div>
             </div>
@@ -24,12 +24,6 @@
 
 <script>
 export default {
-    props: {
-        title: {
-            type: String,
-            default: 'Организации'
-        }
-    },
     data: function () {
         return {
             columns: [
@@ -41,24 +35,31 @@ export default {
                     }
                 },
                 {
-                    'title': 'Название',
+                    'title': 'ФИО',
                     'data': 'title',
-                    'render': function (data, type, organization) {
+                    'render': function (data, type, user) {
                         return '<a href="' + router.resolve({
-                            name: 'organizations.show',
-                            params: {id: organization.id}
+                            name: 'users.show',
+                            params: {id: user.id}
                         }).href + '" onclick="router.push(\'' + router.resolve({
-                            name: 'organizations.show',
-                            params: {id: organization.id}
-                        }).href + '\'); return false;">' + organization.title + '</a>';
+                            name: 'users.show',
+                            params: {id: user.id}
+                        }).href + '\'); return false;">' + user.title + '</a>';
                     }
                 },
                 {
-                    'title': 'Полное наименование',
-                    'data': 'full_name',
-                    'render': function (data) {
-                        return data;
-                    }
+                    'title': 'Организация',
+                    'data': 'organization.title',
+                    'render': function (data, type, user) {
+                        return '<a href="' + router.resolve({
+                            name: 'organizations.show',
+                            params: {id: user.organization.id}
+                        }).href + '" onclick="router.push(\'' + router.resolve({
+                            name: 'organizations.show',
+                            params: {id: user.organization.id}
+                        }).href + '\'); return false;">' + user.organization.title + '</a>';
+                    },
+                    'sortable': false
                 }
             ]
         }

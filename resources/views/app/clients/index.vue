@@ -29,7 +29,7 @@
                             <div class="col">
                                 <h5>Клиенты</h5>
                                 <router-link :to="{name: 'clients.organizations'}" class="d-block mt-1">Организации</router-link>
-                                <router-link :to="{name: 'settings.issues.priorities'}" class="d-block mt-1">Контакты</router-link>
+                                <router-link :to="{name: 'clients.contacts'}" class="d-block mt-1">Контакты</router-link>
                             </div>
                         </div>
                     </div>

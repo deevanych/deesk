@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Organization;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
@@ -19,7 +21,22 @@ class OrganizationController extends Controller
     public function index(Request $request)
     {
         //
-        return $request->user()->organization->clients;
+        $search = $request->get('search')['value'];
+        $organizations = Organization::where('parent_id', '=', Auth::user()->organization_id);
+        $columns = ['id', 'title', 'full_name'];
+        $organizations = $organizations->where(function ($query) use ($search) {
+            $query->where('title', 'LIKE', '%' . $search . '%')
+                ->OrWhere('id', '=', $search)
+                ->OrWhere('full_name', 'LIKE', '%' . $search . '%');
+        });
+        $organizationsCount = $organizations->count();
+        foreach ($request->get('order') as $order) {
+            $organizations = $organizations->orderBy($columns[$order['column']], $order['dir']);
+        }
+        $organizations = $organizations->get();
+        $filteredCount = count($organizations);
+        $organizations = $organizations->slice($request->get('start'), $request->get('length'))->values();
+        return array('data' => $organizations, 'recordsTotal' => $organizationsCount, 'recordsFiltered' => $filteredCount, 'draw' => $request->get('draw'));
     }
 
     /**

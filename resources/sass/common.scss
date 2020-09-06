@@ -307,11 +307,6 @@ table.table td:nth-child(1) {
     border-radius: 5px 0 0 5px;
 }
 
-.dataTable td:nth-child(1), .dataTable th:nth-child(1) {
-    min-width: 3rem;
-    padding-left: 0;
-}
-
 table.table td:nth-last-child(1), table.table th:nth-last-child(1) {
     padding-right: 0;
 }

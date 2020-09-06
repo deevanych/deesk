@@ -53,12 +53,20 @@ class IssueStatus extends Model
         $organization = Auth::user()->organization;
         if (isset($_GET['organization'])) {
             $issues = $issues->where('author_organization_id', $_GET['organization']);
+            return $issues->count();
         }
         if (isset($_GET['user'])) {
             $organization = User::findOrFail($_GET['user'])->organization;
             $type = ($organization->isClient() ? 'author_id' : 'employee_id');
             $issues = $issues->where($type, $_GET['user']);
+            return $issues->count();
         }
+        if ($organization->isClient()) {
+            $issues = $issues->where('author_organization_id', $organization->id);
+        } else {
+            $issues = $issues->where('organization_id', $organization->id);
+        }
+
         return $issues->count();
     }
 }
