@@ -7,7 +7,7 @@
             <div class="row mb-2">
                 <div class="col">
                     <h1 class="font-weight-bolder mb-4 d-flex align-items-center">
-                        <a class="back-link d-flex align-items-center" v-on:click="router.go(-1)">
+                        <a class="back-link d-flex align-items-center" v-on:click="$router.go(-1)">
                             <svg aria-hidden="true" focusable="false" data-prefix="far" data-icon="long-arrow-alt-left"
                                  role="img"
                                  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"
