@@ -20,9 +20,9 @@ class IssuePriorityController extends Controller
         //
         $organization = Auth::user()->organization;
         if ($organization->isClient()) {
-            return Auth::user()->organization->parent->issuePriorities($request->withDeleted);
+            return Auth::user()->organization->parent->getIssuePriorities($request->withDeleted);
         }
-        return Auth::user()->organization->issuePriorities($request->withDeleted);
+        return Auth::user()->organization->getIssuePriorities($request->withDeleted);
     }
 
     /**

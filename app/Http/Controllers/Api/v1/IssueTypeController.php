@@ -21,10 +21,10 @@ class IssueTypeController extends Controller
         //
         $organization = Auth::user()->organization;
         if ($organization->isClient()) {
-            return Auth::user()->organization->parent->issueTypes($request->withDeleted);
+            return Auth::user()->organization->parent->getIssueTypes($request->withDeleted);
         }
 
-        return Auth::user()->organization->issueTypes($request->withDeleted);
+        return Auth::user()->organization->getIssueTypes($request->withDeleted);
     }
 
     /**

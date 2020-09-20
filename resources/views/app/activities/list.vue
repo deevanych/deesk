@@ -6,12 +6,9 @@
             </div>
         </div>
         <div class="col block-content timeline">
-            <template v-if="activities">
-                <template v-if="count > 0">
-                    <div class="timeline-item mb-3" v-for="activity in activities">
-                        <span class="d-block font-weight-bold" v-html="getActivity(activity)"></span>
-                        <span class="d-block text-secondary small" v-html="getDescription(activity)"></span>
-                    </div>
+            <template v-if="activitiesSelf">
+                <template v-if="activitiesSelf.length > 0">
+                    <ActivityItem :activity="activity" v-for="activity in activitiesSelf" :key="activity.id"/>
                 </template>
                 <template v-else>
                     Действий не было
@@ -24,152 +21,76 @@
                 </div>
             </template>
         </div>
-        <template v-if="count >= 5">
-            <button v-bind:disabled="disable"
-                    class="mt-3 ml-3 button white p-3 px-4 rounded-pill shadow-sm refresh"
-                    @click.prevent="changeData">
-                Еще
-            </button>
-        </template>
+        <button v-show="moreButton.show" v-bind:disabled="moreButton.disabled"
+                class="mt-3 ml-3 button white p-3 px-4 rounded-pill shadow-sm refresh"
+                @click.prevent="changeData">
+            Еще
+        </button>
     </div>
 </template>
 
 <script>
-    export default {
-        name: 'activities',
-        props: ['activities', 'count', 'url', 'type'],
-        data: function () {
-            return {
-                offset: 1,
-                disable: false,
-            }
+import ActivityItem from "../../../components/activities/ActivityItem";
+
+export default {
+    name: 'ActivityList',
+    components: {
+        ActivityItem
+    },
+    props: {
+        activities: {
+            type: Array
         },
-        mounted() {
-        },
-        methods: {
-            changeData() {
-                let self = this,
-                    url = new URL(window.location.origin + self.url);
-                header.loading = true;
-                url.searchParams.append('offset', self.offset);
-                self.disable = true;
-                axios.get(url.href)
-                    .then(function (response) {
-                        header.loading = false;
-                        self.offset = self.offset + 1;
-                        let activities = response.data.activities;
-                        for (let activity in activities) {
-                            self.activities.push(activities[activity]);
-                        }
-                        self.count = (response.data.count !== 0 ? response.data.count : 1);
-                        self.disable = false;
-                    });
-            },
-            getActivity(activity) {
-                let self = this;
-                switch (activity.type) {
-                    case 1:
-                        return '<a href="' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '\'); return false;">' + activity.author.title + '</a> добавил комментарий к заявке <a href="' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '\'); return false;">' + activity.issue.title + ' (#' + activity.issue.id + ')</a>';
-                    case 3:
-                        return '<a href="' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '\'); return false;">' + activity.author.title + '</a> сменил статус у заявки <a href="' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '\'); return false;">' + activity.issue.title + ' (#' + activity.issue.id + ')</a> на <span class="status ml-1 ' + activity.issue_status.icon.title + ' ' + activity.issue_status.color.title + '">' + activity.issue_status.title + '</span>';
-                    case 4:
-                        return '<a href="' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '\'); return false;">' + activity.author.title + '</a> принял заявку <a href="' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '\'); return false;">' + activity.issue.title + ' (#' + activity.issue.id + ')</a>';
-                    case 7:
-                        return '<a href="' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '\'); return false;">' + activity.author.title + '</a> создал заявку <a href="' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '\'); return false;">' + activity.issue.title + ' (#' + activity.issue.id + ')</a>';
-                    case 8:
-                        return '<a href="' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '\'); return false;">' + activity.author.title + '</a> сменил ответственного у <a href="' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '\'); return false;">' + activity.issue.title + ' (#' + activity.issue.id + ')</a> на <a href="' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.user.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.user.id}
-                        }).href + '\'); return false;">' + activity.user.title + '</a>';
-                    case 12:
-                        return '<a href="' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'users.show',
-                            params: {id: activity.author.id}
-                        }).href + '\'); return false;">' + activity.author.title + '</a> удалил заявку <a href="' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                            name: 'issues.show',
-                            params: {id: activity.issue.id}
-                        }).href + '\'); return false;">' + activity.issue.title + ' (#' + activity.issue.id + ')</a>';
-                }
-            },
-            getDescription(activity) {
-                let self = this;
-                return '<a href="' + self.$router.resolve({
-                    name: 'organizations.show',
-                    params: {id: activity.author.organization.id}
-                }).href + '" onclick="Vue.prototype.$globalRouter.push(\'' + self.$router.resolve({
-                    name: 'organizations.show',
-                    params: {id: activity.author.organization.id}
-                }).href + '\'); return false;">' + activity.author.organization.title + '</a>, ' + self.getFormattedTime(activity.created_at);
-            },
+        url: {
+            type: String
         }
+    },
+    data: function () {
+        return {
+            offset: 1,
+            moreButton: {
+                disabled: false,
+                show: true
+            },
+            activitiesSelf: []
+        }
+    },
+    mounted() {
+        this.activitiesSelf = this.activities;
+    },
+    watch: {
+        activities: function (activities) {
+            this.activitiesSelf = activities;
+        }
+    },
+    methods: {
+        changeData() {
+            let self = this,
+                url = new URL(window.location.origin + self.url);
+            header.loading = true;
+            url.searchParams.append('offset', self.offset);
+            self.moreButton.disabled = true;
+            axios.get(url.href)
+                .then(function (response) {
+                    header.loading = false;
+                    self.offset = self.offset + 1;
+                    let activities = response.data.activities;
+                    for (let activity in activities) {
+                        self.activitiesSelf.push(activities[activity]);
+                    }
+                    if (activities.length < 5) {
+                        self.moreButton.show = false;
+                    }
+                    self.moreButton.disabled = false;
+                });
+        },
     }
+}
 </script>
+
+<style scoped lang="scss">
+.timeline {
+    border-left: 2px solid;
+    margin-left: 1rem;
+}
+</style>

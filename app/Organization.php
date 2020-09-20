@@ -58,10 +58,26 @@ class Organization extends Model
         if ($withDeleted) {
             return $issueTypes->get();
         }
+        return $issueTypes->whereActive(true);
+    }
+
+    public function getIssueTypes($withDeleted = false) {
+        $issueTypes = $this->hasMany('App\IssueType');
+        if ($withDeleted) {
+            return $issueTypes->get();
+        }
         return $issueTypes->whereActive(true)->get();
     }
 
     public function issuePriorities($withDeleted = false) {
+        $issuePriorities = $this->hasMany('App\IssuePriority');
+        if ($withDeleted) {
+            return $issuePriorities->get();
+        }
+        return $issuePriorities->whereActive(true);
+    }
+
+    public function getIssuePriorities($withDeleted = false) {
         $issuePriorities = $this->hasMany('App\IssuePriority');
         if ($withDeleted) {
             return $issuePriorities->get();

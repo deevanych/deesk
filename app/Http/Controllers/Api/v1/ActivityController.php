@@ -35,7 +35,7 @@ class ActivityController extends Controller
                 $offset = ($request->get('offset') ? $request->get('offset') * $count : 0);
                 $activity = $user->notifications()->skip($offset)->take($count);
 
-                return array('activities' => $activity, 'count' => count($activity));
+                return array('activities' => $activity);
             }
             $object = Auth::user()->organization;
         }
@@ -44,7 +44,7 @@ class ActivityController extends Controller
         $offset = ($request->get('offset') ? $request->get('offset') * $count : 0);
         $activity = $object->activity->skip($offset)->take($count);
 
-        return array('activities' => $activity, 'count' => count($activity));
+        return array('activities' => $activity);
     }
 
     /**

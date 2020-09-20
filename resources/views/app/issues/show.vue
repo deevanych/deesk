@@ -47,7 +47,8 @@
                     <span v-if="issue.isTrashed" class="text-gray">Заявка удалена</span>
                     <button
                         class="ml-3 button p-3 px-4 rounded-pill shadow-sm tonight router-link-exact-active router-link-active"
-                        v-bind:class="[issue.status.color.title, {'dropdown-toggle': !issue.isTrashed}]" data-color="white"
+                        v-bind:class="[issue.status.color.title, {'dropdown-toggle': !issue.isTrashed}]"
+                        data-color="white"
                         aria-haspopup="true"
                         data-toggle="dropdown"
                         aria-expanded="false"
@@ -134,9 +135,8 @@
                     <h5 v-else>Наблюдателей нет</h5>
                 </div>
             </div>
-            <activity-list :activities="activities" :count="count"
-                           :url="'/api/v1/activity?issue=' + this.$route.params.id"
-                           :type="'issue'"/>
+            <ActivityList :activities="activities"
+                          :url="'/api/v1/activity?issue=' + this.$route.params.id"/>
 
             <div class="row mb-4" v-if="!issue.isTrashed">
                 <div class="col">
@@ -260,201 +260,200 @@
 </template>
 
 <style scoped lang="scss">
-    .notification {
-        width: 1rem;
-        height: 1rem;
-        display: inline-block;
-        background-image: url(/images/icons/warning.svg);
-        background-size: cover;
-    }
+.notification {
+    width: 1rem;
+    height: 1rem;
+    display: inline-block;
+    background-image: url(/images/icons/warning.svg);
+    background-size: cover;
+}
 </style>
 
 <script>
-    import comments from "./comments";
-    import UserInfo from "../components/user-info";
-    import ActivityList from "../activities/list";
+import comments from "./comments";
+import UserInfo from "../components/user-info";
+import ActivityList from "../activities/list";
 
-    export default {
-        data: function () {
-            return {
-                router: this.$router,
-                statuses: null,
-                disabled: {
-                    status: false,
-                    favorite: false,
-                    accept: false,
-                    transfer: false,
-                    remove: false
-                },
-                activities: null,
-                issue: null,
-                count: 0,
-                comments: null,
-                content: null,
-                config: {
-                    placeholder: 'введите комментарий ..',
-                },
-                employees: null,
-                employee_id: null,
-            }
-        },
-        mounted() {
-            let self = this;
-            axios.get('/api/v1/issues/' + this.$route.params.id)
-                .then(function (response) {
-                    self.issue = response.data;
-                    header.loading = false;
-                    let channel = pusher.subscribe('issue-' + self.issue.id);
-                    channel.bind('activityCreated', function (data) {
-                        self.activities.unshift(data.activity);
-                        self.activities.pop();
-                    });
-                    channel.bind('commentAdded', function (data) {
-                        self.comments.push(data.comment);
-                    });
-                    channel.bind('issueUpdated', function (data) {
-                        self.issue = data.issue;
-                    });
-                    setTimeout(function () {
-                        $('[data-toggle="tooltip"]').tooltip();
-                    }, 100);
-                });
-            axios.get('/api/v1/issues/statuses')
-                .then(function (response) {
-                    header.loading = false;
-                    self.statuses = response.data;
-                });
-            axios.get('/api/v1/activity?issue=' + this.$route.params.id).then(function (response) {
-                self.activities = response.data.activities;
-                self.count = response.data.count;
-            });
-            axios.get('/api/v1/issues/' + this.$route.params.id + '/comments')
-                .then(function (response) {
-                    self.comments = response.data;
-                });
-            if (self.$type('service')) {
-                axios.get('/api/v1/users?type=employee')
-                    .then(function (response) {
-                        header.loading = false;
-                        self.employees = response.data;
-                    });
-            }
-        },
-        beforeDestroy() {
-            let self = this;
-            if (self.issue) {
-                pusher.unsubscribe('issue-' + self.issue.id);
-            }
-        },
-        methods: {
-            checkEmployee(issue) {
-                return (this.$user.id === issue.employee.id);
+export default {
+    data: function () {
+        return {
+            statuses: null,
+            disabled: {
+                status: false,
+                favorite: false,
+                accept: false,
+                transfer: false,
+                remove: false
             },
-            changeStatus(status) {
-                let self = this;
-                self.disabled.status = true;
-                header.loading = true;
-                axios.put('/api/v1/issues/' + this.$route.params.id, {
-                    issue_status_id: status.id
-                })
-                    .then(function (response) {
-                        toastr[response.data.status](response.data.message);
-                        self.disabled.status = false;
-                        header.loading = false;
-                        if (response.data.updated) {
-                            self.issue = response.data.issue;
-                        }
-                    }).catch(function () {
-                    toastr[response.data.status](response.data.message);
-                });
+            activities: null,
+            issue: null,
+            comments: null,
+            content: null,
+            config: {
+                placeholder: 'введите комментарий ..',
             },
-            transferIssue(e) {
-                let self = this;
-                header.loading = true;
-                self.disabled.transfer = true;
-                axios.put('/api/v1/issues/' + this.$route.params.id, {
-                    employee_id: self.employee_id
-                })
-                    .then(function (response) {
-                        toastr[response.data.status](response.data.message);
-                        self.disabled.transfer = false;
-                        header.loading = false;
-                        if (response.data.updated) {
-                            self.issue = response.data.issue;
-                            $(e.target).modal('toggle');
-                        }
-                    }).catch(function () {
-                    toastr[response.data.status](response.data.message);
-                });
-            },
-            acceptIssue() {
-                let self = this;
-                self.disabled.accept = true;
-                header.loading = true;
-                axios.put('/api/v1/issues/' + this.$route.params.id, {
-                    employee_id: this.$user.id,
-                })
-                    .then(function (response) {
-                        toastr[response.data.status](response.data.message);
-                        self.disabled.accept = false;
-                        header.loading = false;
-                        if (response.data.updated) {
-                            self.issue = response.data.issue;
-                        }
-                    }).catch(function () {
-                    toastr[response.data.status](response.data.message);
-                });
-            },
-            removeIssue(e) {
-                let self = this;
-                self.disabled.remove = true;
-                header.loading = true;
-                axios.delete('/api/v1/issues/' + this.$route.params.id)
-                    .then(function (response) {
-                        toastr[response.data.status](response.data.message);
-                        header.loading = false;
-                        if (response.data.deleted) {
-                            self.issue = response.data.issue;
-                            self.issue.isTrashed = true;
-                            $(e.target).modal('toggle');
-                        }
-                    }).catch(function () {
-                    toastr[response.data.status](response.data.message);
-                });
-            },
-            toggleFavorite(issueId, remove) {
-                let self = this;
-                self.disabled.favorite = true;
-                header.loading = true;
-                let method = (remove) ? 'delete' : 'post',
-                    url = '';
-                if (remove) {
-                    url = '/api/v1/issues/favorite/' + this.$route.params.id;
-                } else {
-                    url = '/api/v1/issues/favorite';
-                }
-                axios[method](url, {
-                    favorite: self.$route.params.id,
-                })
-                    .then(function (response) {
-                        header.loading = false;
-                        self.disabled.favorite = false;
-                        toastr[response.data.status](response.data.message);
-                        if (response.data.toggled) {
-                            self.issue = response.data.issue;
-                        }
-                    })
-                    .catch(function () {
-                        header.loading = false;
-                        self.disable = false;
-                        toastr['error']('Произошла ошибка');
-                    });
-            }
-        },
-        components: {
-            UserInfo,
-            comments: comments,
-            activityList: ActivityList,
+            employees: null,
+            employee_id: null,
         }
+    },
+    mounted() {
+        let self = this;
+        axios.get('/api/v1/issues/' + this.$route.params.id)
+            .then(function (response) {
+                self.issue = response.data;
+                header.loading = false;
+                let channel = pusher.subscribe('issue-' + self.issue.id);
+                channel.bind('activityCreated', function (data) {
+                    self.activities.unshift(data.activity);
+                    if (self.activities.length > 5) {
+                        self.activities.pop();
+                    }
+                });
+                channel.bind('commentAdded', function (data) {
+                    self.comments.push(data.comment);
+                });
+                channel.bind('issueUpdated', function (data) {
+                    self.issue = data.issue;
+                });
+                setTimeout(function () {
+                    $('[data-toggle="tooltip"]').tooltip();
+                }, 100);
+            });
+        axios.get('/api/v1/issues/statuses')
+            .then(function (response) {
+                header.loading = false;
+                self.statuses = response.data;
+            });
+        axios.get('/api/v1/activity?issue=' + this.$route.params.id).then(function (response) {
+            self.activities = response.data.activities;
+        });
+        axios.get('/api/v1/issues/' + this.$route.params.id + '/comments')
+            .then(function (response) {
+                self.comments = response.data;
+            });
+        if (self.$type('service')) {
+            axios.get('/api/v1/users?type=employee')
+                .then(function (response) {
+                    header.loading = false;
+                    self.employees = response.data;
+                });
+        }
+    },
+    beforeDestroy() {
+        let self = this;
+        if (self.issue) {
+            pusher.unsubscribe('issue-' + self.issue.id);
+        }
+    },
+    methods: {
+        checkEmployee(issue) {
+            return (this.$user.id === issue.employee.id);
+        },
+        changeStatus(status) {
+            let self = this;
+            self.disabled.status = true;
+            header.loading = true;
+            axios.put('/api/v1/issues/' + this.$route.params.id, {
+                issue_status_id: status.id
+            })
+                .then(function (response) {
+                    toastr[response.data.status](response.data.message);
+                    self.disabled.status = false;
+                    header.loading = false;
+                    if (response.data.updated) {
+                        self.issue = response.data.issue;
+                    }
+                }).catch(function () {
+                toastr[response.data.status](response.data.message);
+            });
+        },
+        transferIssue(e) {
+            let self = this;
+            header.loading = true;
+            self.disabled.transfer = true;
+            axios.put('/api/v1/issues/' + this.$route.params.id, {
+                employee_id: self.employee_id
+            })
+                .then(function (response) {
+                    toastr[response.data.status](response.data.message);
+                    self.disabled.transfer = false;
+                    header.loading = false;
+                    if (response.data.updated) {
+                        self.issue = response.data.issue;
+                        $(e.target).modal('toggle');
+                    }
+                }).catch(function () {
+                toastr[response.data.status](response.data.message);
+            });
+        },
+        acceptIssue() {
+            let self = this;
+            self.disabled.accept = true;
+            header.loading = true;
+            axios.put('/api/v1/issues/' + this.$route.params.id, {
+                employee_id: this.$user.id,
+            })
+                .then(function (response) {
+                    toastr[response.data.status](response.data.message);
+                    self.disabled.accept = false;
+                    header.loading = false;
+                    if (response.data.updated) {
+                        self.issue = response.data.issue;
+                    }
+                }).catch(function () {
+                toastr[response.data.status](response.data.message);
+            });
+        },
+        removeIssue(e) {
+            let self = this;
+            self.disabled.remove = true;
+            header.loading = true;
+            axios.delete('/api/v1/issues/' + this.$route.params.id)
+                .then(function (response) {
+                    toastr[response.data.status](response.data.message);
+                    header.loading = false;
+                    if (response.data.deleted) {
+                        self.issue = response.data.issue;
+                        self.issue.isTrashed = true;
+                        $(e.target).modal('toggle');
+                    }
+                }).catch(function () {
+                toastr[response.data.status](response.data.message);
+            });
+        },
+        toggleFavorite(issueId, remove) {
+            let self = this;
+            self.disabled.favorite = true;
+            header.loading = true;
+            let method = (remove) ? 'delete' : 'post',
+                url = '';
+            if (remove) {
+                url = '/api/v1/issues/favorite/' + this.$route.params.id;
+            } else {
+                url = '/api/v1/issues/favorite';
+            }
+            axios[method](url, {
+                favorite: self.$route.params.id,
+            })
+                .then(function (response) {
+                    header.loading = false;
+                    self.disabled.favorite = false;
+                    toastr[response.data.status](response.data.message);
+                    if (response.data.toggled) {
+                        self.issue = response.data.issue;
+                    }
+                })
+                .catch(function () {
+                    header.loading = false;
+                    self.disable = false;
+                    toastr['error']('Произошла ошибка');
+                });
+        }
+    },
+    components: {
+        UserInfo,
+        comments,
+        ActivityList
     }
+}
 </script>
